@@ -2,6 +2,7 @@
 
 import { Clapperboard } from "lucide-react";
 import { ShortVideoCard } from "@/components/shorts/short-video-card";
+import { REELS_SLIDE_CLASS } from "@/components/shorts/reels-layout";
 import type { AcademyShort } from "@/types/shorts";
 import { cn } from "@/lib/utils";
 
@@ -35,10 +36,10 @@ export function ShortsFeed({ shorts, className }: ShortsFeedProps) {
 
   return (
     <>
-      {/* Mobile / tablet: um reel por viewport */}
+      {/* Mobile / tablet: tela cheia, um reel por viewport */}
       <div
         className={cn(
-          "h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth",
+          "flex h-full min-h-0 flex-col overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth",
           "snap-y snap-proximity",
           "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
           "lg:hidden",
@@ -50,7 +51,11 @@ export function ShortsFeed({ shorts, className }: ShortsFeedProps) {
             key={short.id}
             data-analytics-event="short_view"
             data-short-id={short.id}
-            className="flex h-full w-full shrink-0 snap-start items-center justify-center px-4"
+            className={cn(
+              REELS_SLIDE_CLASS,
+              "relative isolate shrink-0 snap-start snap-always overflow-hidden",
+              "w-full pb-1",
+            )}
           >
             <ShortVideoCard short={short} />
           </section>

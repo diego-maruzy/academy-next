@@ -13,8 +13,8 @@ export default async function ReelsPage() {
       className={cn(
         "flex min-h-0 flex-col overflow-hidden",
         REELS_VIEWPORT_CLASS,
-        "max-lg:-mx-4",
-        "lg:h-auto lg:gap-6 lg:overflow-visible lg:mx-0",
+        "max-lg:-mx-4 max-lg:-mt-4",
+        "lg:h-auto lg:gap-6 lg:overflow-visible lg:mx-0 lg:mt-0",
       )}
     >
       <header className="hidden shrink-0 min-w-0 lg:block lg:max-w-[1120px]">
