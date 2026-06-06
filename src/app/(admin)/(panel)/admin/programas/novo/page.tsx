@@ -5,7 +5,7 @@ export default function NewAdminProgramPage() {
     <div className="grid gap-8">
       <section>
         <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-300">
-          Programas ADM
+          Gestão de conteúdo
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white">
           Novo programa

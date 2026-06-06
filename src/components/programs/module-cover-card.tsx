@@ -51,7 +51,6 @@ const cardClassName = cn(
 
 function CardVisual({
   title,
-  subtitle,
   coverUrl,
   progress,
   locked,
@@ -59,7 +58,6 @@ function CardVisual({
   upgradeHref,
 }: {
   title: string;
-  subtitle: string;
   coverUrl?: string | null;
   progress: number;
   locked: boolean;
@@ -87,11 +85,10 @@ function CardVisual({
           onError={() => setImageLoaded(false)}
         />
       ) : (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center text-slate-300">
+        <div className="absolute inset-0 flex items-center justify-center p-6 text-slate-300">
           <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-blue-300">
             <BookOpen className="h-8 w-8" />
           </div>
-          <p className="line-clamp-3 text-sm font-medium">{title}</p>
         </div>
       )}
 
@@ -136,18 +133,12 @@ function CardVisual({
       </div>
 
       <div className="absolute inset-x-0 bottom-0 p-3 md:p-4">
-        <p className="line-clamp-2 text-base font-bold leading-snug text-white">
-          {title}
-        </p>
-        {subtitle ? (
-          <p className="mt-1 line-clamp-1 text-xs text-slate-300">{subtitle}</p>
-        ) : null}
         {isPremium && !locked ? (
-          <span className="mt-2 inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
+          <span className="mb-3 inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
             Premium
           </span>
         ) : null}
-        <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/15">
+        <div className="h-1 overflow-hidden rounded-full bg-white/15">
           <div
             className={cn(
               "h-full rounded-full transition-all",
@@ -164,11 +155,6 @@ function CardVisual({
 export function ModuleCoverCard(props: ModuleCoverCardProps) {
   const isAcademyCard = "module" in props;
   const title = isAcademyCard ? props.module.name : props.title;
-  const subtitle = isAcademyCard
-    ? props.programName
-    : "subtitle" in props
-      ? props.subtitle
-      : "";
   const coverUrl = isAcademyCard ? props.module.cover_image_url : props.coverUrl;
   const progress = isAcademyCard ? props.progress ?? 0 : props.progress;
   const href = isAcademyCard
@@ -188,7 +174,6 @@ export function ModuleCoverCard(props: ModuleCoverCardProps) {
       >
         <CardVisual
           title={title}
-          subtitle={subtitle}
           coverUrl={coverUrl}
           progress={progress}
           locked
@@ -210,7 +195,6 @@ export function ModuleCoverCard(props: ModuleCoverCardProps) {
     >
       <CardVisual
         title={title}
-        subtitle={subtitle}
         coverUrl={coverUrl}
         progress={progress}
         locked={false}

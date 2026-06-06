@@ -11,7 +11,7 @@ import {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith("/programas") || pathname.startsWith("/pay")) {
+  if (pathname.startsWith("/pay")) {
     return NextResponse.next();
   }
 
@@ -51,6 +51,10 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/programas",
+    "/programas/:path*",
+    "/shorts",
+    "/shorts/:path*",
     "/dashboard/:path*",
     "/clientes/:path*",
     "/equipe/:path*",

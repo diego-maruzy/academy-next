@@ -14,6 +14,7 @@ type DeleteConfirmButtonProps =
       id: string;
       label?: string;
       redirectTo?: string;
+      className?: string;
     }
   | {
       type: "module";
@@ -21,6 +22,7 @@ type DeleteConfirmButtonProps =
       programId: string;
       label?: string;
       redirectTo?: string;
+      className?: string;
     }
   | {
       type: "lesson";
@@ -28,6 +30,7 @@ type DeleteConfirmButtonProps =
       moduleId: string;
       label?: string;
       redirectTo?: string;
+      className?: string;
     };
 
 export function DeleteConfirmButton(props: DeleteConfirmButtonProps) {
@@ -65,7 +68,13 @@ export function DeleteConfirmButton(props: DeleteConfirmButtonProps) {
   }
 
   return (
-    <Button type="button" variant="danger" onClick={handleDelete} disabled={pending}>
+    <Button
+      type="button"
+      variant="danger"
+      className={props.className}
+      onClick={handleDelete}
+      disabled={pending}
+    >
       <Trash2 className="mr-2 h-4 w-4" />
       {pending ? "Excluindo..." : props.label ?? "Excluir"}
     </Button>

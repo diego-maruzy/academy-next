@@ -5,6 +5,7 @@
  * Não registrar número do cartão nem CVC em logs.
  */
 
+import { sendCheckoutApprovedEmails } from "@/lib/email/send-checkout-emails";
 import { getPaymentPlanSettingByBillingType } from "@/lib/payment-settings-data";
 import {
   checkoutFormSchema,
@@ -199,6 +200,15 @@ export async function processCheckoutRegistration(
         [plan.webhook_1_url, plan.webhook_2_url],
         safeWebhookPayload,
       );
+
+      // E-mails pós-pagamento — falha não deve quebrar o checkout.
+      void sendCheckoutApprovedEmails({
+        billingType: plan.billing_type as "PREMIUM_MONTH" | "PREMIUM_YEAR",
+        name: parsedPayload.data.name,
+        email: parsedPayload.data.email,
+        phone: parsedPayload.data.phone,
+        coupon: parsedPayload.data.coupon ?? null,
+      });
 
       const apiMessage =
         responseBody &&

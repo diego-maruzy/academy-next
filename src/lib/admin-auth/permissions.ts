@@ -47,6 +47,7 @@ export function canAccessAdminRoute(
     return (
       matchesPath(pathname, "/dashboard") ||
       matchesPath(pathname, "/programas") ||
+      matchesPath(pathname, "/shorts") ||
       matchesPath(pathname, "/clientes")
     );
   }
@@ -97,6 +98,8 @@ export function isProtectedAdminPath(pathname: string): boolean {
   }
 
   const protectedPrefixes = [
+    "/programas",
+    "/shorts",
     "/dashboard",
     "/clientes",
     "/equipe",
@@ -105,6 +108,7 @@ export function isProtectedAdminPath(pathname: string): boolean {
     "/administrador",
     "/pagamentos",
     "/admin",
+    "/admin/emails",
   ];
 
   return protectedPrefixes.some((prefix) => matchesPath(pathname, prefix));

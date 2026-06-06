@@ -21,8 +21,8 @@ export function AdminHeader() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-white/10 bg-[#050814]/90 backdrop-blur-xl">
-      <div className="grid h-[72px] grid-cols-[1fr_auto] items-center gap-4 px-5 md:grid-cols-[220px_minmax(240px,520px)_220px] lg:px-8">
-        <div className="flex items-center gap-3">
+      <div className="mx-auto flex h-[76px] w-full max-w-[1500px] items-center gap-4 px-5 sm:gap-6 lg:gap-8 lg:px-8">
+        <div className="flex min-w-0 shrink-0 items-center gap-3 sm:min-w-[200px] lg:min-w-[220px]">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-blue-300">
             <Grid3X3 className="h-4 w-4" />
           </div>
@@ -35,12 +35,14 @@ export function AdminHeader() {
         </div>
 
         {isAdmin(admin) ? (
-          <AdminHeaderSearch />
+          <div className="hidden min-w-0 flex-1 md:block lg:max-w-3xl xl:max-w-4xl">
+            <AdminHeaderSearch />
+          </div>
         ) : (
-          <div className="hidden md:block" />
+          <div className="hidden min-w-0 flex-1 md:block" />
         )}
 
-        <div className="flex items-center justify-end gap-2">
+        <div className="ml-auto flex shrink-0 items-center justify-end gap-2 sm:gap-3 lg:min-w-[220px]">
           {isAdmin(admin) ? (
             <button className="hidden h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 transition hover:bg-white/10 hover:text-white sm:flex">
               <Sun className="h-4 w-4" />

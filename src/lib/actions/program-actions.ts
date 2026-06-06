@@ -1,7 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { programSchema, type ProgramInput } from "@/lib/validations/program";
+import {
+  programSchema,
+  reorderProgramsSchema,
+  type ProgramInput,
+} from "@/lib/validations/program";
+import { getCurrentAdmin } from "@/lib/admin-auth/current-admin";
+import { isAdmin } from "@/lib/admin-auth/permissions";
 import { createSupabaseServiceServerClient, getSupabaseActionErrorMessage } from "@/lib/supabase/server";
 
 type ActionResult = {
@@ -17,6 +23,16 @@ function getValidationError(message?: string) {
 function revalidateProgramPaths() {
   revalidatePath("/programas");
   revalidatePath("/admin/programas");
+}
+
+async function assertAdmin(): Promise<ActionResult | null> {
+  const admin = await getCurrentAdmin();
+
+  if (!admin || !isAdmin(admin)) {
+    return { success: false, error: "Acesso não autorizado." };
+  }
+
+  return null;
 }
 
 function resolveCoverImageUrl(
@@ -215,4 +231,80 @@ export async function deleteProgram(id: string): Promise<ActionResult> {
 
   revalidateProgramPaths();
   return { success: true, id };
+}
+
+export async function reorderPrograms(
+  orderedIds: string[],
+): Promise<ActionResult> {
+  const authError = await assertAdmin();
+
+  if (authError) {
+    return authError;
+  }
+
+  const parsed = reorderProgramsSchema.safeParse({ orderedIds });
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message ?? "Dados inválidos.",
+    };
+  }
+
+  const supabase = createSupabaseServiceServerClient();
+
+  if (!supabase) {
+    return { success: false, error: "Supabase não configurado." };
+  }
+
+  const { data: existingPrograms, error: fetchError } = await supabase
+    .from("programs")
+    .select("id")
+    .order("display_order", { ascending: true });
+
+  if (fetchError) {
+    return { success: false, error: fetchError.message };
+  }
+
+  const existingIds = (existingPrograms ?? []).map((program) => program.id);
+  const incomingIds = parsed.data.orderedIds;
+
+  if (existingIds.length !== incomingIds.length) {
+    return {
+      success: false,
+      error: "A lista de programas está desatualizada. Recarregue a página.",
+    };
+  }
+
+  const existingSet = new Set(existingIds);
+  const hasUnknownId = incomingIds.some((id) => !existingSet.has(id));
+
+  if (hasUnknownId) {
+    return {
+      success: false,
+      error: "Um ou mais programas não foram encontrados.",
+    };
+  }
+
+  const timestamp = new Date().toISOString();
+  const updates = await Promise.all(
+    incomingIds.map((id, index) =>
+      supabase
+        .from("programs")
+        .update({ display_order: index, updated_at: timestamp })
+        .eq("id", id),
+    ),
+  );
+
+  const failedUpdate = updates.find((result) => result.error);
+
+  if (failedUpdate?.error) {
+    return {
+      success: false,
+      error: getSupabaseActionErrorMessage(failedUpdate.error),
+    };
+  }
+
+  revalidateProgramPaths();
+  return { success: true };
 }

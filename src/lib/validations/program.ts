@@ -26,3 +26,11 @@ export const programSchema = z.object({
 });
 
 export type ProgramInput = z.infer<typeof programSchema>;
+
+export const reorderProgramsSchema = z.object({
+  orderedIds: z
+    .array(z.string().uuid("ID de programa inválido."))
+    .min(1, "Informe ao menos um programa."),
+});
+
+export type ReorderProgramsInput = z.infer<typeof reorderProgramsSchema>;

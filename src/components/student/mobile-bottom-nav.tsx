@@ -2,26 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Activity,
-  BookOpen,
-  Home,
-  User,
-} from "lucide-react";
+import { BookOpen, Home, Menu, PlaySquare } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const CHECKMATE_MENU_URL = "https://app.checkmateproperty.com/#/dashboard";
 
 type NavItem = {
   id: string;
   label: string;
   href: string;
   icon: typeof Home;
+  external?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
   { id: "home", label: "Início", href: "/programas", icon: Home },
   { id: "programs", label: "Programas", href: "/programas", icon: BookOpen },
-  { id: "progress", label: "Progresso", href: "/programas", icon: Activity },
-  { id: "account", label: "Conta", href: "/programas", icon: User },
+  { id: "shorts", label: "Shorts", href: "/shorts", icon: PlaySquare },
+  { id: "menu", label: "Menu", href: CHECKMATE_MENU_URL, icon: Menu, external: true },
 ];
 
 function isNavItemActive(item: NavItem, pathname: string) {
@@ -33,8 +31,8 @@ function isNavItemActive(item: NavItem, pathname: string) {
     return pathname.startsWith("/programas/");
   }
 
-  if (item.id === "account") {
-    return pathname.startsWith("/conta");
+  if (item.id === "shorts") {
+    return pathname === "/shorts" || pathname.startsWith("/shorts/");
   }
 
   return pathname.startsWith(item.href);
@@ -57,16 +55,13 @@ export function MobileBottomNav() {
           const active = isNavItemActive(item, pathname);
           const Icon = item.icon;
 
-          return (
-            <Link
-              key={item.id}
-              href={item.href}
-              className={cn(
-                "flex min-h-[44px] min-w-[44px] flex-1 flex-col items-center justify-center gap-1",
-                "rounded-xl px-2 py-2 transition active:scale-[0.98]",
-                active ? "text-emerald-400" : "text-slate-400",
-              )}
-            >
+          const className = cn(
+            "flex min-h-[44px] min-w-[44px] flex-1 flex-col items-center justify-center gap-1",
+            "rounded-xl px-1.5 py-2 transition active:scale-[0.98]",
+            active ? "text-emerald-400" : "text-slate-400",
+          );
+          const content = (
+            <>
               <Icon
                 className={cn(
                   "h-5 w-5 transition",
@@ -82,6 +77,20 @@ export function MobileBottomNav() {
               >
                 {item.label}
               </span>
+            </>
+          );
+
+          if (item.external) {
+            return (
+              <a key={item.id} href={item.href} className={className}>
+                {content}
+              </a>
+            );
+          }
+
+          return (
+            <Link key={item.id} href={item.href} className={className}>
+              {content}
             </Link>
           );
         })}

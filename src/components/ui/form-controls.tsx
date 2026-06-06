@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from "react";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 
 const fieldClass =
@@ -26,17 +26,18 @@ export function Input({
   return <input className={cn(fieldClass, className)} {...props} />;
 }
 
-export function Textarea({
-  className,
-  ...props
-}: ComponentPropsWithoutRef<"textarea">) {
+export const Textarea = forwardRef<
+  HTMLTextAreaElement,
+  ComponentPropsWithoutRef<"textarea">
+>(function Textarea({ className, ...props }, ref) {
   return (
     <textarea
+      ref={ref}
       className={cn(fieldClass, "min-h-28 py-3", className)}
       {...props}
     />
   );
-}
+});
 
 export function Select({
   className,

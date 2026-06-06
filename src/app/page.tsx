@@ -9,5 +9,5 @@ export default async function HomePage() {
     redirect(getDefaultAdminPath());
   }
 
-  redirect("/programas");
+  redirect("/admin/login");
 }

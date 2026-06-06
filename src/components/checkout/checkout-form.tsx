@@ -4,10 +4,14 @@
  * Esta integração envia cartão para API própria e aumenta escopo PCI.
  * Recomendado migrar para Stripe Checkout ou Stripe Payment Element.
  * Não armazenar cartão no localStorage ou sessionStorage.
+ * Não salvar cartão. Não logar CVC. Não enviar cartão para webhooks.
  */
 
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { CheckCircle2, CreditCard, Loader2, Lock, MapPin, User } from "lucide-react";
+import { checkoutBrandGradientClass } from "@/components/checkout/checkout-theme";
+import { PaymentSectionCard } from "@/components/checkout/payment-section-card";
+import { SecurityBadges } from "@/components/checkout/security-badges";
 import type { PaymentPlanSetting } from "@/types/payment";
 import { cn } from "@/lib/utils";
 
@@ -38,8 +42,25 @@ type SuccessState = {
   email: string;
 };
 
-const inputClass =
-  "h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20";
+const inputClass = cn(
+  "h-[54px] w-full rounded-xl border border-[#E2E8F0] bg-white px-4 text-sm text-slate-900 outline-none transition",
+  "placeholder:text-slate-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20",
+);
+
+function FieldLabel({
+  children,
+  required,
+}: {
+  children: React.ReactNode;
+  required?: boolean;
+}) {
+  return (
+    <span className="text-sm font-medium text-slate-700">
+      {children}
+      {required ? <span className="ml-0.5 text-red-500">*</span> : null}
+    </span>
+  );
+}
 
 function formatCardNumber(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 16);
@@ -48,6 +69,23 @@ function formatCardNumber(value: string) {
 
 function digitsOnly(value: string, maxLength: number) {
   return value.replace(/\D/g, "").slice(0, maxLength);
+}
+
+function normalizeExpYear(value: string) {
+  const digits = digitsOnly(value, 4);
+  if (digits.length === 2) {
+    return `20${digits}`;
+  }
+
+  return digits;
+}
+
+function getSubmitLabel(billingType: string) {
+  if (billingType === "PREMIUM_YEAR") {
+    return "Assinar anual";
+  }
+
+  return "Assinar mensal";
 }
 
 export function CheckoutForm({ plan, loginUrl }: CheckoutFormProps) {
@@ -115,7 +153,7 @@ export function CheckoutForm({ plan, loginUrl }: CheckoutFormProps) {
             number: form.cardNumber.replace(/\s+/g, ""),
             name: form.cardName,
             expMonth: form.expMonth,
-            expYear: form.expYear,
+            expYear: normalizeExpYear(form.expYear),
             cvc: form.cvc,
             address: form.address,
             city: form.city,
@@ -151,24 +189,33 @@ export function CheckoutForm({ plan, loginUrl }: CheckoutFormProps) {
 
   if (success) {
     return (
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center shadow-xl">
-        <h2 className="text-2xl font-semibold text-emerald-900">
-          Pagamento confirmado
+      <div className="rounded-[22px] border border-emerald-200 bg-white p-6 text-center shadow-sm sm:p-10">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+          <CheckCircle2 className="h-8 w-8" />
+        </div>
+        <h2 className="mt-5 text-2xl font-bold text-slate-900">
+          Pagamento processado com sucesso
         </h2>
-        <p className="mt-3 text-slate-700">{success.message}</p>
-        <p className="mt-2 text-sm text-slate-600">
-          Conta criada para <strong>{success.email}</strong> no plano{" "}
-          <strong>{plan.plan_name}</strong>.
+        <p className="mt-3 text-slate-600">{success.message}</p>
+        <p className="mt-2 text-sm text-slate-500">
+          Conta criada para{" "}
+          <strong className="text-slate-700">{success.email}</strong> no plano{" "}
+          <strong className="text-slate-700">{plan.plan_name}</strong>.
         </p>
         <a
           href={loginUrl}
-          className="mt-6 inline-flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-500"
+          className={cn(
+            "mt-8 inline-flex h-14 w-full max-w-sm items-center justify-center rounded-xl px-6 text-sm font-bold text-white transition",
+            checkoutBrandGradientClass,
+            "shadow-lg shadow-sky-500/20",
+            "hover:brightness-105 active:scale-[0.99]",
+          )}
         >
           Acessar plataforma
         </a>
         {plan.redirect_url ? (
           <p className="mt-4 text-xs text-slate-500">
-            Redirecionando em alguns segundos...
+            Você será redirecionado em instantes.
           </p>
         ) : null}
       </div>
@@ -176,11 +223,14 @@ export function CheckoutForm({ plan, loginUrl }: CheckoutFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-8">
-      <section className="grid gap-4">
-        <h3 className="text-lg font-semibold text-slate-900">Dados do cartão</h3>
-        <label className="grid gap-2 text-sm font-medium text-slate-700">
-          Número do cartão
+    <form onSubmit={handleSubmit} className="grid gap-5 sm:gap-6">
+      <PaymentSectionCard
+        title="Dados do cartão"
+        icon={CreditCard}
+        badge="Criptografia ponta a ponta"
+      >
+        <label className="grid gap-2">
+          <FieldLabel required>Número do cartão</FieldLabel>
           <input
             className={inputClass}
             inputMode="numeric"
@@ -193,8 +243,9 @@ export function CheckoutForm({ plan, loginUrl }: CheckoutFormProps) {
             required
           />
         </label>
-        <label className="grid gap-2 text-sm font-medium text-slate-700">
-          Nome no cartão
+
+        <label className="grid gap-2">
+          <FieldLabel required>Nome conforme escrito no cartão</FieldLabel>
           <input
             className={inputClass}
             autoComplete="cc-name"
@@ -204,37 +255,38 @@ export function CheckoutForm({ plan, loginUrl }: CheckoutFormProps) {
             required
           />
         </label>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
-            Expiração (mês)
-            <input
-              className={inputClass}
-              inputMode="numeric"
-              autoComplete="cc-exp-month"
-              placeholder="MM"
-              value={form.expMonth}
-              onChange={(event) =>
-                updateField("expMonth", digitsOnly(event.target.value, 2))
-              }
-              required
-            />
-          </label>
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
-            Expiração (ano)
-            <input
-              className={inputClass}
-              inputMode="numeric"
-              autoComplete="cc-exp-year"
-              placeholder="AAAA"
-              value={form.expYear}
-              onChange={(event) =>
-                updateField("expYear", digitsOnly(event.target.value, 4))
-              }
-              required
-            />
-          </label>
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
-            CVC
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-2">
+            <FieldLabel required>Validade (MM/AA)</FieldLabel>
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                className={inputClass}
+                inputMode="numeric"
+                autoComplete="cc-exp-month"
+                placeholder="MM"
+                value={form.expMonth}
+                onChange={(event) =>
+                  updateField("expMonth", digitsOnly(event.target.value, 2))
+                }
+                required
+              />
+              <input
+                className={inputClass}
+                inputMode="numeric"
+                autoComplete="cc-exp-year"
+                placeholder="AA"
+                value={form.expYear}
+                onChange={(event) =>
+                  updateField("expYear", digitsOnly(event.target.value, 2))
+                }
+                required
+              />
+            </div>
+          </div>
+
+          <label className="grid gap-2">
+            <FieldLabel required>CVC</FieldLabel>
             <input
               className={inputClass}
               inputMode="numeric"
@@ -248,105 +300,114 @@ export function CheckoutForm({ plan, loginUrl }: CheckoutFormProps) {
             />
           </label>
         </div>
-      </section>
+      </PaymentSectionCard>
 
-      <section className="grid gap-4">
-        <h3 className="text-lg font-semibold text-slate-900">
-          Endereço de cobrança
-        </h3>
-        <label className="grid gap-2 text-sm font-medium text-slate-700">
-          Endereço
+      <PaymentSectionCard title="Dados de cobrança" icon={MapPin}>
+        <label className="grid gap-2">
+          <FieldLabel required>Endereço</FieldLabel>
           <input
             className={inputClass}
             autoComplete="street-address"
+            placeholder="123 Main Street"
             value={form.address}
             onChange={(event) => updateField("address", event.target.value)}
             required
           />
         </label>
+
         <div className="grid gap-4 sm:grid-cols-2">
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
-            Cidade
+          <label className="grid gap-2">
+            <FieldLabel required>Cidade</FieldLabel>
             <input
               className={inputClass}
               autoComplete="address-level2"
+              placeholder="Miami"
               value={form.city}
               onChange={(event) => updateField("city", event.target.value)}
               required
             />
           </label>
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
-            Estado
+          <label className="grid gap-2">
+            <FieldLabel required>Estado</FieldLabel>
             <input
               className={inputClass}
               autoComplete="address-level1"
+              placeholder="FL"
               value={form.state}
               onChange={(event) => updateField("state", event.target.value)}
               required
             />
           </label>
         </div>
+
         <div className="grid gap-4 sm:grid-cols-2">
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
-            ZIP Code
+          <label className="grid gap-2">
+            <FieldLabel required>ZIP Code</FieldLabel>
             <input
               className={inputClass}
               autoComplete="postal-code"
+              placeholder="33101"
               value={form.zipCode}
               onChange={(event) => updateField("zipCode", event.target.value)}
               required
             />
           </label>
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
-            País
+          <label className="grid gap-2">
+            <FieldLabel required>País (código ISO)</FieldLabel>
             <input
               className={inputClass}
               autoComplete="country"
+              placeholder="US"
               value={form.country}
               onChange={(event) => updateField("country", event.target.value)}
               required
             />
           </label>
         </div>
-      </section>
+      </PaymentSectionCard>
 
-      <section className="grid gap-4">
-        <h3 className="text-lg font-semibold text-slate-900">Dados de contato</h3>
-        <label className="grid gap-2 text-sm font-medium text-slate-700">
-          Nome completo
+      <PaymentSectionCard title="Dados de contato" icon={User}>
+        <label className="grid gap-2">
+          <FieldLabel required>Nome completo</FieldLabel>
           <input
             className={inputClass}
             autoComplete="name"
+            placeholder="John Doe"
             value={form.name}
             onChange={(event) => updateField("name", event.target.value)}
             required
           />
         </label>
-        <label className="grid gap-2 text-sm font-medium text-slate-700">
-          E-mail
+
+        <label className="grid gap-2">
+          <FieldLabel required>E-mail</FieldLabel>
           <input
             className={inputClass}
             type="email"
             autoComplete="email"
+            placeholder="john@example.com"
             value={form.email}
             onChange={(event) => updateField("email", event.target.value)}
             required
           />
         </label>
-        <label className="grid gap-2 text-sm font-medium text-slate-700">
-          Telefone
+
+        <label className="grid gap-2">
+          <FieldLabel required>WhatsApp / Telefone</FieldLabel>
           <input
             className={inputClass}
             type="tel"
             autoComplete="tel"
+            placeholder="+1 305 555 1234"
             value={form.phone}
             onChange={(event) => updateField("phone", event.target.value)}
             required
           />
         </label>
+
         {plan.show_coupon_field ? (
-          <label className="grid gap-2 text-sm font-medium text-slate-700">
-            Cupom de desconto
+          <label className="grid gap-2">
+            <FieldLabel>Cupom de desconto</FieldLabel>
             <input
               className={inputClass}
               value={form.coupon}
@@ -355,32 +416,47 @@ export function CheckoutForm({ plan, loginUrl }: CheckoutFormProps) {
             />
           </label>
         ) : null}
-      </section>
+      </PaymentSectionCard>
 
       {error ? (
-        <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
-        </p>
+        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-700 sm:px-5">
+          <p className="font-medium">Não foi possível processar o pagamento</p>
+          <p className="mt-1 text-red-600">{error}</p>
+        </div>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className={cn(
-          "inline-flex h-12 items-center justify-center gap-2 rounded-xl",
-          "bg-emerald-600 text-sm font-semibold text-white transition",
-          "hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-70",
-        )}
-      >
-        {submitting ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Processando...
-          </>
-        ) : (
-          "Ativar minha conta"
-        )}
-      </button>
+      <div className="grid gap-4">
+        <button
+          type="submit"
+          disabled={submitting}
+          className={cn(
+            "inline-flex h-[60px] w-full items-center justify-center gap-2.5 rounded-xl px-6 text-base font-bold text-white transition",
+            checkoutBrandGradientClass,
+            "shadow-lg shadow-sky-500/25",
+            "hover:brightness-105 active:scale-[0.99]",
+            "disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:brightness-100",
+          )}
+        >
+          {submitting ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Processando...
+            </>
+          ) : (
+            <>
+              <Lock className="h-4 w-4" />
+              {getSubmitLabel(plan.billing_type)}
+            </>
+          )}
+        </button>
+
+        <p className="text-center text-xs leading-relaxed text-slate-500 sm:text-sm">
+          Ao continuar, você concorda em ser cobrado conforme o plano
+          selecionado.
+        </p>
+
+        <SecurityBadges variant="light" className="justify-center" />
+      </div>
     </form>
   );
 }
