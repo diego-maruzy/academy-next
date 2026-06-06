@@ -50,21 +50,21 @@ export function MobileBottomNav() {
       )}
       aria-label="Navegação principal"
     >
-      <div className="mx-auto flex h-[76px] max-w-lg items-stretch justify-around px-2">
+      <div className="mx-auto flex h-[60px] max-w-lg items-stretch justify-around px-1.5">
         {NAV_ITEMS.map((item) => {
           const active = isNavItemActive(item, pathname);
           const Icon = item.icon;
 
           const className = cn(
-            "flex min-h-[44px] min-w-[44px] flex-1 flex-col items-center justify-center gap-1",
-            "rounded-xl px-1.5 py-2 transition active:scale-[0.98]",
+            "flex min-h-[44px] min-w-[44px] flex-1 flex-col items-center justify-center gap-0.5",
+            "rounded-xl px-1 py-1.5 transition active:scale-[0.98]",
             active ? "text-emerald-400" : "text-slate-400",
           );
           const content = (
             <>
               <Icon
                 className={cn(
-                  "h-5 w-5 transition",
+                  "h-[20px] w-[20px] transition",
                   active && "text-emerald-400",
                 )}
                 strokeWidth={active ? 2.5 : 2}

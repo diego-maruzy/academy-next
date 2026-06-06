@@ -56,15 +56,20 @@ export function ShortVideoCard({ short, className }: ShortVideoCardProps) {
       data-short-id={short.id}
       data-short-slug={short.slug}
       className={cn(
-        "grid min-h-0 w-full max-w-[1120px] gap-5 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:items-center lg:gap-10",
+        "flex h-full w-full max-w-[1120px] min-h-0 flex-col justify-center gap-2",
+        "max-lg:max-h-full sm:gap-3",
+        "lg:grid lg:h-auto lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:items-center lg:gap-10",
         className,
       )}
     >
       <div
         className={cn(
-          "relative mx-auto w-full max-w-[400px] overflow-hidden rounded-[28px]",
+          "relative mx-auto shrink-0 overflow-hidden rounded-[28px]",
           "border border-white/10 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.55)]",
-          "aspect-[9/16]",
+          "aspect-[9/16] w-auto max-w-[92vw]",
+          "h-[min(72dvh,calc(100dvh-10.5rem-env(safe-area-inset-bottom)))]",
+          "max-h-[min(72dvh,calc(100dvh-10.5rem-env(safe-area-inset-bottom)))]",
+          "lg:aspect-[9/16] lg:h-auto lg:max-h-none lg:w-full lg:max-w-[400px]",
         )}
       >
         {embedUrl ? (
@@ -93,7 +98,7 @@ export function ShortVideoCard({ short, className }: ShortVideoCardProps) {
           </div>
         )}
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/85" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/25 lg:to-black/40" />
 
         <div className="absolute left-3 right-3 top-3 flex items-start justify-between gap-2 sm:left-4 sm:right-4 sm:top-4">
           <div className="flex flex-wrap gap-2">
@@ -124,51 +129,49 @@ export function ShortVideoCard({ short, className }: ShortVideoCardProps) {
             </span>
           </div>
         </div>
+      </div>
 
-        <div className="absolute inset-x-0 bottom-0 space-y-3 p-4 pb-5 sm:p-5 lg:hidden">
-          <div>
-            <h2 className="line-clamp-2 text-lg font-bold text-white">
-              {short.title}
-            </h2>
-            {short.description ? (
-              <p className="mt-1 line-clamp-2 text-sm text-slate-300">
-                {short.description}
-              </p>
-            ) : null}
-          </div>
-          <div className="flex items-center gap-2">
-            {hasCta ? (
-              <Link
-                href={short.cta_url!}
-                data-analytics-event="short_cta_click"
-                className={cn(
-                  "inline-flex h-11 min-h-[44px] flex-1 items-center justify-center rounded-xl px-4 text-sm font-bold text-white transition",
-                  checkoutBrandGradientClass,
-                  "shadow-lg shadow-sky-500/20 active:scale-[0.98]",
-                )}
-              >
-                {short.cta_label}
-              </Link>
-            ) : (
-              <span className="inline-flex h-11 flex-1 items-center justify-center rounded-xl border border-white/10 bg-slate-950/70 px-4 text-sm text-slate-400 backdrop-blur">
-                Sem CTA configurado
-              </span>
-            )}
-            <button
-              type="button"
-              onClick={handleShare}
-              className="inline-flex h-11 min-h-[44px] w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-slate-950/70 text-slate-200 backdrop-blur transition hover:bg-white/10"
-              aria-label="Compartilhar short"
+      <div className="shrink-0 space-y-1.5 px-1 pb-3 lg:hidden">
+        <h2 className="line-clamp-1 text-sm font-bold text-white sm:line-clamp-2 sm:text-base">
+          {short.title}
+        </h2>
+        {short.description ? (
+          <p className="hidden line-clamp-1 text-sm text-slate-400 sm:block">
+            {short.description}
+          </p>
+        ) : null}
+        <div className="flex items-center gap-2 pt-0.5">
+          {hasCta ? (
+            <Link
+              href={short.cta_url!}
+              data-analytics-event="short_cta_click"
+              className={cn(
+                "inline-flex h-10 min-h-[44px] flex-1 items-center justify-center rounded-xl px-3 text-xs font-bold text-white transition sm:h-11 sm:px-4 sm:text-sm",
+                checkoutBrandGradientClass,
+                "shadow-lg shadow-sky-500/20 active:scale-[0.98]",
+              )}
             >
-              <Share2 className="h-4 w-4" />
-            </button>
-          </div>
-          {shareFeedback ? (
-            <p className="text-center text-xs font-medium text-emerald-300">
-              {shareFeedback}
-            </p>
-          ) : null}
+              {short.cta_label}
+            </Link>
+          ) : (
+            <span className="inline-flex h-10 flex-1 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-3 text-xs text-slate-500 sm:h-11 sm:text-sm">
+              Sem CTA configurado
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex h-10 min-h-[44px] w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-200 transition hover:bg-white/10 sm:h-11 sm:w-11"
+            aria-label="Compartilhar short"
+          >
+            <Share2 className="h-4 w-4" />
+          </button>
         </div>
+        {shareFeedback ? (
+          <p className="text-center text-xs font-medium text-emerald-300">
+            {shareFeedback}
+          </p>
+        ) : null}
       </div>
 
       <div className="hidden min-w-0 flex-col gap-5 rounded-[28px] border border-white/10 bg-white/[0.03] p-6 lg:flex">

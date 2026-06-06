@@ -36,25 +36,24 @@ export function ShortsFeed({ shorts, className }: ShortsFeedProps) {
   return (
     <div
       className={cn(
-        "snap-y snap-mandatory overflow-y-auto overflow-x-hidden overscroll-y-contain",
-        "h-[calc(100dvh-3.5rem-4.75rem-env(safe-area-inset-bottom))]",
-        "md:h-[calc(100dvh-4.5rem)]",
+        "h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth",
+        "snap-y snap-proximity",
         "lg:h-auto lg:max-h-none lg:snap-none lg:overflow-visible",
         "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         className,
       )}
     >
-      <div className="mx-auto grid w-full max-w-[1120px] lg:gap-12">
+      <div className="mx-auto grid h-full w-full max-w-[1120px] lg:gap-12">
         {shorts.map((short) => (
           <section
             key={short.id}
             data-analytics-event="short_view"
             data-short-id={short.id}
             className={cn(
-              "snap-start snap-always px-4 py-4",
-              "min-h-[calc(100dvh-3.5rem-4.75rem-env(safe-area-inset-bottom))]",
-              "md:min-h-[calc(100dvh-4.5rem)] md:px-5",
-              "lg:min-h-0 lg:px-0 lg:py-6",
+              "flex h-full min-h-0 snap-start items-center justify-center px-4",
+              "max-lg:py-1",
+              "md:px-5",
+              "lg:h-auto lg:min-h-0 lg:px-0 lg:py-6",
             )}
           >
             <ShortVideoCard short={short} />
