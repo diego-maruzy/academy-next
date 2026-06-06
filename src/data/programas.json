@@ -1,0 +1,1862 @@
+[
+  {
+    "id": "57ac0fff-4e0f-4396-ae13-16146c8a5970",
+    "slug": "flip-house-4-0",
+    "name": "Flip House 4.0",
+    "description": null,
+    "published": true,
+    "display_order": 0,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "8303f4d7-4409-4673-bd76-86a9fab69c09",
+        "name": "Base do Negócio",
+        "slug": "base-do-negocio",
+        "lessons": [
+          {
+            "id": "98fc2b95-a362-4aef-b954-f839f84be062",
+            "name": "Base do Negócio",
+            "slug": "base-do-negocio",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Falar com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1077753277",
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/22aa9929-8938-4d03-ac7a-ddcc62ae3873.png"
+      },
+      {
+        "id": "b90ac12e-7e84-49d3-8f46-0e5d234c722a",
+        "name": "Calculando um Deal na prática",
+        "slug": "calculando-um-deal-na-pratica",
+        "lessons": [
+          {
+            "id": "7b13fbee-7224-4644-9613-495d8c094f35",
+            "name": "Calculando um Deal na prática",
+            "slug": "calculando-um-deal-na-pratica",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Falar com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/955333750",
+            "display_order": 0
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/8308a5d6-9516-4545-9cbb-7ad8739265c1.png"
+      },
+      {
+        "id": "0aff098a-2505-4298-8770-2fc5e72d7ca4",
+        "name": "Análise de Negócios",
+        "slug": "analise-de-negocios",
+        "lessons": [
+          {
+            "id": "4f46a1c5-0ac3-498f-bd1a-586765f86b9c",
+            "name": "Análise de Negócios",
+            "slug": "analise-de-negocios",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Falar com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/955342419",
+            "display_order": 0
+          }
+        ],
+        "display_order": 2,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/2da90f14-3295-4290-a875-affbdc35243e.png"
+      },
+      {
+        "id": "fe5cb561-54ba-4f3c-b7c7-b3c370f94d00",
+        "name": "Comunicação Interpessoal",
+        "slug": "comunicacao-interpessoal",
+        "lessons": [
+          {
+            "id": "289d25b5-3b5a-4866-98c6-b91167eb9c66",
+            "name": "Comunicação Interpessoal",
+            "slug": "comunicacao-interpessoal",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Falar com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/955353795",
+            "display_order": 0
+          }
+        ],
+        "display_order": 3,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/1b4602be-8f18-4f32-8db4-3ac574700a4b.png"
+      },
+      {
+        "id": "38196f51-17c1-4329-a709-347fa471182c",
+        "name": "Hora da Ação",
+        "slug": "hora-da-acao-2",
+        "lessons": [
+          {
+            "id": "92f2c5cf-a2d6-4113-931f-18d7d76e060c",
+            "name": "Hora da Ação",
+            "slug": "hora-da-acao",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Falar com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1077754031",
+            "display_order": 0
+          }
+        ],
+        "display_order": 4,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/2d00c9dd-3597-4528-82f4-78090982c1d5.png"
+      }
+    ]
+  },
+  {
+    "id": "c6bc7fd7-47de-4278-bb8e-0a4704bc70c1",
+    "slug": "projetos-em-andamento-de-us-25-milhoes-investidos",
+    "name": "Projetos em andamento — + de US$ 25 milhões investidos",
+    "description": null,
+    "published": true,
+    "display_order": 1,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "fad5f12a-3d1c-4644-8e48-afecb417e02a",
+        "name": "3 Daniels St, Lexington, MA 02421",
+        "slug": "3-daniels-st-lexington-ma-02421",
+        "lessons": [
+          {
+            "id": "e4e969c2-632b-4207-8ff7-abdf5dc8379a",
+            "name": "3 Daniels St, Lexington, MA 02421",
+            "slug": "3-daniels-st-lexington-ma-02421",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/bc2daa67-cebc-463a-85c2-23899c1b6aed.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/f95964de-7989-407d-872b-555a42b14154.png"
+      },
+      {
+        "id": "8a698c87-6746-4a6b-ae1e-57c24565336a",
+        "name": "3 Weston St, Lexington, MA 02421",
+        "slug": "3-weston-st-lexington-ma-02421",
+        "lessons": [
+          {
+            "id": "a3cfc205-42d9-4364-8557-0621ee9135a3",
+            "name": "3 Weston St, Lexington, MA 02421",
+            "slug": "3-weston-st-lexington-ma-02421",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/1ab1c930-5777-4f18-97dc-213afdf849a0.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/1d48da11-a969-4b2e-96c9-0e10ac7a0fb1.png"
+      },
+      {
+        "id": "e05f61bc-d26f-4d71-9eef-1df2c2db4c6a",
+        "name": "4 Great Rock Rd, Lexington, MA 02421",
+        "slug": "4-great-rock-rd-lexington-ma-02421",
+        "lessons": [
+          {
+            "id": "7f30e889-f5ec-4961-a5bc-0bee26a2cc4c",
+            "name": "4 Great Rock Rd, Lexington, MA 02421",
+            "slug": "4-great-rock-rd-lexington-ma-02421",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/3cbe97a2-9044-4860-a930-9cdb1410788d.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 2,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/3357cabe-c7c7-40a6-a6e2-00da67661382.png"
+      },
+      {
+        "id": "9d9bae6b-efab-4455-8ce3-0d9678171130",
+        "name": "15 Bliss St, Monson, MA 01057",
+        "slug": "15-bliss-st-monson-ma-01057",
+        "lessons": [
+          {
+            "id": "df0315f5-cf88-4305-acd0-ee77156ca27b",
+            "name": "15 Bliss St, Monson, MA 01057",
+            "slug": "15-bliss-st-monson-ma-01057",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/527f4509-d4c6-4164-adcb-0e87947d01f9.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 3,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/32f11181-246a-402d-b7ef-31cf0959c6ca.png"
+      },
+      {
+        "id": "7ba9c012-277f-414e-b307-78f177aeff4c",
+        "name": "20 Pine Hill Rd, Lynnfield, MA 01940",
+        "slug": "20-pine-hill-rd-lynnfield-ma-01940-2",
+        "lessons": [
+          {
+            "id": "71e1ee84-b5e1-4b33-8087-d80697e98eea",
+            "name": "20 Pine Hill Rd, Lynnfield, MA 01940",
+            "slug": "20-pine-hill-rd-lynnfield-ma-01940",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/7bc86d65-e4e1-4428-8309-62a1bcaba5a3.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 4,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/611b3c61-94d8-4af3-9d84-7cdb57c60c9f.png"
+      },
+      {
+        "id": "1fc4a3f8-0133-404d-9358-78ed425deb01",
+        "name": "22 Estabrook Rd, Lexington, MA 02421",
+        "slug": "22-estabrook-rd-lexington-ma-02421",
+        "lessons": [
+          {
+            "id": "acc63e5d-4f7a-4b78-a827-37ad7bfa2b34",
+            "name": "22 Estabrook Rd, Lexington, MA 02421",
+            "slug": "22-estabrook-rd-lexington-ma-02421",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/5aec90c7-4f53-4bc7-b556-15436e114fdd.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 5,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/8e47954d-3cdf-48ce-9deb-e19c613240cc.png"
+      },
+      {
+        "id": "38ed085d-5a12-4629-931a-281423720db1",
+        "name": "26 Watertown St, Lexington, MA 02421",
+        "slug": "26-watertown-st-lexington-ma-02421",
+        "lessons": [
+          {
+            "id": "6577398a-5b1c-45f5-98f4-b31cb4cc6c9c",
+            "name": "26 Watertown St, Lexington, MA 02421",
+            "slug": "26-watertown-st-lexington-ma-02421",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/ea378d70-2bec-47a1-9737-57baabf58167.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 6,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/7e8d9a37-ba56-4eac-ac07-5b3e90061fc3.png"
+      },
+      {
+        "id": "bc633cde-f2c0-4b44-a92b-35c60cd22008",
+        "name": "30 Hawley Ave, Leominster, MA 01453",
+        "slug": "30-hawley-ave-leominster-ma-01453",
+        "lessons": [
+          {
+            "id": "ec6f8768-8634-4437-9d47-6b795d05d302",
+            "name": "30 Hawley Ave, Leominster, MA 01453",
+            "slug": "30-hawley-ave-leominster-ma-01453",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/efdd58d7-4791-4cb5-8b2b-8a317ecc48cd.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 7,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/6c3f62b5-7634-4140-ab0f-d3cf5e1a5025.png"
+      },
+      {
+        "id": "76cd7d91-3a56-4c52-b6be-b989842224b7",
+        "name": "32 Main St, Monson, MA 01057",
+        "slug": "32-main-st-monson-ma-01057",
+        "lessons": [
+          {
+            "id": "d884f32c-3ae3-41d9-be29-de5661968859",
+            "name": "32 Main St, Monson, MA 01057",
+            "slug": "32-main-st-monson-ma-01057",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/81679b54-dfc7-4fab-9f04-3c66360ab033.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 8,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/06c90679-5554-4c8e-9772-1fde1250d70a.png"
+      },
+      {
+        "id": "c4744bca-5584-48e4-9288-8e9aa393c1aa",
+        "name": "17 Boulder Rd, Lexington, MA 02420",
+        "slug": "17-boulder-rd-lexington-ma-02420",
+        "lessons": [
+          {
+            "id": "a8fcc3e0-730a-4755-8709-169b6af3c891",
+            "name": "17 Boulder Rd, Lexington, MA 02420",
+            "slug": "17-boulder-rd-lexington-ma-02420",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20projetos%20em%20andamento%20da%20Checkmate!",
+            "cta_text": "Falar com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/bed24274-1b86-47a7-bc7e-0f70356bfad3.webp",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 9,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/6d73d61e-9dde-4b56-ad4d-4e005aeb631d.png"
+      }
+    ]
+  },
+  {
+    "id": "7f4dcc63-39d5-40c0-95ea-ae19a6ea876f",
+    "slug": "historias-reais-de-projetos",
+    "name": "Histórias Reais de Projetos",
+    "description": null,
+    "published": true,
+    "display_order": 2,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "58d2ec5a-74c8-4433-b236-c5a431a664fa",
+        "name": "457 Ellis Ave, Lawnside NJ 08045",
+        "slug": "457-ellis-ave-lawnside-nj-08045",
+        "lessons": [
+          {
+            "id": "a43756c2-bfc0-4427-b2f7-c713e95bdbea",
+            "name": "Ep 1 - 457 Ellis Ave, Lawnside NJ 08045",
+            "slug": "ep-1-457-ellis-ave-lawnside-nj-08045",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196977165",
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/5a331b49-b896-479a-ac95-0d7076b7d56b.png"
+      },
+      {
+        "id": "3aa2bb4f-b2e4-48d4-aec5-16f6352704ad",
+        "name": "576-578 School St, Webster, MA 01570",
+        "slug": "576-578-school-st-webster-ma-01570",
+        "lessons": [
+          {
+            "id": "e28cb0f8-45f9-4ef4-b2a3-135642e1c544",
+            "name": "Ep 2 - 576-578 School St, Webster, MA 01570",
+            "slug": "ep-2-576-578-school-st-webster-ma-01570",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196976164",
+            "display_order": 0
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/1b799cea-b729-41f5-8559-667700b7b9aa.png"
+      },
+      {
+        "id": "53765819-3900-440c-bcb9-4846bfcf500b",
+        "name": "63 Graham St, Lunenburg MA 01462",
+        "slug": "63-graham-st-lunenburg-ma-01462",
+        "lessons": [
+          {
+            "id": "f4136caa-f285-4fc2-871d-1a0e3c3ed3a0",
+            "name": "Ep 3 - 63 Graham St, Lunenburg MA 01462",
+            "slug": "ep-3-63-graham-st-lunenburg-ma-01462",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196976165",
+            "display_order": 0
+          }
+        ],
+        "display_order": 2,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/5da170ad-d37d-4770-bbeb-01bd03222feb.png"
+      },
+      {
+        "id": "d6901617-abee-4db8-8369-4c1d2874b2f8",
+        "name": "34 Stoughton Ave, Webster, MA 01570",
+        "slug": "34-stoughton-ave-webster-ma-01570",
+        "lessons": [
+          {
+            "id": "af0325ce-3016-484e-ae6f-ff35215fcf35",
+            "name": "Ep 4 - 34 Stoughton Ave, Webster, MA 01570",
+            "slug": "ep-4-34-stoughton-ave-webster-ma-01570",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196976194",
+            "display_order": 0
+          }
+        ],
+        "display_order": 3,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/e2002f8a-ddc0-4459-b2df-ff72183ea63e.png"
+      },
+      {
+        "id": "731d0ca0-9292-428e-a839-26f2a19369fb",
+        "name": "59 Summer St, Medway, MA 02053",
+        "slug": "59-summer-st-medway-ma-02053",
+        "lessons": [
+          {
+            "id": "2f4a5816-dadf-4157-b669-ff12f770042c",
+            "name": "Ep 5 - 59 Summer St, Medway, MA 02053",
+            "slug": "ep-5-59-summer-st-medway-ma-02053",
+            "cta_url": null,
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196977164",
+            "display_order": 0
+          }
+        ],
+        "display_order": 4,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/882eeeed-8a38-4f8b-a627-0a5e9e2e9bc1.png"
+      },
+      {
+        "id": "82fd6512-008d-4483-bd03-ded410d68c98",
+        "name": "20 Pine Hill RD, Lynnfield, MA 01940",
+        "slug": "20-pine-hill-rd-lynnfield-ma-01940",
+        "lessons": [
+          {
+            "id": "aad0b9c2-828d-4c3e-b9fe-1544bde5f37d",
+            "name": "Ep 6 - 20 Pine Hill RD, Lynnfield, MA 01940",
+            "slug": "ep-6-20-pine-hill-rd-lynnfield-ma-01940",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196977177",
+            "display_order": 0
+          }
+        ],
+        "display_order": 5,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/ec8a61ee-c049-4542-8d93-9fa558f6c054.png"
+      },
+      {
+        "id": "ac44e2c2-2185-4925-80a8-e3db1c2e1944",
+        "name": "129 8TH St, Leominter MA 01453",
+        "slug": "129-8th-st-leominter-ma-01453",
+        "lessons": [
+          {
+            "id": "fc39834c-1109-4e84-8688-7368778555ea",
+            "name": "Ep 7 - 129 8TH St, Leominter MA 01453",
+            "slug": "ep-7-129-8th-st-leominter-ma-01453",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196977166",
+            "display_order": 0
+          }
+        ],
+        "display_order": 6,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/3fd9d042-e7d9-4950-9b53-1572a9316cb8.png"
+      },
+      {
+        "id": "9f8af419-1991-4d78-927f-02745344932e",
+        "name": "20 Upland Rd, Marlborough, MA 01752",
+        "slug": "20-upland-rd-marlborough-ma-01752",
+        "lessons": [
+          {
+            "id": "9973a164-bbe6-4f48-b01d-c8e668254e67",
+            "name": "Ep 8 - 20 Upland Rd, Marlborough, MA 01752",
+            "slug": "ep-8-20-upland-rd-marlborough-ma-01752",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196977215?",
+            "display_order": 0
+          }
+        ],
+        "display_order": 7,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/348f3400-957b-4e58-a7c8-48ae0e6790bf.png"
+      },
+      {
+        "id": "32e606ef-2228-4845-a2e5-23d556d3c07d",
+        "name": "46 W Meadow Rd, Lowell MA 01854",
+        "slug": "46-w-meadow-rd-lowell-ma-01854",
+        "lessons": [
+          {
+            "id": "0c556dc9-c072-4070-ba44-c4e5a8117e2f",
+            "name": "Ep 9 - 46 W Meadow Rd, Lowell MA 01854",
+            "slug": "ep-9-46-w-meadow-rd-lowell-ma-01854",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196977216",
+            "display_order": 0
+          }
+        ],
+        "display_order": 8,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/1bf0ea1a-300d-47a4-8fa3-89e529e27ee4.png"
+      },
+      {
+        "id": "d3ab7772-23a2-41a6-9712-0433d1a09021",
+        "name": "35 Pearl St, Fitchburg MA 01420",
+        "slug": "35-pearl-st-fitchburg-ma-01420",
+        "lessons": [
+          {
+            "id": "84cecc25-d245-4282-83ae-1bb6b7be39db",
+            "name": "Ep 10 - 35 Pearl St, Fitchburg MA 01420",
+            "slug": "ep-10-35-pearl-st-fitchburg-ma-01420",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1196977165",
+            "display_order": 0
+          }
+        ],
+        "display_order": 9,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/94fa9e45-baf1-4599-ad69-c40972f437d5.png"
+      }
+    ]
+  },
+  {
+    "id": "7167a2f7-6f51-4889-806e-23bb691f6279",
+    "slug": "nosso-metodo-na-midia",
+    "name": "Nosso método na mídia",
+    "description": null,
+    "published": true,
+    "display_order": 3,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "6daeca12-ea1e-44e8-b927-7f0598e67c75",
+        "name": "Victor Queirós e a evolução dos negócios imobiliários nos Estados Unidos",
+        "slug": "victor-queiros-e-a-evolucao-dos-negocios-imobiliarios-nos-estados-unidos",
+        "lessons": [],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/e1c174dc-1b43-49d0-bdda-42ff1b143cc7.jpg"
+      },
+      {
+        "id": "cf0653b9-9854-4345-a785-2bc30f306ff3",
+        "name": "Brasileiro fortalece presença no mercado imobiliário de luxo nos EUA",
+        "slug": "brasileiro-fortalece-presenca-no-mercado-imobiliario-de-luxo-nos-eua",
+        "lessons": [],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/e986014a-36c7-4677-9833-ab966365a2a1.png"
+      },
+      {
+        "id": "82cbd27d-f305-4dbb-a5e8-3434174f33b3",
+        "name": "Do zero ao topo do mercado imobiliário dos EUA",
+        "slug": "do-zero-ao-topo-do-mercado-imobiliario-dos-eua",
+        "lessons": [],
+        "display_order": 2,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/cb2577d6-68a5-4e54-8851-459eb2b8d3be.png"
+      },
+      {
+        "id": "297144f9-7d35-4730-9a7b-3d715021fda0",
+        "name": "Victor Queiros fala sobre a tendência da Flip House",
+        "slug": "victor-queiros-fala-sobre-a-tendencia-da-flip-house",
+        "lessons": [],
+        "display_order": 3,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/cb99c5e9-56cf-4ecc-99df-d5f3f7fbe8dd.png"
+      },
+      {
+        "id": "6bec4a03-afb7-4fd8-8d84-837e09619abd",
+        "name": "Tecnologias que estão transformando o mercado imobiliário",
+        "slug": "tecnologias-que-estao-transformando-o-mercado-imobiliario",
+        "lessons": [],
+        "display_order": 4,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/e661d49d-bbb2-43fd-8f3d-6f4bbaa5b4fe.png"
+      },
+      {
+        "id": "1ce94ba2-93a2-4532-b891-379ccc117169",
+        "name": "Tendências das construções nos EUA",
+        "slug": "tendencias-das-construcoes-nos-eua",
+        "lessons": [],
+        "display_order": 5,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/a97187c1-ccd2-4094-945c-8826a00f4a11.png"
+      },
+      {
+        "id": "cc10e0f6-2a4f-49fe-a591-3ccdd5c8a9f1",
+        "name": "Entenda o potencial financeiro da Flip House",
+        "slug": "entenda-o-potencial-financeiro-da-flip-house",
+        "lessons": [],
+        "display_order": 6,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/5e9433cf-9694-466d-a5eb-56beb297d758.png"
+      }
+    ]
+  },
+  {
+    "id": "7722de5c-f4b9-49a9-bf80-ba4330e1f6c3",
+    "slug": "mercado-imobiliario-na-pratica",
+    "name": "Mercado Imobiliário na Prática",
+    "description": null,
+    "published": true,
+    "display_order": 4,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "beefe18d-625d-4873-8131-cf911ddd7480",
+        "name": "Mercado Imobiliário na Prática",
+        "slug": "mercado-imobiliario-na-pratica",
+        "lessons": [
+          {
+            "id": "4d28d661-2ea3-47a6-a59d-36c4d1f5633d",
+            "name": "Mercado Imobiliário na Prática",
+            "slug": "mercado-imobiliario-na-pratica",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1191378522",
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/d25432e5-7e99-4c9e-8a6c-4644b9477dd0.png"
+      },
+      {
+        "id": "89a1bf06-89dc-4a07-bf14-4274e4ffca0e",
+        "name": "Tour em Casas em Lexington",
+        "slug": "tour-em-casas-em-lexington",
+        "lessons": [
+          {
+            "id": "7caaecd3-3b49-4e91-8187-8367b7246b27",
+            "name": "Tour em Casas em Lexington",
+            "slug": "tour-em-casas-em-lexington",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1191382412",
+            "display_order": 0
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/dc94a70d-1ddc-452e-87eb-413215ab7f75.png"
+      }
+    ]
+  },
+  {
+    "id": "d1fbfa70-e3e0-4b8f-b597-7216aff6826f",
+    "slug": "o-segredo-que-ninguem-te-conta",
+    "name": "O Segredo que ninguém te conta",
+    "description": null,
+    "published": true,
+    "display_order": 5,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "dbde4cb1-9323-48a4-9460-bf2908a88b33",
+        "name": "O Segredo que ninguém te conta",
+        "slug": "o-segredo-que-ninguem-te-conta",
+        "lessons": [
+          {
+            "id": "77230e44-3c28-4df2-85ce-b44439060f9c",
+            "name": "O Segredo que ninguém te conta",
+            "slug": "o-segredo-que-ninguem-te-conta",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1124084915",
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/1fb66beb-56e8-49de-a5ce-22802064c552.png"
+      }
+    ]
+  },
+  {
+    "id": "c58f2af4-4157-470e-a7c1-eb4869836edd",
+    "slug": "do-zero-a-milhoes-em-projetos-imobiliarios-no-usa",
+    "name": "Do zero a milhões em projetos imobiliários no USA",
+    "description": null,
+    "published": true,
+    "display_order": 6,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "5571382b-08a7-409a-b4fc-c78b9c844061",
+        "name": "Do zero a milhões em projetos imobiliários no USA",
+        "slug": "do-zero-a-milhoes-em-projetos-imobiliarios-no-usa",
+        "lessons": [
+          {
+            "id": "99e7e9f7-b823-42e9-a2a2-f155a6c87e9f",
+            "name": "Do zero a milhões em projetos imobiliários no USA",
+            "slug": "do-zero-a-milhoes-em-projetos-imobiliarios-no-usa",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1191335602",
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/8d0d782b-be6b-48c1-b67a-22335f5c89fc.png"
+      }
+    ]
+  },
+  {
+    "id": "db26232a-8ae4-4324-bf58-50a87912a3c3",
+    "slug": "new-construction",
+    "name": "New Construction",
+    "description": null,
+    "published": true,
+    "display_order": 7,
+    "is_premium": true,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "c368c954-54ab-4ff0-b4ec-6e5a417dd799",
+        "name": "Introdução",
+        "slug": "introducao",
+        "lessons": [
+          {
+            "id": "69a78d3c-995c-46f3-9b5b-c3dc4149fd2f",
+            "name": "Introdução",
+            "slug": "introducao",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1189075327?fl=ip&fe=ec",
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/15857d41-24a9-4b6d-85aa-43d417260423.png"
+      },
+      {
+        "id": "6bd3b2b1-50c7-488b-8aea-e0b4de7f35c1",
+        "name": "Ramificações da New Construction",
+        "slug": "ramificacoes-da-new-construction",
+        "lessons": [
+          {
+            "id": "b87ed3a8-4b0f-45ac-a8b9-90a64fec9fe8",
+            "name": "Ramificações da New Construction",
+            "slug": "ramificacoes-da-new-construction",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1189143772",
+            "display_order": 0
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/9dd776a1-0b28-4234-82b1-6b76dbf65599.png"
+      },
+      {
+        "id": "0509db3d-0011-4d17-b47e-eb7ad6460edd",
+        "name": "Análise do terreno",
+        "slug": "analise-do-terreno",
+        "lessons": [
+          {
+            "id": "ccd68b73-6a2c-4fd5-9c77-ce056fadf670",
+            "name": "Análise do terreno",
+            "slug": "analise-do-terreno",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1189187619",
+            "display_order": 0
+          }
+        ],
+        "display_order": 2,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/7717e521-e29b-4308-a0a8-9cf997648f4f.png"
+      },
+      {
+        "id": "8320dc80-bc3e-4d70-95ff-6b7e56c3574f",
+        "name": "Etapas do Permit",
+        "slug": "etapas-do-permit",
+        "lessons": [
+          {
+            "id": "7a1d4f1c-829c-4b8a-9bfe-a10274134791",
+            "name": "Etapas do Permit",
+            "slug": "etapas-do-permit",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1189724886",
+            "display_order": 0
+          }
+        ],
+        "display_order": 3,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/2cb877c4-2fe9-4b26-96cd-af8c74a735f3.png"
+      },
+      {
+        "id": "bfb31a97-722d-424c-92d3-2f923d4362c7",
+        "name": "Viabilidade Financeira",
+        "slug": "viabilidade-financeira",
+        "lessons": [
+          {
+            "id": "9630a9d6-c6af-49b5-8f71-d5e05a41b3a9",
+            "name": "Viabilidade Financeira",
+            "slug": "viabilidade-financeira",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1189889445",
+            "display_order": 0
+          }
+        ],
+        "display_order": 4,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/50d9335b-12f6-4bd7-a064-1dec44fc2862.png"
+      },
+      {
+        "id": "82d316d3-53da-447d-87ca-77ba6bfbbc4c",
+        "name": "Estrutura do Deal",
+        "slug": "estrutura-do-deal",
+        "lessons": [
+          {
+            "id": "9a37538a-3d67-4b77-b713-a1105c6fdc76",
+            "name": "Estrutura do Deal",
+            "slug": "estrutura-do-deal",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1190226812",
+            "display_order": 0
+          }
+        ],
+        "display_order": 5,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/49401756-7054-42e2-8dc6-4a0bb24116fc.png"
+      }
+    ]
+  },
+  {
+    "id": "6db4340d-ffd6-49fb-9039-4f53f141aa72",
+    "slug": "palestras-checkmate",
+    "name": "Palestras Checkmate",
+    "description": null,
+    "published": true,
+    "display_order": 8,
+    "is_premium": true,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "99007ff9-de1a-4da6-bbec-61680a2510b0",
+        "name": "Segurança e Solidez do mercado imobiliário",
+        "slug": "seguranca-e-solidez-do-mercado-imobiliario",
+        "lessons": [
+          {
+            "id": "c372786d-8878-49b1-8866-dba78b2f5707",
+            "name": "Segurança e Solidez do mercado imobiliário",
+            "slug": "seguranca-e-solidez-do-mercado-imobiliario",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1192213512",
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/9dbaa770-a027-41de-90b4-6810dc33ffe2.png"
+      },
+      {
+        "id": "8bff19b6-1550-4c37-945c-7272909291c9",
+        "name": "O Jogo do Real Estate americano",
+        "slug": "o-jogo-do-real-estate-americano",
+        "lessons": [
+          {
+            "id": "c6bc2138-4822-428f-944f-649bd138f5cf",
+            "name": "O Jogo do Real Estate americano",
+            "slug": "o-jogo-do-real-estate-americano",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/931491331",
+            "display_order": 0
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/f4ecf054-2bd0-4f47-bc6c-170bd0ebdffe.png"
+      },
+      {
+        "id": "f625da4a-bd90-4046-ba8d-1f3e3651618e",
+        "name": "A Nova era",
+        "slug": "a-nova-era",
+        "lessons": [
+          {
+            "id": "956e4f17-2581-4b2f-94da-369fecd5f53c",
+            "name": "A Nova era",
+            "slug": "a-nova-era-2",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1192102538",
+            "display_order": 0
+          }
+        ],
+        "display_order": 2,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/49099c67-68a5-42bd-8e4b-505c34f2c753.png"
+      },
+      {
+        "id": "5fcaf8dc-1c1c-442d-8ad5-5969c2de27d7",
+        "name": "Passo a Passo do Flip - Thaise Nunes",
+        "slug": "passo-a-passo-do-flip-thaise-nunes",
+        "lessons": [
+          {
+            "id": "baf8f905-88b1-4867-8cca-8fdd138c3c7e",
+            "name": "Passo a Passo do Flip - Thaise Nunes",
+            "slug": "passo-a-passo-do-flip-thaise-nunes",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Falar com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/931490105",
+            "display_order": 0
+          }
+        ],
+        "display_order": 3,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/1e36a66a-8141-46b5-b4f3-13cf044f1f44.png"
+      },
+      {
+        "id": "4af32abb-6d1f-404c-a6b4-7916779b53d8",
+        "name": "Lucro é Melhor que Salário - Leo Cruz",
+        "slug": "lucro-e-melhor-que-salario-leo-cruz",
+        "lessons": [
+          {
+            "id": "556a9cbc-4a66-4195-aff6-6a9480c872b5",
+            "name": "Lucro é Melhor que Salário - Leo Cruz",
+            "slug": "lucro-e-melhor-que-salario-leo-cruz",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1191754376",
+            "display_order": 0
+          }
+        ],
+        "display_order": 4,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/f7622156-80d4-4db4-a568-b69386d6b7c3.png"
+      },
+      {
+        "id": "5e65d749-1bf5-451d-977a-601677df614d",
+        "name": "O Mercado do Trilhão - Carlos Moreira",
+        "slug": "o-mercado-do-trilhao-carlos-moreira",
+        "lessons": [
+          {
+            "id": "1a47d5d1-440b-4824-8860-22d7d258c221",
+            "name": "O Mercado do Trilhão - Carlos Moreira",
+            "slug": "o-mercado-do-trilhao-carlos-moreira",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1191713381",
+            "display_order": 0
+          }
+        ],
+        "display_order": 5,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/a9b4bdb2-dc06-4a56-a6a2-4960faff6014.png"
+      }
+    ]
+  },
+  {
+    "id": "963f712e-bfdf-4ce8-a1d0-3a10b8d4cc65",
+    "slug": "aulas-de-campo",
+    "name": "Aulas de Campo",
+    "description": null,
+    "published": true,
+    "display_order": 9,
+    "is_premium": true,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "37c23d85-1b2d-4895-84c4-180329229859",
+        "name": "Mentalidade Imobiliária",
+        "slug": "mentalidade-imobiliaria",
+        "lessons": [
+          {
+            "id": "dc104f0e-daf1-40ae-b05c-b3dafbc97628",
+            "name": "Mentalidade Imobiliária",
+            "slug": "mentalidade-imobiliaria",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1191688946",
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/668f44ac-730f-4350-8a74-cada074d2100.png"
+      },
+      {
+        "id": "d1822209-1ce0-4364-96cb-f37a0c1c682f",
+        "name": "Flip: Negócio de números",
+        "slug": "flip-negocio-de-numeros",
+        "lessons": [
+          {
+            "id": "36987399-ccf3-4629-b548-d3e2cae1c5ee",
+            "name": "Flip: Negócio de números",
+            "slug": "flip-negocio-de-numeros-2",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1191711775?share=copy&fl=sv&fe=ci",
+            "display_order": 1
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/d43b3c00-1bb0-4613-92bb-19d0ccc7abea.png"
+      }
+    ]
+  },
+  {
+    "id": "747ca282-3714-4a9a-8672-6ff4f13a66a9",
+    "slug": "construtores-de-prosperidade",
+    "name": "Construtores de Prosperidade",
+    "description": null,
+    "published": true,
+    "display_order": 10,
+    "is_premium": true,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "fbdfd6d9-f77e-4d60-8881-808ca777c00f",
+        "name": "Introdução",
+        "slug": "introducao-2",
+        "lessons": [
+          {
+            "id": "4195fd3b-cce7-412e-baa4-4aaebce36bda",
+            "name": "Introdução - Victor",
+            "slug": "introducao-victor",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916712829",
+            "display_order": 0
+          },
+          {
+            "id": "5fec5219-4218-4e11-b41a-4e70d712a93d",
+            "name": "Introdução - Thaise",
+            "slug": "introducao-thaise",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916710208",
+            "display_order": 1
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/ec3aaff9-e9f2-4a00-800e-125e5522bbc1.png"
+      },
+      {
+        "id": "a1d155da-b0c1-4982-a326-1a4e421bedd2",
+        "name": "Mentalidade do negócio",
+        "slug": "mentalidade-do-negocio",
+        "lessons": [
+          {
+            "id": "f79f306a-1949-4f5c-957c-be4588e1a9a3",
+            "name": "Condicionamento mental",
+            "slug": "condicionamento-mental",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916720161",
+            "display_order": 0
+          },
+          {
+            "id": "62571d03-2bef-4b41-9e35-d4b2fb805e28",
+            "name": "Iniciando um novo condicionamento",
+            "slug": "iniciando-um-novo-condicionamento",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916716680",
+            "display_order": 1
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/af378c04-f08f-4a66-8b69-8fa52d3b119e.png"
+      },
+      {
+        "id": "884befde-9679-40e1-be2d-b8869cf361dd",
+        "name": "Bases do seu negócio",
+        "slug": "bases-do-seu-negocio",
+        "lessons": [
+          {
+            "id": "069e7231-ac4d-4b93-8de5-9e172fc51228",
+            "name": "Introdução",
+            "slug": "introducao-2",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916732876",
+            "display_order": 0
+          },
+          {
+            "id": "6db92476-cebe-43fc-bce9-01a32ca60bc3",
+            "name": "Setup da empresa",
+            "slug": "setup-da-empresa",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916741296",
+            "display_order": 1
+          },
+          {
+            "id": "d6ba4e2e-ec7b-45c9-b203-1605672d5134",
+            "name": "Estrutura da empresa",
+            "slug": "estrutura-da-empresa",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916750190",
+            "display_order": 2
+          },
+          {
+            "id": "44472b6d-84c1-440a-af05-bda856e25c12",
+            "name": "Credibilidade",
+            "slug": "credibilidade",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916752510",
+            "display_order": 3
+          },
+          {
+            "id": "d8519767-ad2f-4568-808c-98c55b624811",
+            "name": "Elevator Pitch",
+            "slug": "elevator-pitch",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916722302",
+            "display_order": 4
+          },
+          {
+            "id": "a064dd6e-b4ee-477d-9378-3391bf072725",
+            "name": " Construir sua equipe",
+            "slug": "construir-sua-equipe",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916725115",
+            "display_order": 5
+          }
+        ],
+        "display_order": 2,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/958d0a29-958c-4116-9502-a3ca49adc305.png"
+      },
+      {
+        "id": "3231c623-0eba-4761-a23d-349c24d70b18",
+        "name": "Modelos de negócio",
+        "slug": "modelos-de-negocio",
+        "lessons": [
+          {
+            "id": "a9850985-039c-42cc-9e60-cdc7de7890c9",
+            "name": "Flip Houses",
+            "slug": "flip-houses",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916756653",
+            "display_order": 0
+          },
+          {
+            "id": "04054be5-8717-4fbd-8b46-2502495be873",
+            "name": "Rental Property",
+            "slug": "rental-property",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916758450",
+            "display_order": 1
+          },
+          {
+            "id": "04afbf8a-c437-4776-a288-67d86eb29755",
+            "name": "New Construction",
+            "slug": "new-construction",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916755163",
+            "display_order": 2
+          }
+        ],
+        "display_order": 3,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/cfe1df86-ef3b-425b-b8fe-0466c158f735.png"
+      },
+      {
+        "id": "2ffcf64d-da6f-4e2b-aa47-ceef04175d7e",
+        "name": "Marketing",
+        "slug": "marketing",
+        "lessons": [
+          {
+            "id": "9ad6ad62-3dbe-450a-8cea-9fd548d8eb32",
+            "name": "Introdução",
+            "slug": "introducao-3",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916772578",
+            "display_order": 0
+          },
+          {
+            "id": "7a7746c7-02cc-4ca7-ab8f-8c718872167f",
+            "name": "Tipos de campanhas",
+            "slug": "tipos-de-campanhas",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916777365",
+            "display_order": 1
+          },
+          {
+            "id": "960e526f-4172-4d80-bc70-cb2c5f9fbec9",
+            "name": "4 maneiras de fazer marketing",
+            "slug": "4-maneiras-de-fazer-marketing",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916763241",
+            "display_order": 2
+          }
+        ],
+        "display_order": 4,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/2eaff95e-78df-4624-b11d-cc4c942f16c9.png"
+      },
+      {
+        "id": "54b86599-f43f-4b3c-8331-7a19d5019179",
+        "name": "Tipos de aquisição",
+        "slug": "tipos-de-aquisicao",
+        "lessons": [
+          {
+            "id": "740b2e88-61fa-4f1b-94dc-e8beb99be73e",
+            "name": "Pre-foreclosure",
+            "slug": "pre-foreclosure",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916782259",
+            "display_order": 0
+          },
+          {
+            "id": "858b8217-0a31-4486-9793-8116eeaced93",
+            "name": "Foreclosure",
+            "slug": "foreclosure",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916794349",
+            "display_order": 1
+          },
+          {
+            "id": "f0fb72f7-25c2-48ce-bbcf-38943223dd84",
+            "name": "On market",
+            "slug": "on-market",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916801079",
+            "display_order": 2
+          },
+          {
+            "id": "e2444d13-160c-4046-b5e5-5c00e53ad890",
+            "name": "Off market",
+            "slug": "off-market",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916803646",
+            "display_order": 3
+          },
+          {
+            "id": "fc766c4d-5e24-4116-8883-ed2bcfc16aae",
+            "name": "Conclusão",
+            "slug": "conclusao",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916780866",
+            "display_order": 4
+          }
+        ],
+        "display_order": 5,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/e069c90b-8933-46af-a3d7-c12c2eaa8ffa.png"
+      },
+      {
+        "id": "61fbfc1e-eb97-4204-a63a-b25c9945810c",
+        "name": "Análise de deals",
+        "slug": "analise-de-deals",
+        "lessons": [
+          {
+            "id": "b6743974-9533-4aa5-a4e2-ab1d268b4045",
+            "name": "Introdução",
+            "slug": "introducao-4",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916812368",
+            "display_order": 0
+          },
+          {
+            "id": "0ba9c662-9fd1-44bb-9f6e-f249e5a4419f",
+            "name": "ARV e COMPS",
+            "slug": "arv-e-comps",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916813988",
+            "display_order": 1
+          },
+          {
+            "id": "bdac664d-be4d-40fa-8ea2-160e153d0db0",
+            "name": "Analisar a propriedade pessoalmente",
+            "slug": "analisar-a-propriedade-pessoalmente",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916809419",
+            "display_order": 2
+          },
+          {
+            "id": "959d1287-845a-46e2-b892-414e766b2516",
+            "name": "Análise de propriedade",
+            "slug": "analise-de-propriedade",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/907611131",
+            "display_order": 3
+          }
+        ],
+        "display_order": 6,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/2544a16e-e5ee-40f3-81b5-b1afaa0d2f5f.png"
+      },
+      {
+        "id": "2c60b30a-f743-4c85-8171-6200de1c285b",
+        "name": "Ofertas e Contratos",
+        "slug": "ofertas-e-contratos",
+        "lessons": [
+          {
+            "id": "9dd0878e-ced8-49c0-86a6-934a959bc3b2",
+            "name": "Contrato",
+            "slug": "contrato",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916826964",
+            "display_order": 0
+          },
+          {
+            "id": "c90bd3d5-c1c9-419b-8a25-f532318e22ff",
+            "name": "Como determinar o valor de uma oferta",
+            "slug": "como-determinar-o-valor-de-uma-oferta",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916829602",
+            "display_order": 1
+          },
+          {
+            "id": "d5202552-a540-41a2-a1d5-0a17dc5d876d",
+            "name": "Earnest money deposit",
+            "slug": "earnest-money-deposit",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916815516",
+            "display_order": 2
+          }
+        ],
+        "display_order": 7,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/e68754ee-5e53-49f1-8aff-0d2dcbb2e186.png"
+      },
+      {
+        "id": "c33ee786-b279-43ac-ade6-3cef1e6f2d6e",
+        "name": "Financiamento",
+        "slug": "financiamento",
+        "lessons": [
+          {
+            "id": "ccdcac49-bea6-4453-ae57-958a23163057",
+            "name": " Introdução",
+            "slug": "introducao-5",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916837956",
+            "display_order": 0
+          },
+          {
+            "id": "c27a78e4-af64-45f2-9eb6-d1fb5d097dbc",
+            "name": "Usando o dinheiro de outras pessoas",
+            "slug": "usando-o-dinheiro-de-outras-pessoas",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916839178",
+            "display_order": 1
+          },
+          {
+            "id": "28dea38a-90c0-4948-845a-9ae8c7470880",
+            "name": "Private money lender",
+            "slug": "private-money-lender",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916841027",
+            "display_order": 2
+          },
+          {
+            "id": "e961f59b-dd0a-42f1-a1c4-3536409a94a5",
+            "name": "Hard money lender",
+            "slug": "hard-money-lender",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916843720",
+            "display_order": 3
+          },
+          {
+            "id": "3edf5a63-0ff8-46f6-967f-dc224ff241d4",
+            "name": "Proof of funds",
+            "slug": "proof-of-funds",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916832306",
+            "display_order": 4
+          },
+          {
+            "id": "21330a2d-4c3b-4734-8372-5c43088bb446",
+            "name": "Financiamentos criativos",
+            "slug": "financiamentos-criativos",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916833186",
+            "display_order": 5
+          }
+        ],
+        "display_order": 8,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/a7e9cd83-215e-4186-ab0c-97a27a5ae3bd.png"
+      },
+      {
+        "id": "92c7db49-cfb5-4710-be6d-5fd11fdf7e30",
+        "name": "Wholesaling",
+        "slug": "wholesaling",
+        "lessons": [
+          {
+            "id": "763d2bd8-f4bb-4aef-98b3-34b2e092f2a1",
+            "name": " Introdução",
+            "slug": "introducao-6",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916851903",
+            "display_order": 0
+          },
+          {
+            "id": "b16350a4-2f3a-4a6f-9da9-7800ee094c20",
+            "name": "Como encontrar wholesale deals",
+            "slug": "como-encontrar-wholesale-deals",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916855731",
+            "display_order": 1
+          },
+          {
+            "id": "3ec1afc0-06ef-4649-b088-a0eae44b2aef",
+            "name": "Como avaliar um wholesale deal",
+            "slug": "como-avaliar-um-wholesale-deal",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916857034",
+            "display_order": 2
+          },
+          {
+            "id": "a46c5086-d55a-4927-bd5f-47937623fdb4",
+            "name": "Negociar e fazer ofertas",
+            "slug": "negociar-e-fazer-ofertas",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916865250",
+            "display_order": 3
+          },
+          {
+            "id": "61410424-b3bb-4faa-8c1b-d2fec9219f9d",
+            "name": "Vender a propriedade",
+            "slug": "vender-a-propriedade",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916845606",
+            "display_order": 4
+          },
+          {
+            "id": "594a129b-b86a-4610-9357-beae21983624",
+            "name": "Processo de fechamento da venda",
+            "slug": "processo-de-fechamento-da-venda",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916847749",
+            "display_order": 5
+          }
+        ],
+        "display_order": 9,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/a5739045-d91c-41b7-9a22-7e65aeda56b2.png"
+      },
+      {
+        "id": "9e0cbef2-07ce-4ea2-a868-1bfe512a2817",
+        "name": "Rehab",
+        "slug": "rehab",
+        "lessons": [
+          {
+            "id": "3852b81d-66d6-4daa-bfc8-9362ad1151b1",
+            "name": " Introdução",
+            "slug": "introducao-7",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916872809",
+            "display_order": 0
+          },
+          {
+            "id": "7616f6f9-d5a6-4545-b878-61130dbfbc6f",
+            "name": " Criar um guia de reforma",
+            "slug": "criar-um-guia-de-reforma",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916874635",
+            "display_order": 1
+          },
+          {
+            "id": "9487df21-96ff-4e3d-b360-908254329f83",
+            "name": "Escolher a sua equipe de construção",
+            "slug": "escolher-a-sua-equipe-de-construcao",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916877288",
+            "display_order": 2
+          },
+          {
+            "id": "4106ac8a-5e0c-4982-be64-168851854b69",
+            "name": "Contrato",
+            "slug": "contrato-2",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916878812",
+            "display_order": 3
+          },
+          {
+            "id": "63605cfc-23b9-4d8b-8755-80223b832765",
+            "name": "Gerenciando a reforma",
+            "slug": "gerenciando-a-reforma",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916868701",
+            "display_order": 4
+          },
+          {
+            "id": "56e2053f-df98-4178-8c4b-1e24f87fc5b8",
+            "name": "Final da reforma e pagamento final",
+            "slug": "final-da-reforma-e-pagamento-final",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916870532",
+            "display_order": 5
+          }
+        ],
+        "display_order": 10,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/fd317e39-85f5-4c06-a40c-8f5ccc2a21b8.png"
+      },
+      {
+        "id": "ecddc356-a676-4bc0-a69b-50cff2ab3a13",
+        "name": "Estratégias de saída",
+        "slug": "estrategias-de-saida",
+        "lessons": [
+          {
+            "id": "29231a7d-db11-450b-b3c8-83f0779e646b",
+            "name": "Introdução",
+            "slug": "introducao-8",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916886910",
+            "display_order": 0
+          },
+          {
+            "id": "1c6b9b20-c125-4eae-bb16-a315d2b54749",
+            "name": "Wholesaling",
+            "slug": "wholesaling",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916892228",
+            "display_order": 1
+          },
+          {
+            "id": "f88d9aa0-b817-4f6e-8d6a-f4e5b7c38eab",
+            "name": "Flipping",
+            "slug": "flipping",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916892795",
+            "display_order": 2
+          },
+          {
+            "id": "ea09d6ac-5196-4a13-901e-8dc47c013e0d",
+            "name": "Refinanciar e cash out",
+            "slug": "refinanciar-e-cash-out",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916893689",
+            "display_order": 3
+          },
+          {
+            "id": "4f64b7c7-a91a-489e-9a89-ee5fc3f0ab6c",
+            "name": "Comprar e alugar",
+            "slug": "comprar-e-alugar",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916880541",
+            "display_order": 4
+          },
+          {
+            "id": "e3d0c398-93e2-4db9-8e05-732a2c17ffbd",
+            "name": "Seller financing",
+            "slug": "seller-financing",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916881614",
+            "display_order": 5
+          },
+          {
+            "id": "ec045121-9e16-4163-958f-c44e61c5d5ea",
+            "name": "Dar opção de compra ao inquilino – rent to own",
+            "slug": "dar-opcao-de-compra-ao-inquilino-rent-to-own",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916883221",
+            "display_order": 6
+          },
+          {
+            "id": "6a3a522c-b4b9-4983-bc56-dcfef8766d26",
+            "name": "Criar o seu legado",
+            "slug": "criar-o-seu-legado",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916884045",
+            "display_order": 7
+          },
+          {
+            "id": "1c74ce69-46b5-469f-be08-0ac17bcd2132",
+            "name": " O que pode impactar o seu negócio negativamente",
+            "slug": "o-que-pode-impactar-o-seu-negocio-negativamente",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916884863",
+            "display_order": 8
+          }
+        ],
+        "display_order": 11,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/4c627dca-18e3-4c7f-832b-75a7afbd240b.png"
+      },
+      {
+        "id": "f8c642a8-442a-4015-b9b7-16700fc8c602",
+        "name": "Encerramento",
+        "slug": "encerramento",
+        "lessons": [
+          {
+            "id": "5077a325-d078-4e5b-ba52-cd677a0ae701",
+            "name": "Encerramento - Thaise",
+            "slug": "encerramento-thaise",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916895923",
+            "display_order": 0
+          },
+          {
+            "id": "215dfcc8-ffb2-46b7-8077-0dfc6de1fa05",
+            "name": "Encerramento - Victor",
+            "slug": "encerramento-victor",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/916895017",
+            "display_order": 1
+          }
+        ],
+        "display_order": 12,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/b6ea3060-5a8c-4b97-931f-1ee235777e2b.png"
+      },
+      {
+        "id": "efc938b9-a2ae-4f43-be1a-064d218fff28",
+        "name": "Documentos",
+        "slug": "documentos",
+        "lessons": [
+          {
+            "id": "b286741b-712d-4bf9-bd71-6e6c3ee1aba0",
+            "name": "Documentos",
+            "slug": "documentos",
+            "cta_url": "https://drive.google.com/drive/u/3/folders/1oXIFuQDAdb9mxOVql30FL-zAL9Mm3ojH",
+            "cta_text": "FAZER DOWNLOAD DE DOCS",
+            "image_url": null,
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 13,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/9174897a-38cb-43b5-8652-0c0a2e2c33c3.png"
+      },
+      {
+        "id": "13d20af7-1274-44f7-814b-4bb3542abcd5",
+        "name": "Aulas Complementares",
+        "slug": "aulas-complementares",
+        "lessons": [
+          {
+            "id": "5969c134-de91-43fe-a6e4-a79087f5e757",
+            "name": "Tese de negócio: New Construction",
+            "slug": "tese-de-negocio-new-construction",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1082136939",
+            "display_order": 0
+          },
+          {
+            "id": "c8599316-5c41-4d1d-83ba-3b428ebc8c98",
+            "name": "Plataformas para encontrar deals on e off market",
+            "slug": "plataformas-para-encontrar-deals-on-e-off-market",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1082201886",
+            "display_order": 1
+          },
+          {
+            "id": "88c49955-0e1c-4563-b33e-ca8c073ed4d6",
+            "name": "Táticas inteligentes para encontrar o próximo deal",
+            "slug": "taticas-inteligentes-para-encontrar-o-proximo-deal",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1082316942",
+            "display_order": 2
+          },
+          {
+            "id": "6f8424fc-91e0-4b6a-a87c-1c04e93911a6",
+            "name": "Como funciona o processo de parceria",
+            "slug": "como-funciona-o-processo-de-parceria",
+            "cta_url": "https://api.whatsapp.com/send?phone=17549993588&text=Estou%20assistindo%20ao%20Programa%20Construtores%20de%20Prosperidade%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!%20",
+            "cta_text": "Fale com um Analista",
+            "image_url": null,
+            "vimeo_url": "https://vimeo.com/1082316455",
+            "display_order": 3
+          }
+        ],
+        "display_order": 14,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/58436e75-7f3f-4940-96d1-9c70f969d838.png"
+      }
+    ]
+  },
+  {
+    "id": "742b66e2-c73e-46ba-bf12-39999c8c67a7",
+    "slug": "financiamento",
+    "name": "Financiamento",
+    "description": null,
+    "published": true,
+    "display_order": 11,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "ae2ed98f-b61b-4b1c-901b-26febc8827a4",
+        "name": "Financiamento",
+        "slug": "financiamento-2",
+        "lessons": [
+          {
+            "id": "43b511e7-21d7-402e-962e-466eb29d64ba",
+            "name": "Financiamento",
+            "slug": "financiamento",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Fale com um Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/d1388eac-18d6-4a96-8525-f06782b9dc25.jpg",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/cf4a00bb-9937-4da7-a2b8-ff69e281ba08.png"
+      }
+    ]
+  },
+  {
+    "id": "a192bc55-a9db-4991-97af-84232ef89e16",
+    "slug": "checkmate-group",
+    "name": "Checkmate Group",
+    "description": null,
+    "published": true,
+    "display_order": 12,
+    "is_premium": false,
+    "cover_image_url": null,
+    "modules": [
+      {
+        "id": "4ee36d0e-9778-4616-8a80-a7dc68962697",
+        "name": "Suporte por WhatsApp",
+        "slug": "suporte-por-whatsapp",
+        "lessons": [
+          {
+            "id": "3f7603fc-7a17-404c-8687-fc0d4a24f155",
+            "name": "Suporte por WhatsApp",
+            "slug": "suporte-por-whatsapp",
+            "cta_url": "https://api.whatsapp.com/send?phone=19549554018&text=Estou%20assistindo%20aos%20programas%20da%20Academy%20e%20preciso%20de%20ajuda!",
+            "cta_text": "Suporte com Analista",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/43dcd18e-aead-4437-82fb-123744cd07ef.jpg",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 0,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/2e5f2ae7-3103-422a-8024-d9129a051c4a.png"
+      },
+      {
+        "id": "74b2e41e-6bab-42f6-97ff-63c94c5fa04e",
+        "name": "Instagram",
+        "slug": "instagram",
+        "lessons": [
+          {
+            "id": "a487dc77-0891-4158-8bf2-ec8ba62233e6",
+            "name": "Instagram",
+            "slug": "instagram",
+            "cta_url": "https://www.instagram.com/checkmate.reg",
+            "cta_text": "Acesso o Instagram da Checkmate",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/cb919b6c-01cd-4d36-b645-92dd9940d163.jpg",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 1,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/73776b0f-dbc2-4b58-a493-07a5105bd4bf.png"
+      },
+      {
+        "id": "e5ccd1a7-71b4-48d1-a30d-dfa402a0d9b3",
+        "name": "Youtube",
+        "slug": "youtube",
+        "lessons": [
+          {
+            "id": "ba66ada8-310f-485c-958b-37c4d5debc12",
+            "name": "Youtube",
+            "slug": "youtube",
+            "cta_url": "https://www.youtube.com/@checkmaterealestate",
+            "cta_text": "Acesse o Youtube da Checkmate",
+            "image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/lessons/8ee97b4e-1aa0-4ce3-90ee-d9037bc555f4.jpg",
+            "vimeo_url": null,
+            "display_order": 0
+          }
+        ],
+        "display_order": 2,
+        "cover_image_url": "https://wzzehyhqfkvgrtbnnghq.supabase.co/storage/v1/object/public/program-covers/modules/c39ec9ec-0799-414b-9680-111178e19a6d.png"
+      }
+    ]
+  }
+]

@@ -1,0 +1,88 @@
+import type { ModuleCoverCardData } from "@/components/programs/module-cover-card";
+
+export const flipHouseModules: ModuleCoverCardData[] = [
+  {
+    id: "base-do-negocio",
+    title: "Base do Negócio",
+    subtitle: "Fundamentos para começar",
+    coverUrl: "/module-covers/base-do-negocio.jpg",
+    progress: 100,
+    badge: "FLIP HOUSE 4.0",
+    href: "/programas/flip-house-4/modulos/base-do-negocio",
+  },
+  {
+    id: "deal-na-pratica",
+    title: "Deal na Prática",
+    subtitle: "Aprenda a calcular oportunidades",
+    coverUrl: "/module-covers/deal-na-pratica.jpg",
+    progress: 0,
+    badge: "FLIP HOUSE 4.0",
+    href: "/programas/flip-house-4/modulos/deal-na-pratica",
+  },
+  {
+    id: "analise-de-negocios",
+    title: "Análise de Negócios",
+    subtitle: "Critérios de análise e decisão",
+    coverUrl: "/module-covers/analise-de-negocios.jpg",
+    progress: 0,
+    badge: "FLIP HOUSE 4.0",
+    href: "/programas/flip-house-4/modulos/analise-de-negocios",
+  },
+  {
+    id: "comunicacao-interpessoal",
+    title: "Comunicação Interpessoal",
+    subtitle: "Negociação e relacionamento",
+    coverUrl: "/module-covers/comunicacao-interpessoal.jpg",
+    progress: 0,
+    badge: "FLIP HOUSE 4.0",
+    href: "/programas/flip-house-4/modulos/comunicacao-interpessoal",
+  },
+  {
+    id: "modelagem-financeira",
+    title: "Modelagem Financeira",
+    subtitle: "Números, risco e retorno",
+    coverUrl: "",
+    progress: 0,
+    badge: "FLIP HOUSE 4.0",
+    href: "/programas/flip-house-4/modulos/modelagem-financeira",
+  },
+];
+
+export const projectModules: ModuleCoverCardData[] = [
+  {
+    id: "pipeline",
+    title: "Pipeline de Projetos",
+    subtitle: "Originação e priorização",
+    coverUrl: "/module-covers/base-do-negocio.jpg",
+    progress: 35,
+    badge: "PROJETOS",
+    href: "/programas/projetos/modulos/pipeline",
+  },
+  {
+    id: "due-diligence",
+    title: "Due Diligence",
+    subtitle: "Análise e diligência",
+    coverUrl: "/module-covers/analise-de-negocios.jpg",
+    progress: 10,
+    badge: "PROJETOS",
+    href: "/programas/projetos/modulos/due-diligence",
+  },
+  {
+    id: "negociacao",
+    title: "Negociação",
+    subtitle: "Estrutura e fechamento",
+    coverUrl: "/module-covers/comunicacao-interpessoal.jpg",
+    progress: 0,
+    badge: "PROJETOS",
+    href: "/programas/projetos/modulos/negociacao",
+  },
+  {
+    id: "comite",
+    title: "Comitê de Investimento",
+    subtitle: "Decisão e governança",
+    coverUrl: "",
+    progress: 0,
+    badge: "PROJETOS",
+    href: "/programas/projetos/modulos/comite",
+  },
+];
