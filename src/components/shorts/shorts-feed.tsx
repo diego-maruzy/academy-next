@@ -24,7 +24,7 @@ export function ShortsFeed({ shorts, className }: ShortsFeedProps) {
           <Clapperboard className="h-7 w-7" />
         </div>
         <h2 className="mt-5 text-xl font-semibold text-white sm:text-2xl">
-          Nenhum short publicado ainda.
+          Nenhum reel publicado ainda.
         </h2>
         <p className="mt-2 max-w-md text-sm text-slate-400">
           Novos vídeos verticais aparecerão aqui assim que forem publicados.
@@ -34,32 +34,47 @@ export function ShortsFeed({ shorts, className }: ShortsFeedProps) {
   }
 
   return (
-    <div
-      className={cn(
-        "h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth",
-        "snap-y snap-proximity",
-        "lg:h-auto lg:max-h-none lg:snap-none lg:overflow-visible",
-        "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-        className,
-      )}
-    >
-      <div className="mx-auto grid h-full w-full max-w-[1120px] lg:gap-12">
+    <>
+      {/* Mobile / tablet: um reel por viewport */}
+      <div
+        className={cn(
+          "h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth",
+          "snap-y snap-proximity",
+          "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "lg:hidden",
+          className,
+        )}
+      >
         {shorts.map((short) => (
           <section
             key={short.id}
             data-analytics-event="short_view"
             data-short-id={short.id}
-            className={cn(
-              "flex h-full min-h-0 snap-start items-center justify-center px-4",
-              "max-lg:py-1",
-              "md:px-5",
-              "lg:h-auto lg:min-h-0 lg:px-0 lg:py-6",
-            )}
+            className="flex h-full w-full shrink-0 snap-start items-center justify-center px-4"
           >
             <ShortVideoCard short={short} />
           </section>
         ))}
       </div>
-    </div>
+
+      {/* Desktop: lista vertical */}
+      <div
+        className={cn(
+          "mx-auto hidden w-full max-w-[1120px] flex-col gap-12 lg:flex",
+          className,
+        )}
+      >
+        {shorts.map((short) => (
+          <section
+            key={short.id}
+            data-analytics-event="short_view"
+            data-short-id={short.id}
+            className="py-2"
+          >
+            <ShortVideoCard short={short} />
+          </section>
+        ))}
+      </div>
+    </>
   );
 }

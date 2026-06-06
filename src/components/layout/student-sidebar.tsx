@@ -53,7 +53,7 @@ export function StudentSidebar() {
             )}
           >
             <PlaySquare className="h-4 w-4 shrink-0" />
-            <span>Shorts</span>
+            <span>Reels</span>
           </Link>
           <a
             href={CHECKMATE_MENU_URL}

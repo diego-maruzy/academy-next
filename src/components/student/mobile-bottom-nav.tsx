@@ -18,7 +18,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { id: "home", label: "Início", href: "/programas", icon: Home },
   { id: "programs", label: "Programas", href: "/programas", icon: BookOpen },
-  { id: "shorts", label: "Shorts", href: "/shorts", icon: PlaySquare },
+  { id: "shorts", label: "Reels", href: "/shorts", icon: PlaySquare },
   { id: "menu", label: "Menu", href: CHECKMATE_MENU_URL, icon: Menu, external: true },
 ];
 

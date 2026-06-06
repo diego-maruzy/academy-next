@@ -56,20 +56,19 @@ export function ShortVideoCard({ short, className }: ShortVideoCardProps) {
       data-short-id={short.id}
       data-short-slug={short.slug}
       className={cn(
-        "flex h-full w-full max-w-[1120px] min-h-0 flex-col justify-center gap-2",
-        "max-lg:max-h-full sm:gap-3",
-        "lg:grid lg:h-auto lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:items-center lg:gap-10",
+        "flex w-full max-w-[1120px] flex-col items-center justify-center gap-2",
+        "max-lg:max-h-full max-lg:min-h-0",
+        "lg:grid lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:items-center lg:gap-10",
         className,
       )}
     >
       <div
         className={cn(
-          "relative mx-auto shrink-0 overflow-hidden rounded-[28px]",
+          "relative shrink-0 overflow-hidden rounded-[28px]",
           "border border-white/10 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.55)]",
-          "aspect-[9/16] w-auto max-w-[92vw]",
-          "h-[min(72dvh,calc(100dvh-10.5rem-env(safe-area-inset-bottom)))]",
-          "max-h-[min(72dvh,calc(100dvh-10.5rem-env(safe-area-inset-bottom)))]",
-          "lg:aspect-[9/16] lg:h-auto lg:max-h-none lg:w-full lg:max-w-[400px]",
+          "aspect-[9/16] w-[min(88vw,340px)]",
+          "max-lg:max-h-[min(62dvh,calc(100%-6.5rem))]",
+          "lg:aspect-[9/16] lg:h-auto lg:w-full lg:max-h-none lg:max-w-[400px]",
         )}
       >
         {embedUrl ? (
@@ -131,7 +130,7 @@ export function ShortVideoCard({ short, className }: ShortVideoCardProps) {
         </div>
       </div>
 
-      <div className="shrink-0 space-y-1.5 px-1 pb-3 lg:hidden">
+      <div className="w-full max-w-[min(88vw,340px)] shrink-0 space-y-1.5 px-1 pb-2 lg:hidden">
         <h2 className="line-clamp-1 text-sm font-bold text-white sm:line-clamp-2 sm:text-base">
           {short.title}
         </h2>
@@ -162,7 +161,7 @@ export function ShortVideoCard({ short, className }: ShortVideoCardProps) {
             type="button"
             onClick={handleShare}
             className="inline-flex h-10 min-h-[44px] w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-200 transition hover:bg-white/10 sm:h-11 sm:w-11"
-            aria-label="Compartilhar short"
+            aria-label="Compartilhar reel"
           >
             <Share2 className="h-4 w-4" />
           </button>
@@ -177,7 +176,7 @@ export function ShortVideoCard({ short, className }: ShortVideoCardProps) {
       <div className="hidden min-w-0 flex-col gap-5 rounded-[28px] border border-white/10 bg-white/[0.03] p-6 lg:flex">
         <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-sky-200">
           <Clapperboard className="h-3.5 w-3.5" />
-          Academy Short
+          Academy Reel
         </div>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">

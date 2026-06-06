@@ -18,7 +18,7 @@ export default async function ShortsLayout({
     <UserProvider user={user}>
       <StudentShell>
         <StudentSessionTracker clientId={client?.id ?? null} />
-        <div className="max-lg:-mt-4">{children}</div>
+        <div className="max-lg:-mt-4 max-lg:overflow-hidden">{children}</div>
       </StudentShell>
     </UserProvider>
   );
