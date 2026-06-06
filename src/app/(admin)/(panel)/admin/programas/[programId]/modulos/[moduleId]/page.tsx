@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Edit3, Plus } from "lucide-react";
 import { DeleteConfirmButton } from "@/components/admin/programs/delete-confirm-button";
+import { LessonMediaBadge } from "@/components/admin/programs/lesson-media-badge";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -79,6 +80,11 @@ export default async function AdminModuleDetailPage({
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge>Aula {lesson.display_order}</Badge>
+                  <LessonMediaBadge
+                    mediaType={lesson.media_type}
+                    vimeoUrl={lesson.vimeo_url}
+                    imageUrl={lesson.image_url}
+                  />
                   <h3 className="text-lg font-semibold text-white">
                     {lesson.name}
                   </h3>
@@ -87,9 +93,15 @@ export default async function AdminModuleDetailPage({
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
                     slug: {lesson.slug}
                   </span>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
-                    Vimeo: {lesson.vimeo_url ?? "Sem Vimeo"}
-                  </span>
+                  {lesson.media_type === "video" ? (
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
+                      Vimeo: {lesson.vimeo_url ?? "Sem Vimeo"}
+                    </span>
+                  ) : (
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
+                      Imagem: {lesson.image_url ? "Configurada" : "Sem imagem"}
+                    </span>
+                  )}
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
                     CTA: {lesson.cta_text ?? "Sem CTA"}
                   </span>

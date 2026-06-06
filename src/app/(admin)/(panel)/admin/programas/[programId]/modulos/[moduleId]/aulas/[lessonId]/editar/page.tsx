@@ -46,6 +46,7 @@ export default async function EditAdminLessonPage({
           cta_text: lesson.cta_text ?? "",
           image_url: lesson.image_url,
           vimeo_url: lesson.vimeo_url,
+          media_type: lesson.media_type,
           display_order: lesson.display_order,
         }}
       />

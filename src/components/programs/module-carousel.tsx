@@ -19,6 +19,8 @@ type ModuleCarouselProps = {
   programSlug?: string;
   programName?: string;
   isPremium?: boolean;
+  locked?: boolean;
+  upgradeUrl?: string | null;
   moduleProgressMap?: ModuleProgressMap;
 };
 
@@ -32,6 +34,8 @@ export function ModuleCarousel({
   programSlug,
   programName,
   isPremium,
+  locked = false,
+  upgradeUrl,
   moduleProgressMap = {},
 }: ModuleCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -128,6 +132,8 @@ export function ModuleCarousel({
                 programName={programName}
                 module={module}
                 isPremium={isPremium}
+                locked={locked}
+                upgradeUrl={upgradeUrl}
                 progress={moduleProgressMap[module.id]?.percentage ?? 0}
                 className="snap-start"
               />

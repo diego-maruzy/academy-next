@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { ImageUploadField } from "@/components/admin/programs/image-upload-field";
 import { Button } from "@/components/ui/button";
@@ -39,7 +39,14 @@ export function AdminProgramForm({
       published: defaultValues?.published ?? true,
       display_order: defaultValues?.display_order ?? 0,
       is_premium: defaultValues?.is_premium ?? false,
+      upgrade_url: defaultValues?.upgrade_url ?? "",
     },
+  });
+
+  const isPremium = useWatch({
+    control: form.control,
+    name: "is_premium",
+    defaultValue: defaultValues?.is_premium ?? false,
   });
 
   function onSubmit(values: ProgramInput) {
@@ -133,6 +140,24 @@ export function AdminProgramForm({
           Premium
         </label>
       </div>
+
+      {isPremium ? (
+        <Field label="Link de upgrade">
+          <Input
+            {...form.register("upgrade_url")}
+            placeholder="https://checkmateproperty.com/checkout"
+          />
+          <p className="mt-2 text-xs text-slate-400">
+            Usuários sem acesso ao programa premium serão direcionados para este
+            link ao clicar em Upgrade.
+          </p>
+          {form.formState.errors.upgrade_url ? (
+            <p className="mt-1 text-xs text-red-300">
+              {form.formState.errors.upgrade_url.message}
+            </p>
+          ) : null}
+        </Field>
+      ) : null}
 
       {error ? (
         <div className="rounded-xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">

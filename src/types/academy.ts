@@ -1,3 +1,5 @@
+export type LessonMediaType = "video" | "image";
+
 export type Lesson = {
   id: string;
   external_id: string;
@@ -9,6 +11,7 @@ export type Lesson = {
   cta_text: string | null;
   image_url: string | null;
   vimeo_url: string | null;
+  media_type: LessonMediaType;
   display_order: number;
   created_at: string;
   updated_at: string;
@@ -36,6 +39,7 @@ export type Program = {
   published: boolean;
   display_order: number;
   is_premium: boolean;
+  upgrade_url: string | null;
   cover_image_url: string | null;
   created_at: string;
   updated_at: string;

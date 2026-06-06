@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ModuleCarousel } from "@/components/programs/module-carousel";
+import { PremiumLockedState } from "@/components/student/premium-locked-state";
 import { Card, CardContent } from "@/components/ui/card";
 import { getProgramBySlug } from "@/lib/academy-data";
 import { getCurrentClient } from "@/lib/current-client";
@@ -9,6 +10,7 @@ import {
   getProgramModuleProgressMap,
 } from "@/lib/progress-data";
 import { recordStudentActivity } from "@/lib/student-activity";
+import { studentHasProgramAccess } from "@/lib/student-access";
 
 type ProgramDetailPageProps = {
   params: Promise<{ programId: string }>;
@@ -27,8 +29,10 @@ export default async function ProgramDetailPage({
   }
 
   const client = await getCurrentClient();
+  const hasAccess = studentHasProgramAccess(program, client);
+  const locked = program.is_premium && !hasAccess;
 
-  if (client) {
+  if (client && hasAccess) {
     void recordStudentActivity({
       clientId: client.id,
       programId: program.id,
@@ -83,17 +87,25 @@ export default async function ProgramDetailPage({
         </CardContent>
       </Card>
 
-      <ModuleCarousel
-        title="Módulos do programa"
-        subtitle="Abra um módulo para ver aulas, CTA e materiais."
-        progressLabel={`${completedModules}/${totalModules}`}
-        progressPercent={progressPercent}
-        academyModules={program.modules}
-        programSlug={program.slug}
-        programName={program.name}
-        isPremium={program.is_premium}
-        moduleProgressMap={moduleProgressMap}
-      />
+      {locked ? (
+        <PremiumLockedState
+          title={program.name}
+          description="Este conteúdo é premium. Faça upgrade para acessar os módulos deste programa."
+          upgradeUrl={program.upgrade_url}
+        />
+      ) : (
+        <ModuleCarousel
+          title="Módulos do programa"
+          subtitle="Abra um módulo para ver aulas, CTA e materiais."
+          progressLabel={`${completedModules}/${totalModules}`}
+          progressPercent={progressPercent}
+          academyModules={program.modules}
+          programSlug={program.slug}
+          programName={program.name}
+          isPremium={program.is_premium}
+          moduleProgressMap={moduleProgressMap}
+        />
+      )}
     </div>
   );
 }

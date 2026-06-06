@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ModuleCompletionButton } from "@/components/programs/module-completion-button";
 import { ModulePlayer } from "@/components/programs/module-player";
 import { ProgramProgressPanel } from "@/components/programs/program-progress-panel";
+import { PremiumLockedState } from "@/components/student/premium-locked-state";
 import { ButtonLink } from "@/components/ui/button";
 import {
   getFirstLessonFromModule,
@@ -18,6 +19,7 @@ import {
   isLessonCompletedForClient,
 } from "@/lib/progress-data";
 import { recordStudentActivity } from "@/lib/student-activity";
+import { studentHasProgramAccess } from "@/lib/student-access";
 import { cn } from "@/lib/utils";
 
 type ModuleDetailPageProps = {
@@ -38,6 +40,8 @@ export default async function ModuleDetailPage({
   }
 
   const client = await getCurrentClient();
+  const hasAccess = studentHasProgramAccess(program, client);
+  const locked = program.is_premium && !hasAccess;
 
   const [lesson, modules, navigation, moduleProgressMap] = await Promise.all([
     getFirstLessonFromModule(program.slug, programModule.slug),
@@ -48,7 +52,7 @@ export default async function ModuleDetailPage({
       : Promise.resolve({}),
   ]);
 
-  if (client) {
+  if (client && hasAccess) {
     void recordStudentActivity({
       clientId: client.id,
       programId: program.id,
@@ -70,7 +74,6 @@ export default async function ModuleDetailPage({
   const { previousModule, nextModule } = navigation;
   const title = lesson?.name ?? programModule.name;
   const ctaText = lesson?.cta_text || "Falar com um Analista";
-  const fallbackImage = lesson?.image_url ?? programModule.cover_image_url;
 
   const initialLessonCompleted =
     client && lesson
@@ -87,7 +90,7 @@ export default async function ModuleDetailPage({
     <div className="grid min-w-0 gap-6 md:gap-8">
       <section className="min-w-0">
         <Link
-          href={`/programas/${program.slug}`}
+          href="/programas"
           className="inline-flex min-h-[44px] items-center text-sm font-medium text-slate-400 transition active:scale-[0.98] hover:text-white"
         >
           <ArrowLeft className="mr-2 h-4 w-4 shrink-0" />
@@ -103,10 +106,19 @@ export default async function ModuleDetailPage({
 
       <section className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
         <div className="grid min-w-0 gap-4 md:gap-5">
+          {locked ? (
+            <PremiumLockedState
+              title="Este conteúdo é premium"
+              description="Faça upgrade para acessar este programa."
+              upgradeUrl={program.upgrade_url}
+            />
+          ) : (
+            <>
           <ModulePlayer
             title={title}
+            mediaType={lesson?.media_type}
             videoUrl={lesson?.vimeo_url ?? null}
-            coverUrl={fallbackImage}
+            imageUrl={lesson?.image_url ?? programModule.cover_image_url}
           />
 
           {lesson?.cta_url ? (
@@ -184,14 +196,18 @@ export default async function ModuleDetailPage({
               )}
             </div>
           </div>
+            </>
+          )}
         </div>
 
-        <ProgramProgressPanel
-          program={program}
-          modules={modules}
-          currentModuleSlug={programModule.slug}
-          moduleProgressMap={moduleProgressMap}
-        />
+        {!locked ? (
+          <ProgramProgressPanel
+            program={program}
+            modules={modules}
+            currentModuleSlug={programModule.slug}
+            moduleProgressMap={moduleProgressMap}
+          />
+        ) : null}
       </section>
     </div>
   );

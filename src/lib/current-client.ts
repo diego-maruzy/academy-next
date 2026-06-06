@@ -5,6 +5,7 @@ export type CurrentClient = {
   id: string;
   email: string;
   full_name: string;
+  role: string;
 };
 
 let warnedMissingClient = false;
@@ -20,7 +21,7 @@ export async function getCurrentClient(): Promise<CurrentClient | null> {
 
   const { data, error } = await supabase
     .from("clients")
-    .select("id, email, full_name")
+    .select("id, email, full_name, role")
     .eq("email", user.clientEmail)
     .maybeSingle();
 

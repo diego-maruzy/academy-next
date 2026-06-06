@@ -41,6 +41,7 @@ function normalizeProgramData(
     published: data.published,
     display_order: data.display_order,
     is_premium: data.is_premium,
+    upgrade_url: data.upgrade_url ?? null,
     cover_image_url: resolveCoverImageUrl(
       data.cover_image_url,
       existingCoverImageUrl,

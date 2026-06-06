@@ -6,6 +6,11 @@ const optionalImageUrl = (message: string) =>
     z.union([z.url(message), z.null()]).optional(),
   );
 
+const optionalUpgradeUrl = z.preprocess(
+  (value) => (value === "" || value === undefined ? null : value),
+  z.union([z.string().url("Informe uma URL válida para o upgrade."), z.null()]).optional(),
+);
+
 export const programSchema = z.object({
   name: z.string().min(2, "Informe o nome do programa."),
   slug: z
@@ -16,6 +21,7 @@ export const programSchema = z.object({
   published: z.boolean(),
   display_order: z.coerce.number().int().min(0, "Informe uma ordem válida."),
   is_premium: z.boolean(),
+  upgrade_url: optionalUpgradeUrl,
   cover_image_url: optionalImageUrl("Informe uma URL válida para a capa."),
 });
 

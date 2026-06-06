@@ -7,6 +7,7 @@ import {
   getProgramModuleProgressMap,
 } from "@/lib/progress-data";
 import { recordStudentActivity } from "@/lib/student-activity";
+import { studentHasProgramAccess } from "@/lib/student-access";
 
 export const dynamic = "force-dynamic";
 
@@ -52,6 +53,8 @@ export default async function ProgramsPage() {
       ) : null}
 
       {programs.map((program) => {
+        const hasAccess = studentHasProgramAccess(program, client);
+        const locked = program.is_premium && !hasAccess;
         const completedModules = countCompletedModules(
           program.modules,
           moduleProgressMap,
@@ -68,11 +71,13 @@ export default async function ProgramsPage() {
             title={program.name}
             subtitle={program.description ?? undefined}
             progressLabel={`${completedModules}/${totalModules}`}
-            progressPercent={progressPercent}
+            progressPercent={locked ? 0 : progressPercent}
             academyModules={program.modules}
             programSlug={program.slug}
             programName={program.name}
             isPremium={program.is_premium}
+            locked={locked}
+            upgradeUrl={program.upgrade_url}
             moduleProgressMap={moduleProgressMap}
           />
         );

@@ -38,6 +38,7 @@ function normalizeLessonData(
     cta_text: data.cta_text || null,
     image_url: resolveImageUrl(data.image_url, existingImageUrl),
     vimeo_url: data.vimeo_url ?? null,
+    media_type: data.media_type ?? "video",
     display_order: data.display_order,
   };
 }

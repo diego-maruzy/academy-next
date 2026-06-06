@@ -39,6 +39,7 @@ export default async function EditAdminProgramPage({
           published: program.published,
           display_order: program.display_order,
           is_premium: program.is_premium,
+          upgrade_url: program.upgrade_url ?? "",
           cover_image_url: program.cover_image_url,
         }}
       />

@@ -1,3 +1,4 @@
+import { normalizeLesson } from "@/lib/lesson-media";
 import {
   createSupabaseReadServerClient,
   formatSupabaseError,
@@ -11,11 +12,11 @@ import type {
 } from "@/types/academy";
 
 const programColumns =
-  "id, external_id, slug, name, description, published, display_order, is_premium, cover_image_url, created_at, updated_at";
+  "id, external_id, slug, name, description, published, display_order, is_premium, upgrade_url, cover_image_url, created_at, updated_at";
 const moduleColumns =
   "id, external_id, program_id, slug, name, description, display_order, cover_image_url, created_at, updated_at";
 const lessonColumns =
-  "id, external_id, module_id, slug, name, description, cta_url, cta_text, image_url, vimeo_url, display_order, created_at, updated_at";
+  "id, external_id, module_id, slug, name, description, cta_url, cta_text, image_url, vimeo_url, media_type, display_order, created_at, updated_at";
 
 function logAcademyDataError(context: string, error: unknown) {
   console.error(`[academy-data] ${context}`, formatSupabaseError(error));
@@ -233,7 +234,7 @@ export async function getLessonsByModuleId(moduleId: string): Promise<Lesson[]> 
     return [];
   }
 
-  return (data ?? []) as Lesson[];
+  return ((data ?? []) as Lesson[]).map((lesson) => normalizeLesson(lesson));
 }
 
 export async function getLessonBySlug(
@@ -272,7 +273,8 @@ export async function getLessonById(lessonId: string): Promise<Lesson | null> {
     return null;
   }
 
-  return (data as Lesson | null) ?? null;
+  const lesson = data as Lesson | null;
+  return lesson ? normalizeLesson(lesson) : null;
 }
 
 export async function getFirstLessonFromModule(
