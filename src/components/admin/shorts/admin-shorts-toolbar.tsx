@@ -5,7 +5,7 @@ import { Input, Select } from "@/components/ui/form-controls";
 import { cn } from "@/lib/utils";
 
 export type ShortStatusFilter = "all" | "published" | "draft";
-export type ShortProviderFilter = "all" | "vimeo" | "youtube";
+export type ShortProviderFilter = "all" | "supabase" | "vimeo" | "youtube";
 export type ShortSortOption = "order" | "title" | "recent";
 
 type AdminShortsToolbarProps = {
@@ -64,14 +64,15 @@ export function AdminShortsToolbar({
       </label>
 
       <label className="grid min-w-0 gap-2 text-sm font-medium text-slate-300">
-        Provider
+        Origem
         <Select
           value={providerFilter}
           onChange={(event) =>
             onProviderFilterChange(event.target.value as ShortProviderFilter)
           }
         >
-          <option value="all">Todos</option>
+          <option value="all">Todas</option>
+          <option value="supabase">Supabase</option>
           <option value="vimeo">Vimeo</option>
           <option value="youtube">YouTube</option>
         </Select>

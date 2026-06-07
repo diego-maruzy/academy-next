@@ -20,7 +20,7 @@ export function ReelsFeed({ reels, className }: ReelsFeedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
+  const [globalMuted, setGlobalMuted] = useState(true);
   const [likedIds, setLikedIds] = useState<Set<string>>(() =>
     getStoredReelLikes(),
   );
@@ -85,7 +85,7 @@ export function ReelsFeed({ reels, className }: ReelsFeedProps) {
   }, [reels.length]);
 
   const toggleMute = useCallback(() => {
-    setIsMuted((current) => !current);
+    setGlobalMuted((current) => !current);
   }, []);
 
   const toggleLike = useCallback((reelId: string) => {
@@ -136,7 +136,7 @@ export function ReelsFeed({ reels, className }: ReelsFeedProps) {
           <ReelSlide
             reel={reel}
             isActive={index === activeIndex}
-            isMuted={isMuted}
+            globalMuted={globalMuted}
             isLiked={likedIds.has(reel.id)}
             onToggleMute={toggleMute}
             onToggleLike={() => toggleLike(reel.id)}

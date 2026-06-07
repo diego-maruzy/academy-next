@@ -19,7 +19,7 @@ export const shortSchema = z.object({
   description: optionalText,
   category: optionalText,
   video_url: z.string().url("Informe uma URL válida do vídeo."),
-  video_provider: z.enum(["vimeo", "youtube"]),
+  video_provider: z.enum(["supabase", "vimeo", "youtube"]),
   thumbnail_url: optionalUrl,
   duration_label: optionalText,
   cta_label: optionalText,

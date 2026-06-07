@@ -34,6 +34,10 @@ export function getSupabaseActionErrorMessage(error: unknown) {
     return "SUPABASE_SERVICE_ROLE_KEY inválida ou revogada. Copie a chave service_role atual em Supabase → Settings → API e atualize o .env.local.";
   }
 
+  if (formatted.message.includes("academy_shorts_video_provider_check")) {
+    return "O banco ainda não aceita vídeos do Supabase Storage. Execute a migration supabase/academy-shorts-supabase-provider.sql no Supabase SQL Editor (ou rode npm run setup:shorts-provider).";
+  }
+
   return formatted.message;
 }
 

@@ -1,4 +1,4 @@
-export type VideoProvider = "vimeo" | "youtube";
+export type VideoProvider = "supabase" | "vimeo" | "youtube";
 
 export type AcademyShort = {
   id: string;

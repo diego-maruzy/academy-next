@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 type ReelSlideProps = {
   reel: AcademyShort;
   isActive: boolean;
-  isMuted: boolean;
+  globalMuted: boolean;
   isLiked: boolean;
   onToggleMute: () => void;
   onToggleLike: () => void;
@@ -19,7 +19,7 @@ type ReelSlideProps = {
 export function ReelSlide({
   reel,
   isActive,
-  isMuted,
+  globalMuted,
   isLiked,
   onToggleMute,
   onToggleLike,
@@ -54,7 +54,7 @@ export function ReelSlide({
         <ReelPlayer
           reel={reel}
           isActive={isActive}
-          isMuted={isMuted}
+          globalMuted={globalMuted}
           isPaused={isPaused}
           onError={() => setHasError(true)}
         />
@@ -99,10 +99,10 @@ export function ReelSlide({
         </ActionButton>
 
         <ActionButton
-          label={isMuted ? "Ativar som" : "Silenciar"}
+          label={globalMuted ? "Ativar som" : "Silenciar"}
           onClick={onToggleMute}
         >
-          {isMuted ? (
+          {globalMuted ? (
             <VolumeX className="h-5 w-5" />
           ) : (
             <Volume2 className="h-5 w-5" />

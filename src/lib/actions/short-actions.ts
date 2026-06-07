@@ -32,7 +32,7 @@ async function assertAdmin(): Promise<ActionResult | null> {
 function normalizeShortInput(data: ShortInput): ShortInput {
   const detectedProvider = detectVideoProvider(data.video_url);
   const provider =
-    data.video_provider ?? detectedProvider ?? ("vimeo" as const);
+    data.video_provider ?? detectedProvider ?? ("supabase" as const);
 
   return {
     ...data,

@@ -10,10 +10,12 @@ import { slugify } from "@/lib/slugify";
 import {
   detectVideoProvider,
   getVideoEmbedUrl,
+  usesNativeVideoPlayer,
 } from "@/lib/video-embed";
 import { shortSchema, type ShortInput } from "@/lib/validations/short";
+import { VideoUploadField } from "@/components/admin/shorts/video-upload-field";
 import { Button } from "@/components/ui/button";
-import { Field, Input, Select, Textarea } from "@/components/ui/form-controls";
+import { Field, Input, Textarea } from "@/components/ui/form-controls";
 import type { VideoProvider } from "@/types/shorts";
 
 type AdminShortFormProps = {
@@ -35,7 +37,7 @@ export function AdminShortForm({ shortId, defaultValues }: AdminShortFormProps) 
       description: defaultValues?.description ?? "",
       category: defaultValues?.category ?? "",
       video_url: defaultValues?.video_url ?? "",
-      video_provider: defaultValues?.video_provider ?? "vimeo",
+      video_provider: defaultValues?.video_provider ?? "supabase",
       thumbnail_url: defaultValues?.thumbnail_url ?? "",
       duration_label: defaultValues?.duration_label ?? "",
       cta_label: defaultValues?.cta_label ?? "Ver programa completo",
@@ -56,9 +58,7 @@ export function AdminShortForm({ shortId, defaultValues }: AdminShortFormProps) 
 
   useEffect(() => {
     const detected = detectVideoProvider(videoUrl ?? "");
-    if (detected) {
-      form.setValue("video_provider", detected);
-    }
+    form.setValue("video_provider", detected ?? "supabase");
   }, [videoUrl, form]);
 
   useEffect(() => {
@@ -67,13 +67,19 @@ export function AdminShortForm({ shortId, defaultValues }: AdminShortFormProps) 
     }
   }, [title, slugTouched, form]);
 
+  const resolvedProvider = (videoProvider as VideoProvider) ?? "supabase";
+
+  const usesNativeVideo = useMemo(
+    () => usesNativeVideoPlayer(videoUrl ?? null, resolvedProvider),
+    [videoUrl, resolvedProvider],
+  );
+
   const embedUrl = useMemo(
     () =>
-      getVideoEmbedUrl(
-        videoUrl ?? null,
-        (videoProvider as VideoProvider) ?? "vimeo",
-      ),
-    [videoUrl, videoProvider],
+      usesNativeVideo
+        ? null
+        : getVideoEmbedUrl(videoUrl ?? null, resolvedProvider),
+    [usesNativeVideo, videoUrl, resolvedProvider],
   );
 
   function onSubmit(values: ShortInput) {
@@ -122,18 +128,18 @@ export function AdminShortForm({ shortId, defaultValues }: AdminShortFormProps) 
           <Input {...form.register("category")} placeholder="Deal Analysis" />
         </Field>
 
-        <Field label="Link do vídeo">
-          <Input
-            {...form.register("video_url")}
-            placeholder="https://vimeo.com/... ou https://youtube.com/..."
+        <Field label="Vídeo (Supabase Storage)">
+          <VideoUploadField
+            value={videoUrl ?? ""}
+            onChange={(url) =>
+              form.setValue("video_url", url, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+            helperText="Novos uploads vão para o bucket reels no Supabase Storage."
+            error={form.formState.errors.video_url?.message}
           />
-        </Field>
-
-        <Field label="Provider">
-          <Select {...form.register("video_provider")}>
-            <option value="vimeo">Vimeo</option>
-            <option value="youtube">YouTube</option>
-          </Select>
         </Field>
 
         <Field label="Thumbnail URL">
@@ -195,7 +201,15 @@ export function AdminShortForm({ shortId, defaultValues }: AdminShortFormProps) 
             Preview do vídeo
           </p>
           <div className="relative mt-3 aspect-[9/16] overflow-hidden rounded-2xl border border-white/10 bg-black">
-            {embedUrl ? (
+            {usesNativeVideo && videoUrl ? (
+              <video
+                src={videoUrl}
+                controls
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : embedUrl ? (
               <iframe
                 src={embedUrl}
                 title="Preview"
@@ -212,7 +226,7 @@ export function AdminShortForm({ shortId, defaultValues }: AdminShortFormProps) 
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center px-4 text-center text-sm text-slate-500">
-                Cole um link Vimeo ou YouTube para visualizar o embed.
+                Cole a URL do vídeo no Supabase Storage para visualizar o preview.
               </div>
             )}
           </div>

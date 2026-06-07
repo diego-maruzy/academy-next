@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import {
   getReelsEmbedUrl,
-  isDirectVideoUrl,
   postEmbedMute,
   postEmbedPause,
   postEmbedPlay,
+  usesNativeVideoPlayer,
 } from "@/lib/video-embed";
 import type { AcademyShort } from "@/types/shorts";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 type ReelPlayerProps = {
   reel: AcademyShort;
   isActive: boolean;
-  isMuted: boolean;
+  globalMuted: boolean;
   isPaused: boolean;
   onError: () => void;
   className?: string;
@@ -23,7 +23,7 @@ type ReelPlayerProps = {
 export function ReelPlayer({
   reel,
   isActive,
-  isMuted,
+  globalMuted,
   isPaused,
   onError,
   className,
@@ -32,16 +32,14 @@ export function ReelPlayer({
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const playback = useMemo(() => {
-    if (isDirectVideoUrl(reel.video_url)) {
+    if (usesNativeVideoPlayer(reel.video_url, reel.video_provider)) {
       return {
         type: "direct" as const,
         src: reel.video_url,
       };
     }
 
-    const embedUrl = getReelsEmbedUrl(reel.video_url, reel.video_provider, {
-      muted: isMuted,
-    });
+    const embedUrl = getReelsEmbedUrl(reel.video_url, reel.video_provider);
 
     if (!embedUrl) {
       return { type: "error" as const };
@@ -52,7 +50,7 @@ export function ReelPlayer({
       src: embedUrl,
       provider: reel.video_provider,
     };
-  }, [isMuted, reel.video_provider, reel.video_url]);
+  }, [reel.video_provider, reel.video_url]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -61,18 +59,25 @@ export function ReelPlayer({
       return;
     }
 
-    video.muted = isMuted;
-
     if (!isActive || isPaused) {
       video.pause();
       return;
     }
 
-    const playPromise = video.play();
-    playPromise.catch(() => {
-      onError();
+    video.play().catch((error) => {
+      console.warn("[reel-player] Autoplay bloqueado:", error);
     });
-  }, [isActive, isMuted, isPaused, onError, playback.type]);
+  }, [isActive, isPaused, playback.type]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (playback.type !== "direct" || !video) {
+      return;
+    }
+
+    video.muted = globalMuted;
+  }, [globalMuted, playback.type]);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -81,20 +86,23 @@ export function ReelPlayer({
       return;
     }
 
-    if (!isActive) {
-      postEmbedPause(iframe, playback.provider);
-      return;
-    }
-
-    postEmbedMute(iframe, playback.provider, isMuted);
-
-    if (isPaused) {
+    if (!isActive || isPaused) {
       postEmbedPause(iframe, playback.provider);
       return;
     }
 
     postEmbedPlay(iframe, playback.provider);
-  }, [isActive, isMuted, isPaused, playback]);
+  }, [isActive, isPaused, playback]);
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+
+    if (playback.type !== "embed" || !iframe || !isActive) {
+      return;
+    }
+
+    postEmbedMute(iframe, playback.provider, globalMuted);
+  }, [globalMuted, isActive, playback]);
 
   useEffect(() => {
     if (playback.type === "error") {
@@ -112,7 +120,6 @@ export function ReelPlayer({
         ref={videoRef}
         src={playback.src}
         playsInline
-        muted={isMuted}
         loop
         preload="metadata"
         onError={onError}

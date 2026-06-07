@@ -8,7 +8,7 @@ create table if not exists public.academy_shorts (
   description text,
   category text,
   video_url text not null,
-  video_provider text not null default 'vimeo',
+  video_provider text not null default 'supabase',
   thumbnail_url text,
   duration_label text,
   cta_label text,
@@ -19,7 +19,7 @@ create table if not exists public.academy_shorts (
   created_at timestamptz default now(),
   updated_at timestamptz default now(),
   constraint academy_shorts_video_provider_check
-    check (video_provider in ('vimeo', 'youtube'))
+    check (video_provider in ('supabase', 'vimeo', 'youtube'))
 );
 
 create index if not exists idx_academy_shorts_slug

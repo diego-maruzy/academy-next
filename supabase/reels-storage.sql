@@ -1,0 +1,11 @@
+-- Bucket `reels` para vídeos da página /reels
+--
+-- 1. Supabase Dashboard → Storage → New bucket
+--    - Name: reels
+--    - Public bucket: ON (leitura pública dos vídeos)
+--
+-- 2. O upload pelo admin usa SUPABASE_SERVICE_ROLE_KEY (server action),
+--    então não depende de políticas de INSERT para usuários autenticados.
+--
+-- 3. URL pública gerada após upload:
+--    https://{projeto}.supabase.co/storage/v1/object/public/reels/{arquivo}.mp4

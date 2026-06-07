@@ -26,6 +26,31 @@ export function isDirectVideoUrl(url: string | null | undefined): boolean {
   return /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(url.trim());
 }
 
+export function isSupabaseStorageUrl(url: string | null | undefined): boolean {
+  if (!url) {
+    return false;
+  }
+
+  return /supabase\.co\/storage\/v1\/object\/(?:public|sign)\//i.test(
+    url.trim(),
+  );
+}
+
+export function usesNativeVideoPlayer(
+  url: string | null | undefined,
+  provider: VideoProvider,
+): boolean {
+  if (!url) {
+    return false;
+  }
+
+  return (
+    provider === "supabase" ||
+    isSupabaseStorageUrl(url) ||
+    isDirectVideoUrl(url)
+  );
+}
+
 export function detectVideoProvider(url: string): VideoProvider | null {
   const normalized = url.trim().toLowerCase();
 
@@ -33,8 +58,8 @@ export function detectVideoProvider(url: string): VideoProvider | null {
     return null;
   }
 
-  if (isDirectVideoUrl(normalized)) {
-    return null;
+  if (isSupabaseStorageUrl(normalized) || isDirectVideoUrl(normalized)) {
+    return "supabase";
   }
 
   if (
@@ -165,7 +190,7 @@ export function getReelsEmbedUrl(
     return null;
   }
 
-  const muted = options.muted ?? false;
+  const muted = options.muted ?? true;
 
   if (provider === "youtube") {
     return getYouTubeEmbedUrl(url, {
@@ -230,7 +255,13 @@ export function postEmbedMute(
   muted: boolean,
 ) {
   if (provider === "youtube") {
-    iframe.contentWindow?.postMessage(
+    const target = iframe.contentWindow;
+
+    if (!target) {
+      return;
+    }
+
+    target.postMessage(
       JSON.stringify({
         event: "command",
         func: muted ? "mute" : "unMute",
@@ -238,6 +269,18 @@ export function postEmbedMute(
       }),
       "*",
     );
+
+    if (!muted) {
+      target.postMessage(
+        JSON.stringify({
+          event: "command",
+          func: "setVolume",
+          args: [100],
+        }),
+        "*",
+      );
+    }
+
     return;
   }
 

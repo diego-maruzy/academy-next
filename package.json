@@ -12,6 +12,7 @@
     "sync:client-passwords": "tsx scripts/sync-client-passwords.ts",
     "reset:admin-password": "tsx scripts/reset-admin-password.ts",
     "setup:team-auth": "tsx scripts/print-team-auth-migration.ts",
+    "setup:shorts-provider": "tsx scripts/setup-shorts-supabase-provider.ts",
     "generate:admin-session-secret": "tsx scripts/generate-admin-session-secret.ts"
   },
   "dependencies": {
