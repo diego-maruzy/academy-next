@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "import:programs": "tsx scripts/import-programs.ts",
+    "import:clients": "tsx scripts/import-clients.ts",
+    "sync:client-passwords": "tsx scripts/sync-client-passwords.ts",
     "reset:admin-password": "tsx scripts/reset-admin-password.ts",
     "setup:team-auth": "tsx scripts/print-team-auth-migration.ts",
     "generate:admin-session-secret": "tsx scripts/generate-admin-session-secret.ts"

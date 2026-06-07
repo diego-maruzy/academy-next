@@ -5,6 +5,7 @@
  * Não registrar número do cartão nem CVC em logs.
  */
 
+import { DEFAULT_CLIENT_PASSWORD } from "@/lib/clients/default-password";
 import { sendCheckoutApprovedEmails } from "@/lib/email/send-checkout-emails";
 import { getPaymentPlanSettingByBillingType } from "@/lib/payment-settings-data";
 import {
@@ -120,7 +121,7 @@ export async function processCheckoutRegistration(
     name: parsedForm.data.name.trim(),
     email: parsedForm.data.email.trim(),
     phone: parsedForm.data.phone.trim(),
-    password: plan.default_password || "fliphouse2026",
+    password: plan.default_password || DEFAULT_CLIENT_PASSWORD,
     card: {
       ...parsedForm.data.card,
       number: normalizeCardNumber(parsedForm.data.card.number),

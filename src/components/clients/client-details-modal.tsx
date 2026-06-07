@@ -12,6 +12,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { ClientAnalyticsPanel } from "@/components/clients/client-analytics-panel";
+import { ClientPlanBadge } from "@/components/clients/client-plan-badge";
 import { RoleBadge } from "@/components/crm/role-badge";
 import { StatusBadge } from "@/components/crm/status-badge";
 import { Button } from "@/components/ui/button";
@@ -56,7 +57,15 @@ export function ClientDetailsModal({
         badges={
           <>
             <StatusBadge status={client.status} label={client.statusLabel} />
-            <RoleBadge value={client.role} variant="client" />
+            <ClientPlanBadge
+              label={client.planLabel}
+              isPremium={client.isPremium}
+            />
+            <RoleBadge
+              value={client.role}
+              label={client.roleLabel}
+              variant="client"
+            />
           </>
         }
         meta={
@@ -87,10 +96,14 @@ export function ClientDetailsModal({
           />
           <AdminDetailCard
             icon={UserRound}
-            label="Role"
-            value={client.role}
+            label="Tipo de usuário"
+            value={client.roleLabel}
           />
-          <AdminDetailCard icon={Globe2} label="Origem" value={client.source} />
+          <AdminDetailCard
+            icon={Globe2}
+            label="Origem"
+            value={client.sourceLabel}
+          />
           <AdminDetailCard
             icon={CalendarDays}
             label="Data de cadastro"
@@ -98,9 +111,13 @@ export function ClientDetailsModal({
           />
           <AdminDetailCard
             icon={Clock3}
+            label="Último acesso"
+            value={client.lastSignInAt}
+          />
+          <AdminDetailCard
+            icon={Clock3}
             label="Última atualização"
             value={client.updatedAt}
-            className="md:col-span-2 xl:col-span-2"
           />
         </div>
 

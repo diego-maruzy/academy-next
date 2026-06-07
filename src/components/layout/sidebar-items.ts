@@ -58,7 +58,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     allowedPermissions: ["admin_access"],
   },
   {
-    title: "Shorts",
+    title: "Reels",
     href: "/admin/shorts",
     icon: Clapperboard,
     group: "management",

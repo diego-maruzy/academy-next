@@ -1,96 +1,99 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
-import { Plus, Users } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import { Plus, Upload, Users } from "lucide-react";
+import { ClientCard } from "@/components/clients/client-card";
 import { ClientDetailsModal } from "@/components/clients/client-details-modal";
+import { ClientFilters } from "@/components/clients/client-filters";
 import { ClientFormModal } from "@/components/clients/client-form-modal";
+import {
+  ClientImportButton,
+  ClientImportModal,
+} from "@/components/clients/client-import-modal";
+import { ClientStatsCards } from "@/components/clients/client-stats-cards";
+import { ClientsTable } from "@/components/clients/clients-table";
 import type { Client } from "@/components/clients/types";
 import { CardsEmptyState, CardsGrid } from "@/components/crm/cards-grid";
-import { ClientCard } from "@/components/crm/client-card";
-import { EntityFiltersToolbar } from "@/components/crm/entity-filters-toolbar";
 import { Button } from "@/components/ui/button";
-import { CLIENT_STATUS_LABELS } from "@/lib/admin-labels";
 import {
   createClient,
   deleteClient,
   updateClient,
 } from "@/lib/actions/client-actions";
+import {
+  filterAndSortClients,
+  getClientStats,
+  type ClientPlanFilter,
+  type ClientSortOption,
+  type ClientSourceFilter,
+  type ClientStatusFilter,
+} from "@/lib/clients/client-filters";
 import type { ClientInput } from "@/lib/validations/client";
 
 type ClientsPageContentProps = {
   initialClients: Client[];
+  canImport?: boolean;
 };
 
 export function ClientsPageContent({
   initialClients,
+  canImport = false,
 }: ClientsPageContentProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const searchValue = searchParams.get("q") ?? "";
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [roleFilter, setRoleFilter] = useState("all");
+  const [localSearch, setLocalSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<ClientStatusFilter>("all");
+  const [planFilter, setPlanFilter] = useState<ClientPlanFilter>("all");
+  const [sourceFilter, setSourceFilter] =
+    useState<ClientSourceFilter>("all");
+  const [sortBy, setSortBy] = useState<ClientSortOption>("recent");
+  const [viewMode, setViewMode] = useState<"table" | "cards">("table");
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const [deletePending, startDeleteTransition] = useTransition();
 
-  const roleOptions = useMemo(() => {
-    const roles = [...new Set(initialClients.map((client) => client.role))].sort();
-    return [
-      { value: "all", label: "Todas as roles" },
-      ...roles.map((role) => ({ value: role, label: role })),
-    ];
-  }, [initialClients]);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 1023px)");
 
-  const statusOptions = useMemo(
-    () => [
-      { value: "all", label: "Todos os status" },
-      ...Object.entries(CLIENT_STATUS_LABELS).map(([value, label]) => ({
-        value,
-        label,
-      })),
-    ],
-    [],
-  );
-
-  function updateSearchQuery(value: string) {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (value.trim()) {
-      params.set("q", value.trim());
-    } else {
-      params.delete("q");
+    function syncViewMode() {
+      setViewMode(mediaQuery.matches ? "cards" : "table");
     }
 
-    const query = params.toString();
-    router.replace(query ? `/clientes?${query}` : "/clientes");
-  }
+    syncViewMode();
+    mediaQuery.addEventListener("change", syncViewMode);
+    return () => mediaQuery.removeEventListener("change", syncViewMode);
+  }, []);
 
-  const visibleClients = useMemo(() => {
-    const searchQuery = searchValue.trim().toLowerCase();
+  const stats = useMemo(
+    () => getClientStats(initialClients),
+    [initialClients],
+  );
 
-    return initialClients.filter((client) => {
-      if (statusFilter !== "all" && client.status !== statusFilter) {
-        return false;
-      }
+  const visibleClients = useMemo(
+    () =>
+      filterAndSortClients(initialClients, {
+        search: localSearch,
+        statusFilter,
+        planFilter,
+        sourceFilter,
+        sortBy,
+      }),
+    [
+      initialClients,
+      localSearch,
+      statusFilter,
+      planFilter,
+      sourceFilter,
+      sortBy,
+    ],
+  );
 
-      if (roleFilter !== "all" && client.role !== roleFilter) {
-        return false;
-      }
-
-      if (!searchQuery) {
-        return true;
-      }
-
-      return (
-        client.fullName.toLowerCase().includes(searchQuery) ||
-        client.email.toLowerCase().includes(searchQuery) ||
-        client.phone?.toLowerCase().includes(searchQuery) ||
-        client.programName.toLowerCase().includes(searchQuery)
-      );
-    });
-  }, [initialClients, searchValue, statusFilter, roleFilter]);
+  const countLabel =
+    visibleClients.length === 1
+      ? "1 cliente encontrado"
+      : `${visibleClients.length} clientes encontrados`;
 
   function openCreateForm() {
     setEditingClient(null);
@@ -101,6 +104,15 @@ export function ClientsPageContent({
     setSelectedClient(null);
     setEditingClient(client);
     setFormOpen(true);
+  }
+
+  function openImport() {
+    if (canImport) {
+      setImportOpen(true);
+      return;
+    }
+
+    window.alert("A importação está disponível apenas para administradores.");
   }
 
   async function saveClient(values: ClientInput, clientId?: string) {
@@ -142,78 +154,103 @@ export function ClientsPageContent({
     });
   }
 
-  const countLabel =
-    visibleClients.length === 1
-      ? "1 cliente"
-      : `${visibleClients.length} clientes`;
+  function clearFilters() {
+    setLocalSearch("");
+    setStatusFilter("all");
+    setPlanFilter("all");
+    setSourceFilter("all");
+    setSortBy("recent");
+  }
+
+  const showTable = viewMode === "table";
 
   return (
-    <div className="grid gap-8">
-      <section className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+    <div className="grid gap-6">
+      <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-blue-300">
-            Relacionamento
-          </p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             Clientes
           </h1>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
-            Gerencie alunos, leads e usuários vinculados aos programas da
-            Academy.
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
+            Gerencie usuários, acessos, planos e histórico da plataforma.
           </p>
         </div>
-        <Button type="button" onClick={openCreateForm}>
-          <Plus className="mr-2 h-4 w-4" />
-          Novo cliente
-        </Button>
+
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          {canImport ? (
+            <ClientImportButton onClick={openImport} />
+          ) : (
+            <Button type="button" variant="secondary" onClick={openImport}>
+              <Upload className="mr-2 h-4 w-4" />
+              Importar clientes
+            </Button>
+          )}
+          <Button type="button" onClick={openCreateForm}>
+            <Plus className="mr-2 h-4 w-4" />
+            Novo cliente
+          </Button>
+        </div>
       </section>
 
-      <EntityFiltersToolbar
-        searchValue={searchValue}
-        onSearchChange={updateSearchQuery}
-        searchPlaceholder="Buscar por nome, e-mail ou telefone..."
-        statusValue={statusFilter}
-        onStatusChange={setStatusFilter}
-        statusOptions={statusOptions}
-        secondaryValue={roleFilter}
-        onSecondaryChange={setRoleFilter}
-        secondaryLabel="Role"
-        secondaryOptions={roleOptions}
+      <ClientStatsCards stats={stats} />
+
+      <ClientFilters
+        search={localSearch}
+        onSearchChange={setLocalSearch}
+        statusFilter={statusFilter}
+        onStatusFilterChange={setStatusFilter}
+        planFilter={planFilter}
+        onPlanFilterChange={setPlanFilter}
+        sourceFilter={sourceFilter}
+        onSourceFilterChange={setSourceFilter}
+        sortBy={sortBy}
+        onSortByChange={setSortBy}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
         countLabel={countLabel}
       />
 
       {initialClients.length === 0 ? (
         <CardsEmptyState
           icon={Users}
-          title="Nenhum cliente cadastrado ainda."
-          description="Crie o primeiro cliente manualmente ou receba leads via webhook de conexões."
-          actionLabel="Criar cliente"
-          onAction={openCreateForm}
+          title="Nenhum cliente encontrado"
+          description="Ajuste os filtros ou importe novos clientes para começar."
+          actionLabel="Importar clientes"
+          onAction={openImport}
         />
       ) : visibleClients.length === 0 ? (
         <CardsEmptyState
           icon={Users}
-          title="Nenhum cliente encontrado."
-          description="Ajuste os filtros ou limpe a busca para ver todos os registros."
-          actionLabel="Limpar busca"
-          onAction={() => {
-            setStatusFilter("all");
-            setRoleFilter("all");
-            router.replace("/clientes");
-          }}
+          title="Nenhum cliente encontrado"
+          description="Ajuste os filtros ou importe novos clientes para começar."
+          actionLabel="Limpar filtros"
+          onAction={clearFilters}
         />
       ) : (
-        <CardsGrid>
-          {visibleClients.map((client) => (
-            <ClientCard
-              key={client.id}
-              client={client}
-              onView={setSelectedClient}
-              onEdit={openEditForm}
-              onDelete={deleteClientItem}
-            />
-          ))}
-        </CardsGrid>
+        <>
+          {showTable ? (
+            <div className="hidden lg:block">
+              <ClientsTable
+                clients={visibleClients}
+                onView={setSelectedClient}
+                onEdit={openEditForm}
+                onDelete={deleteClientItem}
+              />
+            </div>
+          ) : null}
+
+          <CardsGrid className={showTable ? "lg:hidden" : undefined}>
+            {visibleClients.map((client) => (
+              <ClientCard
+                key={client.id}
+                client={client}
+                onView={setSelectedClient}
+                onEdit={openEditForm}
+                onDelete={deleteClientItem}
+              />
+            ))}
+          </CardsGrid>
+        </>
       )}
 
       <ClientDetailsModal
@@ -233,6 +270,13 @@ export function ClientsPageContent({
         }}
         onSave={saveClient}
       />
+
+      {canImport ? (
+        <ClientImportModal
+          open={importOpen}
+          onClose={() => setImportOpen(false)}
+        />
+      ) : null}
 
       {deletePending ? (
         <p className="sr-only" aria-live="polite">

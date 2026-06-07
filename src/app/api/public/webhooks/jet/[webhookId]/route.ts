@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
+import { mergeDefaultPasswordIntoNotes } from "@/lib/clients/client-password-notes";
 import { createSupabaseServiceServerClient } from "@/lib/supabase/server";
 import { incomingWebhookSchema } from "@/lib/validations/webhook";
 
@@ -176,6 +177,7 @@ export async function POST(request: Request, context: WebhookRouteContext) {
       program_id: connection.program_id,
       source: connection.name,
       status: "active",
+      notes: mergeDefaultPasswordIntoNotes(null),
       updated_at: new Date().toISOString(),
     };
 

@@ -1,6 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import {
+  applyDefaultPasswordFields,
+  supportsDefaultPasswordColumn,
+} from "@/lib/clients/client-password-storage";
 import { clientSchema, type ClientInput } from "@/lib/validations/client";
 import { createSupabaseServiceServerClient } from "@/lib/supabase/server";
 
@@ -14,18 +18,28 @@ function getValidationError(message?: string) {
   return message ?? "Dados inválidos para o cliente.";
 }
 
-function normalizeClientData(data: ClientInput) {
-  return {
-    full_name: data.full_name,
-    email: data.email,
-    phone: data.phone ?? null,
-    role: data.role,
-    status: data.status,
-    source: data.source ?? null,
-    program_id: data.program_id ?? null,
-    notes: data.notes ?? null,
-    updated_at: new Date().toISOString(),
-  };
+async function normalizeClientData(
+  data: ClientInput,
+  supabase: NonNullable<ReturnType<typeof createSupabaseServiceServerClient>>,
+) {
+  const hasPasswordColumn = await supportsDefaultPasswordColumn(supabase);
+
+  return applyDefaultPasswordFields(
+    {
+      full_name: data.full_name,
+      email: data.email,
+      phone: data.phone ?? null,
+      role: data.role,
+      status: data.status,
+      source: data.source ?? null,
+      program_id: data.program_id ?? null,
+      updated_at: new Date().toISOString(),
+    },
+    {
+      notes: data.notes,
+      hasPasswordColumn,
+    },
+  );
 }
 
 async function emailExists(email: string, ignoreId?: string) {
@@ -79,7 +93,7 @@ export async function createClient(data: ClientInput): Promise<ActionResult> {
 
   const { data: createdClient, error } = await supabase
     .from("clients")
-    .insert(normalizeClientData(parsed.data))
+    .insert(await normalizeClientData(parsed.data, supabase))
     .select("id")
     .single();
 
@@ -123,7 +137,7 @@ export async function updateClient(
 
   const { error } = await supabase
     .from("clients")
-    .update(normalizeClientData(parsed.data))
+    .update(await normalizeClientData(parsed.data, supabase))
     .eq("id", id);
 
   if (error) {

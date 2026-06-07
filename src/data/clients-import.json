@@ -1,0 +1,751 @@
+[
+  {
+    "id": "78e063f9-0e57-4800-b11f-1781143f7e68",
+    "display_name": "Carlito Oliveira",
+    "email": "oliveira.tampa@gmail.com",
+    "created_at": "2026-06-07T16:05:20.095143+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "c36e1576-cdd5-48d7-9eca-2d6ff644f367",
+    "display_name": "Wesley gomes",
+    "email": "wesleygomes101@gmail.com",
+    "created_at": "2026-06-07T12:20:49.607952+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "34ae0ce1-beb4-4cc6-91cc-b81c62e593f2",
+    "display_name": "Gustavo Ferreira Gustavo Ferreira",
+    "email": "oifloripa1@gmail.com",
+    "created_at": "2026-06-07T11:04:34.09579+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-07T11:06:01.367394Z"
+  },
+  {
+    "id": "a59f980c-53a4-45d0-9179-13c71e7c299a",
+    "display_name": "Victor allala",
+    "email": "admin@braziliandream.com",
+    "created_at": "2026-06-06T21:58:54.70863+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "ce2255aa-0f46-4895-bb8a-699a69dafd51",
+    "display_name": "Wanderlei Espine",
+    "email": "wanderleiespine2604@hotmail.com",
+    "created_at": "2026-06-06T04:58:50.403502+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "ccdc1bc2-729c-440b-adc1-ac05f364cec5",
+    "display_name": "Ivan gomes Ivan gomes",
+    "email": "igomes9@icloud.com",
+    "created_at": "2026-06-06T02:54:00.672923+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-06T02:56:48.044995Z"
+  },
+  {
+    "id": "570aeff9-88b5-4493-bf35-aa5e719c0f1c",
+    "display_name": "Carlos Vilela",
+    "email": "carlosouriques@gmail.com",
+    "created_at": "2026-06-05T22:09:25.37505+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "2ecf72dc-8c64-4aae-97e9-6625c049e973",
+    "display_name": "Isaias Isaias",
+    "email": "isaias.t.costa@gmail.com",
+    "created_at": "2026-06-05T21:39:15.293745+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-06T12:02:41.546651Z"
+  },
+  {
+    "id": "450bf70d-353a-47d4-b3c3-91579e3e88e7",
+    "display_name": "Marcel Yamakawa",
+    "email": "marcel.yamakawa@gmail.com",
+    "created_at": "2026-06-05T19:09:22.024629+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "e7da8579-b983-4145-b1e7-e7d822ca1bdb",
+    "display_name": "Wilson Ohara",
+    "email": "wil.ohara@gmail.com",
+    "created_at": "2026-06-05T15:13:19.652476+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": false,
+    "last_sign_in_at": "2026-06-05T15:36:48.171778Z"
+  },
+  {
+    "id": "c48b4616-1e36-4c52-a088-85a69181142d",
+    "display_name": "Gabriel cesar Gabriel cesar",
+    "email": "gabriel.cesar2@icloud.com",
+    "created_at": "2026-06-05T09:17:56.786894+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": "2026-06-05T09:23:23.895591Z"
+  },
+  {
+    "id": "42db85ac-ac4e-4942-8f08-28bc15433233",
+    "display_name": "Luis Sena",
+    "email": "luiscvfogo14@gmail.com",
+    "created_at": "2026-06-05T02:38:47.448671+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "e2ab3b19-6efa-4580-a562-df6efb72a654",
+    "display_name": "Gabriel Calovini",
+    "email": "bigdolarssale@hotmail.com",
+    "created_at": "2026-06-05T00:58:35.218047+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "b40e584c-53cc-4e82-a85d-b15d05df2bd7",
+    "display_name": "Rodney mendonca",
+    "email": "rodineirpm@hotmail.com",
+    "created_at": "2026-06-04T21:36:35.715947+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "523cf486-828c-498e-9c41-84559a7dbc60",
+    "display_name": "Rodrigo Campos Rodrigo Campos",
+    "email": "camposcapitalventures@gmail.com",
+    "created_at": "2026-06-04T15:17:53.340272+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-04T15:29:05.190673Z"
+  },
+  {
+    "id": "e96002f2-1504-47c2-9b7b-de01f3fc12b6",
+    "display_name": "Berg",
+    "email": "mktbraziliandream@gmail.com",
+    "created_at": "2026-06-04T14:39:12.676892+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "f475a2aa-139d-4b73-9843-8b730009d797",
+    "display_name": "Thales Nunes Thales Nunes",
+    "email": "tknunes@gmail.com",
+    "created_at": "2026-06-04T14:37:41.698612+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-04T14:39:36.099143Z"
+  },
+  {
+    "id": "1c2a1d56-5542-4e49-b555-fe14a114e8ae",
+    "display_name": "Sarah Nunes",
+    "email": "sarahdepaulanunes@gmail.com",
+    "created_at": "2026-06-04T13:28:25.87209+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "d4ce8523-be04-499b-9d3d-7a6be845a7ef",
+    "display_name": "diego teste",
+    "email": "diegotest@gmail.com",
+    "created_at": "2026-06-04T13:08:31.139033+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "55f0b1ed-f595-40ad-816c-e15792d361ce",
+    "display_name": "Apple Account",
+    "email": "apple@apple.com",
+    "created_at": "2026-06-02T14:27:34.497674+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-03T23:57:59.381067Z"
+  },
+  {
+    "id": "cd0396c7-49e4-4217-98a8-37662365f0b9",
+    "display_name": "Checkmate 2",
+    "email": "admin@checkmateproperty.com",
+    "created_at": "2026-06-01T20:54:25.436426+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-04T14:13:43.448887Z"
+  },
+  {
+    "id": "5a3ddb4d-6c85-47ff-8436-bac3770d0a8b",
+    "display_name": "Ulisses Moreira",
+    "email": "umccf@me.com",
+    "created_at": "2026-06-01T20:14:45.627335+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-03T23:42:23.379116Z"
+  },
+  {
+    "id": "569e6962-f214-42f7-9d66-e5e54813a7bd",
+    "display_name": "Carlos Simon",
+    "email": "simonportero@gmail.com",
+    "created_at": "2026-06-01T17:56:21.647832+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-03T23:47:32.505335Z"
+  },
+  {
+    "id": "817280b7-9a9d-4095-a911-f78057cfb500",
+    "display_name": "Alexandre Junqueira",
+    "email": "fortesofamerica@hotmail.com",
+    "created_at": "2026-06-01T01:43:51.103344+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "fbdfeb84-202d-410e-b5d9-2a8a4a88f64f",
+    "display_name": "Cristiane",
+    "email": "csnt2010@hotmail.com",
+    "created_at": "2026-05-31T21:56:57.213383+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-05-31T22:00:47.652445Z"
+  },
+  {
+    "id": "86489170-0235-4736-aef1-e222e5304e2d",
+    "display_name": "Aurea soares",
+    "email": "pedromarcelino792@gmail.com",
+    "created_at": "2026-05-31T21:42:41.623876+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "8231abc7-e24e-4a26-a920-27b34b435b28",
+    "display_name": "Rafaela Pereira",
+    "email": "rafaela322@outlook.com",
+    "created_at": "2026-05-31T18:06:41.696408+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-05-31T18:19:55.58402Z"
+  },
+  {
+    "id": "cb8f21c5-7959-439c-aac5-420cff91f6db",
+    "display_name": "Queiros",
+    "email": "admin@thebraziliandream.com",
+    "created_at": "2026-05-31T17:35:46.685571+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-01T16:32:22.635727Z"
+  },
+  {
+    "id": "d80d4d50-c0a9-421e-9f8f-06a02bff04e8",
+    "display_name": "Paulo José Pinheiro",
+    "email": "pjpinheiro1973@gmail.com",
+    "created_at": "2026-05-31T12:43:29.240044+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-05-31T12:45:47.937869Z"
+  },
+  {
+    "id": "fdaf0cb5-8edc-4d05-84ff-61c1adbaae77",
+    "display_name": "Benedito Baruch",
+    "email": "beneditobaruch@gmail.com",
+    "created_at": "2026-05-31T10:02:06.257124+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "581aad4d-0481-4678-baf3-d83afd1a2a40",
+    "display_name": "Daniel lima",
+    "email": "danieldelima19883030@gmail.com",
+    "created_at": "2026-05-31T06:28:05.560655+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "c12107c6-b10e-46f9-bf45-aa1855516e58",
+    "display_name": "Paulo Dantas",
+    "email": "paulodantas.consig@gmail.com",
+    "created_at": "2026-05-31T03:45:34.381768+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": "2026-05-31T03:54:28.77199Z"
+  },
+  {
+    "id": "d8d6eb3b-1edc-4ef5-baf0-c1a3db498026",
+    "display_name": "Cizenando Nascimento",
+    "email": "cizenandoedwardnascimento@gmail.com",
+    "created_at": "2026-05-30T23:49:56.532142+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "e9edc843-57c5-45ef-9481-d163dbdc98ba",
+    "display_name": "Albertina Mafueca",
+    "email": "tafulacleaning@gmail.com",
+    "created_at": "2026-05-30T20:24:02.191619+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": "(860) 938-5007",
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-05T21:56:22.352294Z"
+  },
+  {
+    "id": "4915f85c-91d7-431d-b1a3-b1b2f3d0b2d5",
+    "display_name": "Imaculada Eduardo",
+    "email": "imachipin@hotmail.com",
+    "created_at": "2026-05-30T18:02:44.202088+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-06-07T02:46:26.003422Z"
+  },
+  {
+    "id": "25404041-6ef8-4e35-9042-fc8f73862d3c",
+    "display_name": "Snannab",
+    "email": "nsjsksndns@hotmail.com",
+    "created_at": "2026-05-30T17:10:04.084926+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "534655e7-b186-402a-8a6a-640695df147a",
+    "display_name": "Teste12",
+    "email": "teste12@gmail.com",
+    "created_at": "2026-05-30T17:08:25.511189+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER_FREE"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-05-30T17:17:44.354612Z"
+  },
+  {
+    "id": "3e370abb-2693-403b-8e69-491a35926e74",
+    "display_name": "Brazilian dream",
+    "email": "info@thebraziliandream.com",
+    "created_at": "2026-05-30T17:07:47.181981+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "3477d30d-238b-438c-a06a-d76d25ebaca9",
+    "display_name": "Victor Queirós",
+    "email": "victoramaway91@gmail.com",
+    "created_at": "2026-05-30T16:57:48.071226+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "1e2d73cd-2457-4e4e-b318-ef91040208eb",
+    "display_name": "Regis Gontijo",
+    "email": "gonntiji@hotmail.com",
+    "created_at": "2026-05-30T16:43:10.099773+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "a1f3db26-1c5a-481f-b70a-ff1edfa82766",
+    "display_name": "Paulo correa",
+    "email": "paulotransportation@gmail.com",
+    "created_at": "2026-05-30T15:01:41.446667+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "425ff126-f4b3-4d77-b9a0-5e5903fb739e",
+    "display_name": "João Rosado Filho",
+    "email": "joaorosadofilho@gmail.com",
+    "created_at": "2026-05-30T14:51:59.182455+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "d2bfbbb2-b6f3-4b4a-b4b8-397e288b69ad",
+    "display_name": "Victor",
+    "email": "yvestorvic@icloud.com",
+    "created_at": "2026-05-29T19:31:13.917349+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": true,
+    "last_sign_in_at": "2026-05-30T16:21:53.044377Z"
+  },
+  {
+    "id": "1d2032f9-3aa2-4ba4-bf7a-427a2dba43d1",
+    "display_name": "Matheus BrandÃ£o",
+    "email": "matheuscostact@gmail.com",
+    "created_at": "2026-05-29T02:47:17.716146+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": "(123) 123-1231",
+    "roles": [
+      "user"
+    ],
+    "plan_id": "196bdb78-bcb7-4396-ab3c-fbeaa8815568",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "4811aa8f-96eb-4ff4-b235-b2840190dcf3",
+    "display_name": "JACKSON F DA COSTA OLIVEIRA",
+    "email": "jkgconstruction_inc@hotmail.com",
+    "created_at": "2026-05-28T20:35:20.933418+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user",
+      "ROLE_USER"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  },
+  {
+    "id": "400b2349-f530-41ce-847f-c45d08f31538",
+    "display_name": "Jackson Oliveira",
+    "email": "montbrosbuilders@gmail.com",
+    "created_at": "2026-05-27T02:55:33.937785+00:00",
+    "country": null,
+    "state": null,
+    "city": null,
+    "whatsapp": null,
+    "roles": [
+      "user"
+    ],
+    "plan_id": "98e82600-8a48-4107-a2ec-eac4973f30a8",
+    "has_accessed": false,
+    "last_sign_in_at": null
+  }
+]

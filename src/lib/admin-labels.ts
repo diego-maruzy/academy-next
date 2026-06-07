@@ -47,10 +47,13 @@ export const TEAM_ROLE_LABELS = {
 } as const;
 
 export const CLIENT_ROLE_LABELS = {
-  ROLE_USER: "ROLE_USER",
-  ROLE_USER_FREE: "ROLE_USER_FREE",
-  academy_access: "academy_access",
-  property_access: "property_access",
+  ROLE_USER: "Premium",
+  ROLE_USER_FREE: "Free",
+  user: "Usuário",
+  admin: "Admin",
+  ROLE_ADMIN: "Admin",
+  academy_access: "Academy",
+  property_access: "Property",
 } as const;
 
 export type ClientStatus = keyof typeof CLIENT_STATUS_LABELS;
