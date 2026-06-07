@@ -4,6 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Clapperboard } from "lucide-react";
 import { ReelSlide } from "@/components/reels/reel-slide";
 import { REELS_SCROLL_CLASS } from "@/components/reels/reels-layout";
+import {
+  getStoredReelLikes,
+  toggleStoredReelLike,
+} from "@/lib/reels/reel-likes";
 import type { AcademyShort } from "@/types/shorts";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +20,10 @@ export function ReelsFeed({ reels, className }: ReelsFeedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const [likedIds, setLikedIds] = useState<Set<string>>(() =>
+    getStoredReelLikes(),
+  );
 
   useEffect(() => {
     const html = document.documentElement;
@@ -81,6 +88,21 @@ export function ReelsFeed({ reels, className }: ReelsFeedProps) {
     setIsMuted((current) => !current);
   }, []);
 
+  const toggleLike = useCallback((reelId: string) => {
+    const liked = toggleStoredReelLike(reelId);
+    setLikedIds((current) => {
+      const next = new Set(current);
+
+      if (liked) {
+        next.add(reelId);
+      } else {
+        next.delete(reelId);
+      }
+
+      return next;
+    });
+  }, []);
+
   if (reels.length === 0) {
     return (
       <div className="flex h-[100dvh] w-full flex-col items-center justify-center bg-black px-6 text-center">
@@ -115,7 +137,9 @@ export function ReelsFeed({ reels, className }: ReelsFeedProps) {
             reel={reel}
             isActive={index === activeIndex}
             isMuted={isMuted}
+            isLiked={likedIds.has(reel.id)}
             onToggleMute={toggleMute}
+            onToggleLike={() => toggleLike(reel.id)}
           />
         </div>
       ))}

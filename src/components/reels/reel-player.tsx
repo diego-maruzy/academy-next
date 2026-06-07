@@ -39,7 +39,9 @@ export function ReelPlayer({
       };
     }
 
-    const embedUrl = getReelsEmbedUrl(reel.video_url, reel.video_provider);
+    const embedUrl = getReelsEmbedUrl(reel.video_url, reel.video_provider, {
+      muted: isMuted,
+    });
 
     if (!embedUrl) {
       return { type: "error" as const };
@@ -50,7 +52,7 @@ export function ReelPlayer({
       src: embedUrl,
       provider: reel.video_provider,
     };
-  }, [reel.video_provider, reel.video_url]);
+  }, [isMuted, reel.video_provider, reel.video_url]);
 
   useEffect(() => {
     const video = videoRef.current;

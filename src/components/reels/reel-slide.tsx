@@ -1,13 +1,7 @@
 "use client";
 
 import { useCallback, useState, type ReactNode } from "react";
-import {
-  Pause,
-  Play,
-  Share2,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
+import { Heart, Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { ReelPlayer } from "@/components/reels/reel-player";
 import { REELS_CONTENT_BOTTOM } from "@/components/reels/reels-layout";
 import type { AcademyShort } from "@/types/shorts";
@@ -17,14 +11,18 @@ type ReelSlideProps = {
   reel: AcademyShort;
   isActive: boolean;
   isMuted: boolean;
+  isLiked: boolean;
   onToggleMute: () => void;
+  onToggleLike: () => void;
 };
 
 export function ReelSlide({
   reel,
   isActive,
   isMuted,
+  isLiked,
   onToggleMute,
+  onToggleLike,
 }: ReelSlideProps) {
   const [isPaused, setIsPaused] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -32,31 +30,6 @@ export function ReelSlide({
   const togglePause = useCallback(() => {
     setIsPaused((current) => !current);
   }, []);
-
-  const handleShare = useCallback(async () => {
-    const shareUrl = reel.cta_url ?? window.location.href;
-    const shareData = {
-      title: reel.title,
-      text: reel.description ?? reel.title,
-      url: shareUrl,
-    };
-
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch {
-        // usuário cancelou
-      }
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      window.alert("Link copiado.");
-    } catch {
-      window.alert("Não foi possível compartilhar.");
-    }
-  }, [reel.cta_url, reel.description, reel.title]);
 
   return (
     <section
@@ -136,8 +109,12 @@ export function ReelSlide({
           )}
         </ActionButton>
 
-        <ActionButton label="Compartilhar" onClick={handleShare}>
-          <Share2 className="h-5 w-5" />
+        <ActionButton
+          label={isLiked ? "Descurtir" : "Curtir"}
+          onClick={onToggleLike}
+          className={isLiked ? "border-rose-400/40 bg-rose-500/20 text-rose-300" : undefined}
+        >
+          <Heart className={cn("h-5 w-5", isLiked && "fill-current")} />
         </ActionButton>
       </div>
 
@@ -156,10 +133,12 @@ function ActionButton({
   children,
   label,
   onClick,
+  className,
 }: {
   children: ReactNode;
   label: string;
   onClick: () => void;
+  className?: string;
 }) {
   return (
     <button
@@ -171,6 +150,7 @@ function ActionButton({
         "flex h-11 w-11 items-center justify-center rounded-full",
         "border border-white/15 bg-black/35 text-white backdrop-blur-md",
         "transition active:scale-95 hover:bg-black/50",
+        className,
       )}
     >
       {children}

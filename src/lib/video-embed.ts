@@ -159,15 +159,18 @@ export function getVideoEmbedUrl(
 export function getReelsEmbedUrl(
   url: string | null,
   provider: VideoProvider,
+  options: { muted?: boolean } = {},
 ): string | null {
   if (!url || isDirectVideoUrl(url)) {
     return null;
   }
 
+  const muted = options.muted ?? false;
+
   if (provider === "youtube") {
     return getYouTubeEmbedUrl(url, {
       autoplay: true,
-      muted: true,
+      muted,
       controls: false,
       loop: true,
       enableJsApi: true,
@@ -179,7 +182,7 @@ export function getReelsEmbedUrl(
     byline: false,
     portrait: false,
     autoplay: true,
-    muted: true,
+    muted,
     controls: false,
     background: false,
   });
