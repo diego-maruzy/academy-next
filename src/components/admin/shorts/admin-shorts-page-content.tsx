@@ -81,14 +81,14 @@ export function AdminShortsPageContent({ shorts }: AdminShortsPageContentProps) 
       <section className="flex w-full flex-col gap-5 sm:gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
         <div className="min-w-0 flex-1">
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">
-            Conteúdo rápido
+            Conteúdo vertical
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Shorts
+            Gestão de Reels
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400 sm:text-base">
-            Gerencie vídeos verticais da Academy, Vimeo, YouTube, CTAs e
-            categorias.
+            Gerencie vídeos verticais da Academy no feed de Reels — Vimeo,
+            YouTube, CTAs e categorias.
           </p>
         </div>
 
@@ -101,7 +101,7 @@ export function AdminShortsPageContent({ shorts }: AdminShortsPageContentProps) 
           )}
         >
           <Plus className="mr-2 h-4 w-4" />
-          Novo Short
+          Novo Reel
         </Link>
       </section>
 
@@ -157,7 +157,7 @@ export function AdminShortsPageContent({ shorts }: AdminShortsPageContentProps) 
             )}
           >
             <Plus className="mr-2 h-4 w-4" />
-            Novo Short
+            Novo Reel
           </Link>
         </div>
       )}

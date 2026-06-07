@@ -18,7 +18,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { id: "home", label: "Início", href: "/programas", icon: Home },
   { id: "programs", label: "Programas", href: "/programas", icon: BookOpen },
-  { id: "shorts", label: "Reels", href: "/shorts", icon: PlaySquare },
+  { id: "reels", label: "Reels", href: "/reels", icon: PlaySquare },
   { id: "menu", label: "Menu", href: CHECKMATE_MENU_URL, icon: Menu, external: true },
 ];
 
@@ -31,8 +31,8 @@ function isNavItemActive(item: NavItem, pathname: string) {
     return pathname.startsWith("/programas/");
   }
 
-  if (item.id === "shorts") {
-    return pathname === "/shorts" || pathname.startsWith("/shorts/");
+  if (item.id === "reels") {
+    return pathname === "/reels" || pathname.startsWith("/reels/");
   }
 
   return pathname.startsWith(item.href);

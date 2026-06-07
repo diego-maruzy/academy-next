@@ -11,8 +11,8 @@ export function StudentSidebar() {
   const pathname = usePathname();
   const programsActive =
     pathname === "/programas" || pathname.startsWith("/programas/");
-  const shortsActive =
-    pathname === "/shorts" || pathname.startsWith("/shorts/");
+  const reelsActive =
+    pathname === "/reels" || pathname.startsWith("/reels/");
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-white/10 bg-[#070B13] px-4 py-6 shadow-2xl shadow-black/30 lg:block">
@@ -45,10 +45,10 @@ export function StudentSidebar() {
             <span>Programas</span>
           </Link>
           <Link
-            href="/shorts"
+            href="/reels"
             className={cn(
               "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white",
-              shortsActive &&
+              reelsActive &&
                 "border border-white/10 bg-white/10 text-white shadow-lg shadow-black/20",
             )}
           >

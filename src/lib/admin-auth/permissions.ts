@@ -47,7 +47,7 @@ export function canAccessAdminRoute(
     return (
       matchesPath(pathname, "/dashboard") ||
       matchesPath(pathname, "/programas") ||
-      matchesPath(pathname, "/shorts") ||
+      matchesPath(pathname, "/reels") ||
       matchesPath(pathname, "/clientes")
     );
   }
@@ -99,7 +99,7 @@ export function isProtectedAdminPath(pathname: string): boolean {
 
   const protectedPrefixes = [
     "/programas",
-    "/shorts",
+    "/reels",
     "/dashboard",
     "/clientes",
     "/equipe",

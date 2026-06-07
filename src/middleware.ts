@@ -15,6 +15,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (pathname === "/shorts" || pathname.startsWith("/shorts/")) {
+    const reelsUrl = request.nextUrl.clone();
+    reelsUrl.pathname = pathname.replace(/^\/shorts/, "/reels");
+    return NextResponse.redirect(reelsUrl);
+  }
+
   if (pathname === "/admin/login") {
     const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
 
@@ -53,6 +59,8 @@ export const config = {
   matcher: [
     "/programas",
     "/programas/:path*",
+    "/reels",
+    "/reels/:path*",
     "/shorts",
     "/shorts/:path*",
     "/dashboard/:path*",

@@ -103,7 +103,7 @@ export function AdminShortCard({ short }: AdminShortCardProps) {
       <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3 lg:mt-0 lg:w-auto lg:min-w-[280px] lg:shrink-0">
         {short.published ? (
           <ButtonLink
-            href="/shorts"
+            href="/reels"
             variant="secondary"
             className="min-h-[44px] w-full"
             target="_blank"

@@ -15,7 +15,7 @@ type ActionResult = {
 };
 
 function revalidateShortPaths() {
-  revalidatePath("/shorts");
+  revalidatePath("/reels");
   revalidatePath("/admin/shorts");
 }
 
