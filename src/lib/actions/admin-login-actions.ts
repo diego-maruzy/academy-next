@@ -63,7 +63,7 @@ export async function loginAdminAction(formData: FormData) {
     .select(
       "id, email, full_name, role, permission, status, password_hash",
     )
-    .eq("email", parsed.data.email.trim())
+    .eq("email", parsed.data.email.trim().toLowerCase())
     .maybeSingle();
 
   if (error) {

@@ -8,7 +8,7 @@ type KeycloakLoginButtonProps = {
 };
 
 export function KeycloakLoginButton({
-  callbackUrl = "/dashboard",
+  callbackUrl = "/programas",
 }: KeycloakLoginButtonProps) {
   const [pending, setPending] = useState(false);
 

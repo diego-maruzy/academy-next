@@ -25,6 +25,38 @@ function matchesPath(pathname: string, route: string) {
   return pathname === route || pathname.startsWith(`${route}/`);
 }
 
+export function isAdminLoginPath(pathname: string) {
+  return pathname === "/admin/login";
+}
+
+export function isProtectedPanelPath(pathname: string): boolean {
+  if (isAdminLoginPath(pathname)) {
+    return false;
+  }
+
+  if (pathname === "/access-denied") {
+    return true;
+  }
+
+  const protectedPrefixes = [
+    "/dashboard",
+    "/clientes",
+    "/equipe",
+    "/conexoes",
+    "/configuracoes",
+    "/administrador",
+    "/pagamentos",
+    "/admin",
+  ];
+
+  return protectedPrefixes.some((prefix) => matchesPath(pathname, prefix));
+}
+
+/** @deprecated Use isProtectedPanelPath */
+export function isProtectedAdminPath(pathname: string): boolean {
+  return isProtectedPanelPath(pathname);
+}
+
 export function canAccessAdminRoute(
   admin: CurrentAdmin | null,
   pathname: string,
@@ -46,8 +78,6 @@ export function canAccessAdminRoute(
   if (permission === "academy_access") {
     return (
       matchesPath(pathname, "/dashboard") ||
-      matchesPath(pathname, "/programas") ||
-      matchesPath(pathname, "/reels") ||
       matchesPath(pathname, "/clientes")
     );
   }
@@ -90,26 +120,4 @@ export function getAdminBadgeLabel(admin: CurrentAdmin | null): string {
 
 export function getDefaultAdminPath(): string {
   return "/dashboard";
-}
-
-export function isProtectedAdminPath(pathname: string): boolean {
-  if (pathname === "/access-denied") {
-    return true;
-  }
-
-  const protectedPrefixes = [
-    "/programas",
-    "/reels",
-    "/dashboard",
-    "/clientes",
-    "/equipe",
-    "/conexoes",
-    "/configuracoes",
-    "/administrador",
-    "/pagamentos",
-    "/admin",
-    "/admin/emails",
-  ];
-
-  return protectedPrefixes.some((prefix) => matchesPath(pathname, prefix));
 }

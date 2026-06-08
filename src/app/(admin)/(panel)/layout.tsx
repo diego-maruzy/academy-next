@@ -12,7 +12,7 @@ export default async function AdminPanelLayout({
   const admin = await getCurrentAdmin();
 
   if (!admin) {
-    redirect("/login?callbackUrl=/dashboard");
+    redirect("/admin/login?next=/dashboard");
   }
 
   return (

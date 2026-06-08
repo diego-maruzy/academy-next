@@ -1,12 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { auth } from "@/auth";
-import { sessionToCurrentAdmin } from "@/lib/auth/keycloak-session";
+import { getToken } from "next-auth/jwt";
 import {
-  canAccessPath,
-  getPostLoginPath,
-  isLoginPath,
-  requiresKeycloakAuth,
-} from "@/lib/auth/route-guard";
+  ADMIN_SESSION_COOKIE,
+  verifyAdminSessionFromToken,
+} from "@/lib/admin-auth/admin-session";
+import {
+  canAccessAdminRoute,
+  isAdminLoginPath,
+  isProtectedPanelPath,
+} from "@/lib/admin-auth/permissions";
+import { requiresKeycloakAuth } from "@/lib/auth/route-guard";
 
 function redirectShortsToReels(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -20,71 +23,98 @@ function redirectShortsToReels(request: NextRequest) {
   return null;
 }
 
-export default auth((request) => {
-  const { pathname } = request.nextUrl;
+function isPublicPath(pathname: string) {
+  return (
+    pathname === "/" ||
+    pathname === "/login" ||
+    isAdminLoginPath(pathname) ||
+    pathname.startsWith("/pay")
+  );
+}
 
-  if (pathname.startsWith("/pay")) {
-    return NextResponse.next();
-  }
+async function getKeycloakToken(request: NextRequest) {
+  return getToken({
+    req: request,
+    secret: process.env.AUTH_SECRET,
+    secureCookie: process.env.NODE_ENV === "production",
+  });
+}
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
   const shortsRedirect = redirectShortsToReels(request);
   if (shortsRedirect) {
     return shortsRedirect;
   }
 
-  const session = request.auth;
-  const isAuthenticated = Boolean(session?.user);
-  const roles = session?.user?.roles ?? [];
-  const admin = sessionToCurrentAdmin(session);
+  if (isAdminLoginPath(pathname)) {
+    const adminToken = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+    const adminSession = adminToken
+      ? await verifyAdminSessionFromToken(adminToken)
+      : null;
 
-  if (pathname === "/admin/login") {
-    const loginUrl = new URL("/login", request.url);
-    const next = request.nextUrl.searchParams.get("next");
-
-    if (next) {
-      loginUrl.searchParams.set("callbackUrl", next);
-    }
-
-    if (isAuthenticated) {
-      return NextResponse.redirect(
-        new URL(next ?? getPostLoginPath(roles), request.url),
-      );
-    }
-
-    return NextResponse.redirect(loginUrl);
-  }
-
-  if (isLoginPath(pathname)) {
-    if (isAuthenticated) {
-      const callbackUrl = request.nextUrl.searchParams.get("callbackUrl");
-      return NextResponse.redirect(
-        new URL(callbackUrl ?? getPostLoginPath(roles), request.url),
-      );
+    if (adminSession) {
+      const next = request.nextUrl.searchParams.get("next") ?? "/dashboard";
+      return NextResponse.redirect(new URL(next, request.url));
     }
 
     return NextResponse.next();
   }
 
-  if (!requiresKeycloakAuth(pathname)) {
+  if (isPublicPath(pathname)) {
+    if (pathname === "/login") {
+      const keycloakToken = await getKeycloakToken(request);
+
+      if (keycloakToken) {
+        const callbackUrl =
+          request.nextUrl.searchParams.get("callbackUrl") ?? "/programas";
+        return NextResponse.redirect(new URL(callbackUrl, request.url));
+      }
+    }
+
     return NextResponse.next();
   }
 
-  if (!isAuthenticated) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+  if (isProtectedPanelPath(pathname)) {
+    const adminToken = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+    const adminSession = adminToken
+      ? await verifyAdminSessionFromToken(adminToken)
+      : null;
+
+    if (!adminSession) {
+      const loginUrl = new URL("/admin/login", request.url);
+      loginUrl.searchParams.set("next", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    if (!canAccessAdminRoute(adminSession, pathname)) {
+      return NextResponse.redirect(new URL("/access-denied", request.url));
+    }
+
+    return NextResponse.next();
   }
 
-  if (!canAccessPath(pathname, admin, isAuthenticated)) {
-    return NextResponse.redirect(new URL("/access-denied", request.url));
+  if (requiresKeycloakAuth(pathname)) {
+    const keycloakToken = await getKeycloakToken(request);
+
+    if (!keycloakToken) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    return NextResponse.next();
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
+    "/",
     "/login",
+    "/admin/login",
     "/auth-debug",
     "/programas",
     "/programas/:path*",
@@ -92,15 +122,21 @@ export const config = {
     "/reels/:path*",
     "/shorts",
     "/shorts/:path*",
+    "/dashboard",
     "/dashboard/:path*",
+    "/clientes",
     "/clientes/:path*",
+    "/equipe",
     "/equipe/:path*",
+    "/conexoes",
     "/conexoes/:path*",
+    "/configuracoes",
     "/configuracoes/:path*",
+    "/administrador",
     "/administrador/:path*",
+    "/pagamentos",
     "/pagamentos/:path*",
     "/admin/:path*",
     "/access-denied",
-    "/admin/login",
   ],
 };

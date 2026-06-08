@@ -98,12 +98,6 @@ export function getClientRoleFromKeycloak(roles: string[]): string {
   return hasPremiumKeycloakAccess(roles) ? "ROLE_USER" : "ROLE_USER_FREE";
 }
 
-export function getDefaultPathForKeycloakRoles(roles: string[]): string {
-  const permission = getAdminPermissionFromKeycloakRoles(roles);
-
-  if (permission) {
-    return "/dashboard";
-  }
-
+export function getDefaultPathForKeycloakRoles(): string {
   return "/programas";
 }

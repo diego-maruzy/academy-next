@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { KeycloakLoginButton } from "@/components/auth/keycloak-login-button";
-import { getPostLoginPath } from "@/lib/auth/route-guard";
+import { getStudentPostLoginPath } from "@/lib/auth/route-guard";
 
 type LoginPageProps = {
   searchParams: Promise<{ callbackUrl?: string }>;
@@ -16,10 +16,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { callbackUrl } = await searchParams;
 
   if (session?.user) {
-    redirect(callbackUrl ?? getPostLoginPath(session.user.roles ?? []));
+    redirect(callbackUrl ?? getStudentPostLoginPath());
   }
 
-  const resolvedCallbackUrl = callbackUrl ?? "/dashboard";
+  const resolvedCallbackUrl = callbackUrl ?? getStudentPostLoginPath();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#050814] px-5 py-10">

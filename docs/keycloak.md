@@ -2,6 +2,15 @@
 
 Autenticação via **Auth.js (NextAuth v5)** com Keycloak, client público e **PKCE** (sem `client_secret`).
 
+## Dois fluxos separados
+
+| Área | Login | Sessão |
+| --- | --- | --- |
+| Aluno (`/programas`, `/reels`) | `/login` → Keycloak | Auth.js cookie |
+| Admin/equipe (`/dashboard`, `/admin`, `/clientes`…) | `/admin/login` → email/senha | `checkmate_admin_session` cookie |
+
+Usuário logado no Keycloak **não** acessa o painel admin automaticamente.
+
 ## Variáveis de ambiente
 
 | Variável | Obrigatória | Exemplo |
