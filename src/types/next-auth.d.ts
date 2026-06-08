@@ -7,6 +7,7 @@ declare module "next-auth" {
     user: DefaultSession["user"] & {
       id: string;
       roles: string[];
+      ignoredRoles: string[];
       appRole: AcademyAppRole;
       rolesSource: KeycloakRolesSource;
       provider: string;
@@ -17,6 +18,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     roles?: string[];
+    ignoredRoles?: string[];
     appRole?: AcademyAppRole;
     rolesSource?: KeycloakRolesSource;
     provider?: string;

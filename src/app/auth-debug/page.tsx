@@ -13,9 +13,11 @@ export default async function AuthDebugPage() {
     redirect("/login?callbackUrl=/auth-debug");
   }
 
-  const roles = session.user.roles ?? [];
-  const appRole = session.user.appRole ?? mapKeycloakRolesToAppRole(roles);
-  const rolesSource = session.user.rolesSource ?? (roles.length > 0 ? "keycloak" : "fallback");
+  const appRoles = session.user.roles ?? [];
+  const ignoredRoles = session.user.ignoredRoles ?? [];
+  const appRole = session.user.appRole ?? mapKeycloakRolesToAppRole(appRoles);
+  const rolesSource =
+    session.user.rolesSource ?? (appRoles.length > 0 ? "keycloak" : "fallback");
 
   return (
     <div className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 bg-[#050814] px-5 py-10 text-white">
@@ -38,14 +40,21 @@ export default async function AuthDebugPage() {
         <Row label="Nome" value={session.user.name ?? "—"} />
         <Row label="Email" value={session.user.email ?? "—"} />
         <Row label="Provider" value={session.user.provider ?? "—"} />
-        <Row label="Roles" value={roles.length > 0 ? roles.join(", ") : "—"} />
+        <Row
+          label="App roles"
+          value={appRoles.length > 0 ? appRoles.join(", ") : "—"}
+        />
+        <Row
+          label="Ignored/system roles"
+          value={ignoredRoles.length > 0 ? ignoredRoles.join(", ") : "—"}
+        />
         <Row label="App role" value={appRole} />
         <Row
           label="Source da role"
           value={
             rolesSource === "keycloak"
               ? "keycloak"
-              : "fallback (nenhuma role encontrada no token)"
+              : "fallback (nenhuma app role encontrada no token)"
           }
         />
         <Row label="User id" value={session.user.id || "—"} />

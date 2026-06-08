@@ -8,25 +8,28 @@ type RealmAccess = {
 
 type ResourceAccess = Record<string, { roles?: string[] } | undefined>;
 
-const KEYCLOAK_SYSTEM_ROLE_PREFIXES = [
-  "default-roles-",
-  "offline_access",
-  "uma_authorization",
-];
+export type PartitionedKeycloakRoles = {
+  applicationRoles: string[];
+  ignoredRoles: string[];
+};
+
+const APPLICATION_ROLE_NORMALIZED = new Set([
+  "role_user_free",
+  "role_user",
+  "role_admin",
+  "admin",
+  "user",
+]);
 
 function normalizeRole(role: string) {
   return role.trim().toLowerCase();
 }
 
-function isSystemRole(role: string) {
-  const normalized = normalizeRole(role);
-
-  return KEYCLOAK_SYSTEM_ROLE_PREFIXES.some(
-    (prefix) => normalized === prefix || normalized.startsWith(prefix),
-  );
+function isApplicationRole(role: string) {
+  return APPLICATION_ROLE_NORMALIZED.has(normalizeRole(role));
 }
 
-export function extractKeycloakRoles(
+export function extractRawKeycloakRoles(
   source: Record<string, unknown> | null | undefined,
 ): string[] {
   if (!source) {
@@ -47,19 +50,42 @@ export function extractKeycloakRoles(
 
   const merged = [...realmRoles, ...resourceRoles, ...topLevelRoles]
     .map((role) => role.trim())
-    .filter((role) => role.length > 0 && !isSystemRole(role));
+    .filter((role) => role.length > 0);
 
   return [...new Set(merged)];
+}
+
+export function partitionKeycloakRoles(
+  rawRoles: string[],
+): PartitionedKeycloakRoles {
+  const applicationRoles: string[] = [];
+  const ignoredRoles: string[] = [];
+
+  for (const role of rawRoles) {
+    const trimmed = role.trim();
+
+    if (!trimmed) {
+      continue;
+    }
+
+    if (isApplicationRole(trimmed)) {
+      applicationRoles.push(trimmed);
+      continue;
+    }
+
+    ignoredRoles.push(trimmed);
+  }
+
+  return {
+    applicationRoles: [...new Set(applicationRoles)],
+    ignoredRoles: [...new Set(ignoredRoles)],
+  };
 }
 
 export function mapKeycloakRolesToAppRole(roles: string[]): AcademyAppRole {
   const normalized = roles.map(normalizeRole);
 
-  if (
-    normalized.includes("role_admin") ||
-    normalized.includes("admin") ||
-    normalized.includes("administrator")
-  ) {
+  if (normalized.includes("role_admin") || normalized.includes("admin")) {
     return "admin";
   }
 
@@ -92,11 +118,7 @@ export function getAdminPermissionFromKeycloakRoles(
 ): AdminPermission | null {
   const normalized = roles.map(normalizeRole);
 
-  if (
-    normalized.includes("role_admin") ||
-    normalized.includes("admin") ||
-    normalized.includes("administrator")
-  ) {
+  if (normalized.includes("role_admin") || normalized.includes("admin")) {
     return "admin_access";
   }
 

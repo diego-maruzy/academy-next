@@ -1,6 +1,7 @@
 import {
-  extractKeycloakRoles,
+  extractRawKeycloakRoles,
   mapKeycloakRolesToAppRole,
+  partitionKeycloakRoles,
   type AcademyAppRole,
 } from "@/lib/auth/keycloak-roles";
 
@@ -8,6 +9,7 @@ export type KeycloakRolesSource = "keycloak" | "fallback";
 
 export type ResolvedKeycloakRoles = {
   roles: string[];
+  ignoredRoles: string[];
   appRole: AcademyAppRole;
   source: KeycloakRolesSource;
 };
@@ -41,21 +43,25 @@ export function resolveKeycloakRolesFromAuthPayload(input: {
     input.idToken ? decodeJwtPayload(input.idToken) : null,
   ].filter((payload): payload is Record<string, unknown> => Boolean(payload));
 
-  for (const payload of payloads) {
-    const roles = extractKeycloakRoles(payload);
+  const rawRoles = [
+    ...new Set(payloads.flatMap((payload) => extractRawKeycloakRoles(payload))),
+  ];
 
-    if (roles.length > 0) {
-      return {
-        roles,
-        appRole: mapKeycloakRolesToAppRole(roles),
-        source: "keycloak",
-      };
-    }
+  if (rawRoles.length === 0) {
+    return {
+      roles: [],
+      ignoredRoles: [],
+      appRole: "free",
+      source: "fallback",
+    };
   }
 
+  const { applicationRoles, ignoredRoles } = partitionKeycloakRoles(rawRoles);
+
   return {
-    roles: [],
-    appRole: "free",
-    source: "fallback",
+    roles: applicationRoles,
+    ignoredRoles,
+    appRole: mapKeycloakRolesToAppRole(applicationRoles),
+    source: applicationRoles.length > 0 ? "keycloak" : "fallback",
   };
 }

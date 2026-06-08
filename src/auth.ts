@@ -21,6 +21,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         token.provider = "keycloak";
         token.roles = resolved.roles;
+        token.ignoredRoles = resolved.ignoredRoles;
         token.appRole = resolved.appRole;
         token.rolesSource = resolved.source;
 
@@ -37,6 +38,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         session.user.id = String(token.sub ?? "");
         session.user.roles = roles;
+        session.user.ignoredRoles =
+          (token.ignoredRoles as string[] | undefined) ?? [];
         session.user.appRole =
           (token.appRole as AcademyAppRole | undefined) ??
           mapKeycloakRolesToAppRole(roles);
