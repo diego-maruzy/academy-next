@@ -7,7 +7,7 @@ Autenticação própria por **email e senha**, separada do Keycloak.
 | Rota | Proteção |
 | --- | --- |
 | `/admin/login` | Pública |
-| `/dashboard`, `/clientes`, `/equipe`, `/admin/*`, `/pagamentos`, `/conexoes`, `/configuracoes`, `/administrador` | Cookie `checkmate_admin_session` |
+| `/admin`, `/clientes`, `/equipe`, `/admin/*`, `/pagamentos`, `/conexoes`, `/configuracoes`, `/administrador` | Cookie `checkmate_admin_session` |
 
 ## Banco de dados
 
@@ -47,7 +47,7 @@ npm run dev
 ```
 
 1. Aba anônima → `http://localhost:3000/admin/login`
-2. Email + senha → redireciona para `/dashboard`
+2. Email + senha → redireciona para `/admin`
 3. Logout no header → volta para `/admin/login`
 
 Via API:

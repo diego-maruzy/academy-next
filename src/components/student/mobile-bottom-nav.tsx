@@ -16,7 +16,7 @@ type NavItem = {
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { id: "home", label: "Início", href: "/programas", icon: Home },
+  { id: "home", label: "Início", href: "/dashboard", icon: Home },
   { id: "programs", label: "Programas", href: "/programas", icon: BookOpen },
   { id: "reels", label: "Reels", href: "/reels", icon: PlaySquare },
   { id: "menu", label: "Menu", href: CHECKMATE_MENU_URL, icon: Menu, external: true },
@@ -24,7 +24,7 @@ const NAV_ITEMS: NavItem[] = [
 
 function isNavItemActive(item: NavItem, pathname: string) {
   if (item.id === "home") {
-    return pathname === "/programas";
+    return pathname === "/dashboard";
   }
 
   if (item.id === "programs") {

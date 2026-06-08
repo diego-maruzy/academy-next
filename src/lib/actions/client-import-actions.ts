@@ -37,7 +37,7 @@ export async function importClientsFromJson(rawRecords: unknown) {
 
   if (summary.created > 0 || summary.updated > 0) {
     revalidatePath("/clientes");
-    revalidatePath("/dashboard");
+    revalidatePath("/admin");
   }
 
   return summary;

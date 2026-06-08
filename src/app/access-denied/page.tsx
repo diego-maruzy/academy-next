@@ -13,10 +13,10 @@ export default function AccessDeniedPage() {
           Sua conta não possui permissão para acessar esta área administrativa.
         </p>
         <Link
-          href="/dashboard"
+          href="/admin"
           className="mt-6 inline-flex h-11 items-center justify-center rounded-xl bg-blue-500 px-5 text-sm font-semibold text-white transition hover:bg-blue-400"
         >
-          Voltar ao dashboard
+          Voltar ao painel
         </Link>
       </div>
     </div>

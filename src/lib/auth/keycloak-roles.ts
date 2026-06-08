@@ -99,5 +99,5 @@ export function getClientRoleFromKeycloak(roles: string[]): string {
 }
 
 export function getDefaultPathForKeycloakRoles(): string {
-  return "/programas";
+  return "/dashboard";
 }

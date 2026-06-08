@@ -37,8 +37,8 @@ export type SidebarItem = {
 
 export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
-    title: "Dashboard",
-    href: "/dashboard",
+    title: "Painel",
+    href: "/admin",
     icon: LayoutDashboard,
     group: "navigation",
     allowedPermissions: ["admin_access", "academy_access", "support_access"],

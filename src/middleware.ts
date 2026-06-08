@@ -6,10 +6,17 @@ import {
 } from "@/lib/admin-auth/admin-session";
 import {
   canAccessAdminRoute,
-  isAdminLoginPath,
+  getDefaultAdminPath,
   isProtectedPanelPath,
 } from "@/lib/admin-auth/permissions";
-import { requiresKeycloakAuth } from "@/lib/auth/route-guard";
+import {
+  isAdminApiPath,
+  isAdminLoginPath,
+  isKeycloakApiPath,
+  isPublicPath,
+  isStudentLoginPath,
+  requiresKeycloakAuth,
+} from "@/lib/auth/route-guard";
 
 function redirectShortsToReels(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -23,15 +30,6 @@ function redirectShortsToReels(request: NextRequest) {
   return null;
 }
 
-function isPublicPath(pathname: string) {
-  return (
-    pathname === "/" ||
-    pathname === "/login" ||
-    isAdminLoginPath(pathname) ||
-    pathname.startsWith("/pay")
-  );
-}
-
 async function getKeycloakToken(request: NextRequest) {
   return getToken({
     req: request,
@@ -42,6 +40,10 @@ async function getKeycloakToken(request: NextRequest) {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (isKeycloakApiPath(pathname) || isAdminApiPath(pathname)) {
+    return NextResponse.next();
+  }
 
   const shortsRedirect = redirectShortsToReels(request);
   if (shortsRedirect) {
@@ -55,24 +57,27 @@ export async function middleware(request: NextRequest) {
       : null;
 
     if (adminSession) {
-      const next = request.nextUrl.searchParams.get("next") ?? "/dashboard";
+      const next =
+        request.nextUrl.searchParams.get("next") ?? getDefaultAdminPath();
       return NextResponse.redirect(new URL(next, request.url));
     }
 
     return NextResponse.next();
   }
 
-  if (isPublicPath(pathname)) {
-    if (pathname === "/login") {
-      const keycloakToken = await getKeycloakToken(request);
+  if (isStudentLoginPath(pathname)) {
+    const keycloakToken = await getKeycloakToken(request);
 
-      if (keycloakToken) {
-        const callbackUrl =
-          request.nextUrl.searchParams.get("callbackUrl") ?? "/programas";
-        return NextResponse.redirect(new URL(callbackUrl, request.url));
-      }
+    if (keycloakToken) {
+      const callbackUrl =
+        request.nextUrl.searchParams.get("callbackUrl") ?? "/dashboard";
+      return NextResponse.redirect(new URL(callbackUrl, request.url));
     }
 
+    return NextResponse.next();
+  }
+
+  if (isPublicPath(pathname)) {
     return NextResponse.next();
   }
 
@@ -116,14 +121,14 @@ export const config = {
     "/login",
     "/admin/login",
     "/auth-debug",
+    "/dashboard",
+    "/dashboard/:path*",
     "/programas",
     "/programas/:path*",
     "/reels",
     "/reels/:path*",
     "/shorts",
     "/shorts/:path*",
-    "/dashboard",
-    "/dashboard/:path*",
     "/clientes",
     "/clientes/:path*",
     "/equipe",

@@ -8,8 +8,8 @@ Autenticação via **Auth.js (NextAuth v5)** com Keycloak, client público e **P
 
 | Área | Login | Sessão |
 | --- | --- | --- |
-| Aluno (`/programas`, `/reels`) | `/login` → Keycloak | cookie Auth.js |
-| Admin/equipe | `/admin/login` → email/senha | `checkmate_admin_session` |
+| Aluno (`/dashboard`, `/programas`, `/reels`) | `/login` → Keycloak | cookie Auth.js |
+| Admin/equipe (`/admin`, `/clientes`…) | `/admin/login` → email/senha | `checkmate_admin_session` |
 
 Roles do Keycloak **não** abrem o painel admin. Mesmo `ROLE_ADMIN` no Keycloak exige login separado em `/admin/login` para acessar `/dashboard`.
 
@@ -35,7 +35,7 @@ Roles do Keycloak **não** abrem o painel admin. Mesmo `ROLE_ADMIN` no Keycloak 
 
 | Role Keycloak | App role | Acesso |
 | --- | --- | --- |
-| `ROLE_USER_FREE` | `free` | `/programas`, `/reels` |
+| `ROLE_USER_FREE` | `free` | `/dashboard`, `/programas`, `/reels` |
 | `ROLE_USER` | `premium` | + conteúdo premium |
 
 ## Testar localmente
@@ -44,9 +44,9 @@ Roles do Keycloak **não** abrem o painel admin. Mesmo `ROLE_ADMIN` no Keycloak 
 npm run dev
 ```
 
-1. Aba anônima → `http://localhost:3000/programas` → `/login`
+1. Aba anônima → `http://localhost:3000/dashboard` → `/login`
 2. **Entrar com Checkmate** → Keycloak
-3. Volta para `/programas`
+3. Volta para `/dashboard`
 4. Confira `/auth-debug`
 
 `/dashboard` **não** usa Keycloak — redireciona para `/admin/login`.

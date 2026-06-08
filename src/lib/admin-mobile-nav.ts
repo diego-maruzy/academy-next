@@ -7,20 +7,20 @@ import type { AdminPermission } from "@/lib/admin-auth/permissions";
 
 const MOBILE_PRIMARY_HREFS: Record<AdminPermission, string[]> = {
   admin_access: [
-    "/dashboard",
+    "/admin",
     "/clientes",
     "/admin/programas",
     "/admin/shorts",
   ],
-  academy_access: ["/dashboard", "/programas", "/reels", "/clientes"],
-  support_access: ["/dashboard", "/clientes"],
-  property_access: ["/dashboard"],
+  academy_access: ["/admin", "/clientes"],
+  support_access: ["/admin", "/clientes"],
+  property_access: ["/admin"],
 };
 
 const MAX_PRIMARY_ITEMS = 4;
 
 const MOBILE_SHORT_LABELS: Record<string, string> = {
-  "/dashboard": "Início",
+  "/admin": "Início",
   "/programas": "Programas",
   "/reels": "Reels",
   "/clientes": "Clientes",
@@ -42,7 +42,7 @@ export function getAdminMobileNavItems(
   permission: AdminPermission,
   allowedItems: SidebarItem[],
 ) {
-  const priorities = MOBILE_PRIMARY_HREFS[permission] ?? ["/dashboard"];
+  const priorities = MOBILE_PRIMARY_HREFS[permission] ?? ["/admin"];
   const primary: SidebarItem[] = [];
   const usedHrefs = new Set<string>();
 

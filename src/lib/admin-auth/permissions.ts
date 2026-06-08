@@ -3,6 +3,7 @@ import {
   type SidebarItem,
 } from "@/components/layout/sidebar-items";
 import type { CurrentAdmin } from "@/lib/admin-auth/current-admin";
+import { isAdminLoginPath } from "@/lib/auth/route-guard";
 
 export type AdminPermission =
   | "admin_access"
@@ -25,8 +26,12 @@ function matchesPath(pathname: string, route: string) {
   return pathname === route || pathname.startsWith(`${route}/`);
 }
 
-export function isAdminLoginPath(pathname: string) {
-  return pathname === "/admin/login";
+function isAdminHomePath(pathname: string) {
+  return pathname === "/admin";
+}
+
+function isAdminCrudPath(pathname: string) {
+  return pathname.startsWith("/admin/");
 }
 
 export function isProtectedPanelPath(pathname: string): boolean {
@@ -38,15 +43,17 @@ export function isProtectedPanelPath(pathname: string): boolean {
     return true;
   }
 
+  if (isAdminHomePath(pathname) || isAdminCrudPath(pathname)) {
+    return true;
+  }
+
   const protectedPrefixes = [
-    "/dashboard",
     "/clientes",
     "/equipe",
     "/conexoes",
     "/configuracoes",
     "/administrador",
     "/pagamentos",
-    "/admin",
   ];
 
   return protectedPrefixes.some((prefix) => matchesPath(pathname, prefix));
@@ -76,17 +83,11 @@ export function canAccessAdminRoute(
   }
 
   if (permission === "academy_access") {
-    return (
-      matchesPath(pathname, "/dashboard") ||
-      matchesPath(pathname, "/clientes")
-    );
+    return isAdminHomePath(pathname) || matchesPath(pathname, "/clientes");
   }
 
   if (permission === "support_access") {
-    return (
-      matchesPath(pathname, "/dashboard") ||
-      matchesPath(pathname, "/clientes")
-    );
+    return isAdminHomePath(pathname) || matchesPath(pathname, "/clientes");
   }
 
   return false;
@@ -119,5 +120,5 @@ export function getAdminBadgeLabel(admin: CurrentAdmin | null): string {
 }
 
 export function getDefaultAdminPath(): string {
-  return "/dashboard";
+  return "/admin";
 }
