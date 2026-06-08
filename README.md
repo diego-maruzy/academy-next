@@ -29,9 +29,12 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Keycloak (SSO)
+## Autenticação
 
-Configuração de autenticação com Keycloak: [docs/keycloak.md](docs/keycloak.md).
+Dois fluxos separados:
+
+- **Aluno** — Keycloak SSO: [docs/keycloak.md](docs/keycloak.md)
+- **Admin/equipe** — email e senha: [docs/admin-auth.md](docs/admin-auth.md)
 
 ## Resend (e-mail)
 

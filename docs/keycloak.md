@@ -1,15 +1,17 @@
-# Keycloak SSO — Checkmate Academy Next
+# Keycloak SSO — área do aluno
 
 Autenticação via **Auth.js (NextAuth v5)** com Keycloak, client público e **PKCE** (sem `client_secret`).
 
-## Dois fluxos separados
+> Login admin/equipe: [docs/admin-auth.md](admin-auth.md) — fluxo separado em `/admin/login`.
+
+## Dois fluxos
 
 | Área | Login | Sessão |
 | --- | --- | --- |
-| Aluno (`/programas`, `/reels`) | `/login` → Keycloak | Auth.js cookie |
-| Admin/equipe (`/dashboard`, `/admin`, `/clientes`…) | `/admin/login` → email/senha | `checkmate_admin_session` cookie |
+| Aluno (`/programas`, `/reels`) | `/login` → Keycloak | cookie Auth.js |
+| Admin/equipe | `/admin/login` → email/senha | `checkmate_admin_session` |
 
-Usuário logado no Keycloak **não** acessa o painel admin automaticamente.
+Roles do Keycloak **não** abrem o painel admin. Mesmo `ROLE_ADMIN` no Keycloak exige login separado em `/admin/login` para acessar `/dashboard`.
 
 ## Variáveis de ambiente
 
@@ -17,72 +19,56 @@ Usuário logado no Keycloak **não** acessa o painel admin automaticamente.
 | --- | --- | --- |
 | `KEYCLOAK_ISSUER` | Sim | `https://auth.checkmateproperty.com/realms/Checkmate` |
 | `KEYCLOAK_CLIENT_ID` | Sim | `checkmate-next` |
-| `AUTH_SECRET` | Sim | gere com `npm run generate:auth-secret` |
+| `AUTH_SECRET` | Sim | `npm run generate:auth-secret` |
 | `AUTH_URL` | Sim (prod) | `https://academy-next-pi.vercel.app` |
-| `APP_URL` | Recomendado | mesma URL pública do app |
+| `APP_URL` | Recomendado | mesma URL pública |
 
-**Não configure** `KEYCLOAK_CLIENT_SECRET` — o client é público.
+**Não configure** `KEYCLOAK_CLIENT_SECRET`.
 
-## Keycloak (client `checkmate-next`)
+## Redirect URIs no Keycloak
 
-- Standard flow: ON
-- Client authentication: OFF
-- Valid redirect URIs:
-  - `https://academy-next-pi.vercel.app/api/auth/callback/keycloak`
-  - `https://play.checkmateproperty.com/api/auth/callback/keycloak`
-  - `http://localhost:3000/api/auth/callback/keycloak` (dev)
+- `https://academy-next-pi.vercel.app/api/auth/callback/keycloak`
+- `https://play.checkmateproperty.com/api/auth/callback/keycloak`
+- `http://localhost:3000/api/auth/callback/keycloak` (dev)
 
-## Roles mapeadas
+## Roles (área do aluno)
 
 | Role Keycloak | App role | Acesso |
 | --- | --- | --- |
 | `ROLE_USER_FREE` | `free` | `/programas`, `/reels` |
-| `ROLE_USER` | `premium` | `/programas`, `/reels` + conteúdo premium |
-| `ROLE_ADMIN` / `admin` | `admin` | painel admin completo |
-
-Roles extras opcionais: `academy_access`, `support_access`.
+| `ROLE_USER` | `premium` | + conteúdo premium |
 
 ## Testar localmente
-
-1. Configure `.env.local` com as variáveis acima.
-2. Adicione redirect URI local no Keycloak.
-3. Rode:
 
 ```bash
 npm run dev
 ```
 
-4. Acesse `http://localhost:3000/dashboard` → redireciona para `/login`.
-5. Clique em **Entrar com Checkmate**.
-6. Após login, confira `/auth-debug`.
+1. Aba anônima → `http://localhost:3000/programas` → `/login`
+2. **Entrar com Checkmate** → Keycloak
+3. Volta para `/programas`
+4. Confira `/auth-debug`
+
+`/dashboard` **não** usa Keycloak — redireciona para `/admin/login`.
 
 ## Testar na Vercel
 
-1. Vercel → Settings → Environment Variables:
-   - `KEYCLOAK_ISSUER`
-   - `KEYCLOAK_CLIENT_ID`
-   - `AUTH_SECRET`
-   - `AUTH_URL=https://academy-next-pi.vercel.app`
-   - `APP_URL=https://academy-next-pi.vercel.app`
-2. Deploy.
-3. Acesse `https://academy-next-pi.vercel.app/dashboard`.
+```text
+https://academy-next-pi.vercel.app/programas
+https://academy-next-pi.vercel.app/login
+https://academy-next-pi.vercel.app/auth-debug
+```
 
 ## SSO com Checkmate Property
 
-1. Faça login no sistema Property (mesmo Keycloak/realm).
-2. Abra a Academy na mesma sessão do browser.
-3. Clique em entrar — o Keycloak deve reutilizar a sessão SSO sem pedir credenciais novamente.
+1. Login no Property (mesmo realm Keycloak).
+2. Abra `/login` na Academy no mesmo browser.
+3. SSO deve autenticar sem pedir senha novamente.
 
-## Logout
+## Logout aluno
 
-O botão **Sair** no header encerra a sessão Auth.js e redireciona para `/login`.
+Encerrar sessão Keycloak: usar sign-out do Auth.js (quando exposto na UI do aluno). O botão **Sair** do painel admin só limpa a sessão admin.
 
-## Rotas
+## PKCE
 
-- `/login` — botão Entrar com Checkmate
-- `/api/auth/callback/keycloak` — callback OIDC
-- `/auth-debug` — debug temporário (sem tokens completos)
-
-## PKCE / public client
-
-Auth.js usa OIDC com PKCE automaticamente quando **não há client secret**. O fluxo é Authorization Code + PKCE, adequado para client público SPA/Next.js.
+Sem client secret, Auth.js usa **Authorization Code + PKCE** automaticamente.
