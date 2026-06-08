@@ -1,4 +1,5 @@
-import { getCurrentUser } from "@/lib/auth/current-user";
+import { auth } from "@/auth";
+import { sessionToCurrentUser } from "@/lib/auth/keycloak-session";
 import { createSupabaseReadServerClient } from "@/lib/supabase/server";
 
 export type CurrentClient = {
@@ -10,19 +11,20 @@ export type CurrentClient = {
 
 let warnedMissingClient = false;
 
-// Futuramente será substituído pelo usuário autenticado do Keycloak.
 export async function getCurrentClient(): Promise<CurrentClient | null> {
-  const user = await getCurrentUser();
+  const session = await auth();
   const supabase = await createSupabaseReadServerClient();
 
-  if (!supabase) {
+  if (!supabase || !session?.user?.email) {
     return null;
   }
+
+  const keycloakUser = sessionToCurrentUser(session);
 
   const { data, error } = await supabase
     .from("clients")
     .select("id, email, full_name, role")
-    .eq("email", user.clientEmail)
+    .eq("email", session.user.email)
     .maybeSingle();
 
   if (error) {
@@ -34,12 +36,20 @@ export async function getCurrentClient(): Promise<CurrentClient | null> {
     if (!warnedMissingClient) {
       warnedMissingClient = true;
       console.warn(
-        "Cliente mockado não encontrado. Crie um cliente com email mariana@email.com ou ajuste currentUser.clientEmail.",
+        `[current-client] Cliente não encontrado no Supabase para ${session.user.email}.`,
       );
     }
 
-    return null;
+    return {
+      id: session.user.id,
+      email: session.user.email,
+      full_name: session.user.name ?? session.user.email,
+      role: keycloakUser.clientRole,
+    };
   }
 
-  return data as CurrentClient;
+  return {
+    ...(data as CurrentClient),
+    role: keycloakUser.clientRole,
+  };
 }

@@ -18,10 +18,6 @@ const PREMIUM_ACCESS_ROLES = new Set([
 
 export const DEFAULT_UPGRADE_URL = "/pay/year";
 
-/**
- * Quando Keycloak estiver ativo, substituir esta lógica por
- * roles/groups/plano do usuário autenticado.
- */
 export function studentHasProgramAccess(
   program: Pick<Program, "is_premium">,
   currentStudent: CurrentStudent | null,

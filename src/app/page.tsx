@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
-import { getCurrentAdmin } from "@/lib/admin-auth/current-admin";
-import { getDefaultAdminPath } from "@/lib/admin-auth/permissions";
+import { auth } from "@/auth";
+import { getPostLoginPath } from "@/lib/auth/route-guard";
 
 export default async function HomePage() {
-  const admin = await getCurrentAdmin();
+  const session = await auth();
 
-  if (admin) {
-    redirect(getDefaultAdminPath());
+  if (session?.user) {
+    redirect(getPostLoginPath(session.user.roles ?? []));
   }
 
-  redirect("/admin/login");
+  redirect("/login");
 }

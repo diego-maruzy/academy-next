@@ -1,9 +1,9 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { signOut } from "@/auth";
 import { destroyAdminSession } from "@/lib/admin-auth/session";
 
 export async function logoutAdminAction() {
   await destroyAdminSession();
-  redirect("/admin/login");
+  await signOut({ redirectTo: "/login" });
 }

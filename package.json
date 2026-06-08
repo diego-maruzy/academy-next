@@ -13,7 +13,8 @@
     "reset:admin-password": "tsx scripts/reset-admin-password.ts",
     "setup:team-auth": "tsx scripts/print-team-auth-migration.ts",
     "setup:shorts-provider": "tsx scripts/setup-shorts-supabase-provider.ts",
-    "generate:admin-session-secret": "tsx scripts/generate-admin-session-secret.ts"
+    "generate:admin-session-secret": "tsx scripts/generate-admin-session-secret.ts",
+    "generate:auth-secret": "tsx scripts/generate-auth-secret.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -28,6 +29,7 @@
     "jose": "^6.2.3",
     "lucide-react": "^1.17.0",
     "next": "16.2.7",
+    "next-auth": "^5.0.0-beta.30",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.77.0",

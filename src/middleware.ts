@@ -1,19 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { auth } from "@/auth";
+import { sessionToCurrentAdmin } from "@/lib/auth/keycloak-session";
 import {
-  canAccessAdminRoute,
-  isProtectedAdminPath,
-} from "@/lib/admin-auth/permissions";
-import {
-  ADMIN_SESSION_COOKIE,
-  verifyAdminSessionFromToken,
-} from "@/lib/admin-auth/session";
+  canAccessPath,
+  getPostLoginPath,
+  isLoginPath,
+  requiresKeycloakAuth,
+} from "@/lib/auth/route-guard";
 
-export async function middleware(request: NextRequest) {
+function redirectShortsToReels(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
-  if (pathname.startsWith("/pay")) {
-    return NextResponse.next();
-  }
 
   if (pathname === "/shorts" || pathname.startsWith("/shorts/")) {
     const reelsUrl = request.nextUrl.clone();
@@ -21,42 +17,75 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(reelsUrl);
   }
 
+  return null;
+}
+
+export default auth((request) => {
+  const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/pay")) {
+    return NextResponse.next();
+  }
+
+  const shortsRedirect = redirectShortsToReels(request);
+  if (shortsRedirect) {
+    return shortsRedirect;
+  }
+
+  const session = request.auth;
+  const isAuthenticated = Boolean(session?.user);
+  const roles = session?.user?.roles ?? [];
+  const admin = sessionToCurrentAdmin(session);
+
   if (pathname === "/admin/login") {
-    const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+    const loginUrl = new URL("/login", request.url);
+    const next = request.nextUrl.searchParams.get("next");
 
-    if (token) {
-      const session = await verifyAdminSessionFromToken(token);
+    if (next) {
+      loginUrl.searchParams.set("callbackUrl", next);
+    }
 
-      if (session) {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
-      }
+    if (isAuthenticated) {
+      return NextResponse.redirect(
+        new URL(next ?? getPostLoginPath(roles), request.url),
+      );
+    }
+
+    return NextResponse.redirect(loginUrl);
+  }
+
+  if (isLoginPath(pathname)) {
+    if (isAuthenticated) {
+      const callbackUrl = request.nextUrl.searchParams.get("callbackUrl");
+      return NextResponse.redirect(
+        new URL(callbackUrl ?? getPostLoginPath(roles), request.url),
+      );
     }
 
     return NextResponse.next();
   }
 
-  if (!isProtectedAdminPath(pathname)) {
+  if (!requiresKeycloakAuth(pathname)) {
     return NextResponse.next();
   }
 
-  const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-  const session = token ? await verifyAdminSessionFromToken(token) : null;
-
-  if (!session) {
-    const loginUrl = new URL("/admin/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
+  if (!isAuthenticated) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (!canAccessAdminRoute(session, pathname)) {
+  if (!canAccessPath(pathname, admin, isAuthenticated)) {
     return NextResponse.redirect(new URL("/access-denied", request.url));
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: [
+    "/login",
+    "/auth-debug",
     "/programas",
     "/programas/:path*",
     "/reels",
