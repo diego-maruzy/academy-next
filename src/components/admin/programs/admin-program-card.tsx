@@ -19,6 +19,11 @@ type AdminProgramCardProps = {
   dragHandle?: ReactNode;
 };
 
+function getProgramDisplayName(program: ProgramWithModules) {
+  const name = program.name?.trim();
+  return name || program.slug;
+}
+
 function ProgramStatusBadge({ published }: { published: boolean }) {
   return (
     <span
@@ -90,7 +95,7 @@ function ProgramCover({ program }: { program: ProgramWithModules }) {
         {isRemote ? (
           <Image
             src={program.cover_image_url}
-            alt={program.name}
+            alt={getProgramDisplayName(program)}
             fill
             className="object-cover"
             sizes="64px"
@@ -99,7 +104,7 @@ function ProgramCover({ program }: { program: ProgramWithModules }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={program.cover_image_url}
-            alt={program.name}
+            alt={getProgramDisplayName(program)}
             className="h-full w-full object-cover"
           />
         )}
@@ -128,42 +133,39 @@ export function AdminProgramCard({
   const displayOrder =
     orderIndex !== undefined ? orderIndex + 1 : program.display_order + 1;
 
+  const displayName = getProgramDisplayName(program);
+
   return (
     <article
       className={cn(
-        "group rounded-2xl border border-white/10 bg-[#0B1220]/90 p-4 transition sm:p-5",
+        "group grid gap-4 rounded-2xl border border-white/10 bg-[#0B1220]/90 p-4 transition sm:gap-5 sm:p-5",
         "hover:border-blue-400/30 hover:bg-white/[0.04]",
-        "lg:flex lg:items-center lg:justify-between lg:gap-6",
+        "xl:grid-cols-[minmax(0,1fr)_auto]",
         isDragging && "border-blue-400/40 bg-white/[0.06] shadow-xl shadow-black/30",
       )}
     >
-      <div className="flex min-w-0 flex-1 items-start gap-4">
-        {dragHandle}
-        <ProgramCover program={program} />
-        <div className="min-w-0 flex-1">
-          <h3 className="line-clamp-1 text-base font-semibold text-white sm:text-lg">
-            {program.name}
-          </h3>
-          <p className="mt-1 font-mono text-xs text-slate-500">{program.slug}</p>
-          {program.description ? (
-            <p className="mt-2 line-clamp-2 text-sm text-slate-400">
-              {program.description}
+      <div className="grid min-w-0 gap-4">
+        <div className="flex min-w-0 items-start gap-4">
+          {dragHandle}
+          <ProgramCover program={program} />
+          <div className="min-w-0 flex-1">
+            <h3 className="break-words text-base font-semibold leading-snug text-white sm:text-lg">
+              {displayName}
+            </h3>
+            <p className="mt-1 break-all font-mono text-xs text-slate-500">
+              {program.slug}
             </p>
-          ) : null}
+            {program.description ? (
+              <p className="mt-2 line-clamp-2 text-sm text-slate-400">
+                {program.description}
+              </p>
+            ) : null}
+          </div>
         </div>
-      </div>
 
-      <div
-        className={cn(
-          "mt-4 grid gap-3 sm:mt-5 sm:grid-cols-2 lg:mt-0 lg:flex lg:flex-wrap lg:items-center",
-        )}
-      >
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <ProgramStatusBadge published={program.published} />
           <ProgramPremiumBadge isPremium={program.is_premium} />
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3 text-sm text-slate-400">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
               Upgrade
@@ -173,23 +175,17 @@ export function AdminProgramCard({
               upgradeUrl={program.upgrade_url}
             />
           </div>
-
           <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-300">
             <Layers3 className="h-3.5 w-3.5 text-sky-300" />
             {program.modules.length} módulos
           </div>
-
           <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-300">
             Ordem {displayOrder}
           </div>
         </div>
       </div>
 
-      <div
-        className={cn(
-          "mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3 lg:mt-0 lg:w-auto lg:min-w-[280px] lg:shrink-0",
-        )}
-      >
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 xl:min-w-[280px] xl:self-center">
         <ButtonLink
           href={`/admin/programas/${program.id}`}
           variant="secondary"

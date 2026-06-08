@@ -32,7 +32,7 @@ function filterPrograms(
   let filtered = programs.filter((program) => {
     const matchesSearch =
       !query ||
-      program.name.toLowerCase().includes(query) ||
+      (program.name?.trim() || program.slug).toLowerCase().includes(query) ||
       program.slug.toLowerCase().includes(query) ||
       (program.description?.toLowerCase().includes(query) ?? false);
 
@@ -51,7 +51,10 @@ function filterPrograms(
 
   filtered = [...filtered].sort((left, right) => {
     if (sortBy === "name") {
-      return left.name.localeCompare(right.name, "pt-BR");
+      return (left.name?.trim() || left.slug).localeCompare(
+        right.name?.trim() || right.slug,
+        "pt-BR",
+      );
     }
 
     if (sortBy === "recent") {
