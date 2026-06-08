@@ -80,11 +80,9 @@ export default async function ModuleDetailPage({
       ? await isLessonCompletedForClient(client.id, lesson.id)
       : false;
 
-  const completionDisabledReason = !client
-    ? "Cliente mockado não encontrado no Supabase."
-    : !lesson
-      ? "Este módulo ainda não possui aula cadastrada."
-      : undefined;
+  const completionDisabledReason = !lesson
+    ? "Este módulo ainda não possui aula cadastrada."
+    : undefined;
 
   return (
     <div className="grid min-w-0 gap-6 md:gap-8">
