@@ -8,27 +8,48 @@ type RealmAccess = {
 
 type ResourceAccess = Record<string, { roles?: string[] } | undefined>;
 
+const KEYCLOAK_SYSTEM_ROLE_PREFIXES = [
+  "default-roles-",
+  "offline_access",
+  "uma_authorization",
+];
+
 function normalizeRole(role: string) {
   return role.trim().toLowerCase();
 }
 
+function isSystemRole(role: string) {
+  const normalized = normalizeRole(role);
+
+  return KEYCLOAK_SYSTEM_ROLE_PREFIXES.some(
+    (prefix) => normalized === prefix || normalized.startsWith(prefix),
+  );
+}
+
 export function extractKeycloakRoles(
-  profile: Record<string, unknown> | null | undefined,
+  source: Record<string, unknown> | null | undefined,
 ): string[] {
-  if (!profile) {
+  if (!source) {
     return [];
   }
 
-  const realmAccess = profile.realm_access as RealmAccess | undefined;
+  const realmAccess = source.realm_access as RealmAccess | undefined;
   const realmRoles = realmAccess?.roles ?? [];
 
-  const resourceAccess = profile.resource_access as ResourceAccess | undefined;
+  const resourceAccess = source.resource_access as ResourceAccess | undefined;
   const resourceRoles = resourceAccess
     ? Object.values(resourceAccess).flatMap((entry) => entry?.roles ?? [])
     : [];
 
-  const merged = [...realmRoles, ...resourceRoles].map((role) => role.trim());
-  return [...new Set(merged.filter(Boolean))];
+  const topLevelRoles = Array.isArray(source.roles)
+    ? source.roles.filter((role): role is string => typeof role === "string")
+    : [];
+
+  const merged = [...realmRoles, ...resourceRoles, ...topLevelRoles]
+    .map((role) => role.trim())
+    .filter((role) => role.length > 0 && !isSystemRole(role));
+
+  return [...new Set(merged)];
 }
 
 export function mapKeycloakRolesToAppRole(roles: string[]): AcademyAppRole {
@@ -42,11 +63,15 @@ export function mapKeycloakRolesToAppRole(roles: string[]): AcademyAppRole {
     return "admin";
   }
 
+  if (normalized.includes("role_user_free")) {
+    return "free";
+  }
+
   if (normalized.includes("role_user")) {
     return "premium";
   }
 
-  if (normalized.includes("role_user_free")) {
+  if (normalized.includes("user")) {
     return "free";
   }
 
