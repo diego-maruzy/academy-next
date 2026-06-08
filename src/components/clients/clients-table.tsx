@@ -31,7 +31,7 @@ export function ClientsTable({
               <Th>Cliente</Th>
               <Th>Plano</Th>
               <Th>Status</Th>
-              <Th>Origem</Th>
+              <Th>Telefone</Th>
               <Th>Cadastro</Th>
               <Th>Último acesso</Th>
               <Th className="text-right">Ações</Th>
@@ -69,7 +69,9 @@ export function ClientsTable({
                   />
                 </Td>
                 <Td>
-                  <span className="text-slate-300">{client.sourceLabel}</span>
+                  <span className="whitespace-nowrap text-slate-300">
+                    {client.phone}
+                  </span>
                 </Td>
                 <Td>
                   <span className="whitespace-nowrap text-slate-300">

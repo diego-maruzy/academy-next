@@ -1,9 +1,10 @@
 /**
  * Não enviar dados de cartão por e-mail.
  * Não logar dados sensíveis.
- * Não expor RESEND_API_KEY nem CHECKMATE_EMAIL_FROM no frontend.
+ * Não expor RESEND_API_KEY nem RESEND_FROM_EMAIL no frontend.
  */
 
+import { getResendClient, getResendFromEmail } from "@/lib/resend";
 import { createSupabaseServiceServerClient } from "@/lib/supabase/server";
 import type { EmailSendStatus } from "@/types/email";
 
@@ -21,10 +22,8 @@ export type SendEmailResult = {
   errorMessage?: string;
 };
 
-const DEFAULT_FROM = "onboarding@resend.dev";
-
 function getFromAddress() {
-  return process.env.CHECKMATE_EMAIL_FROM?.trim() || DEFAULT_FROM;
+  return getResendFromEmail();
 }
 
 async function logEmailSend({
@@ -66,40 +65,25 @@ async function sendViaResend(
   subject: string,
   html: string,
 ): Promise<SendEmailResult> {
-  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const resend = getResendClient();
 
-  if (!apiKey) {
+  if (!resend) {
     return { status: "stub" };
   }
 
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: getFromAddress(),
-        to: [to],
-        subject,
-        html,
-      }),
+    const { error } = await resend.emails.send({
+      from: getFromAddress(),
+      to: [to],
+      subject,
+      html,
     });
 
-    if (!response.ok) {
-      let message = `Resend HTTP ${response.status}`;
-
-      try {
-        const body = (await response.json()) as { message?: string };
-        if (body.message) {
-          message = body.message;
-        }
-      } catch {
-        // ignore parse errors
-      }
-
-      return { status: "failed", errorMessage: message };
+    if (error) {
+      return {
+        status: "failed",
+        errorMessage: error.message ?? "Falha ao enviar e-mail.",
+      };
     }
 
     return { status: "sent" };

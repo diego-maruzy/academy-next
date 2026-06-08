@@ -120,8 +120,8 @@ export function EmailsPageContent({ templates, logs }: EmailsPageContentProps) {
             configurada. Sem domínio verificado, o remetente pode usar{" "}
             <code className="text-emerald-300">onboarding@resend.dev</code>.
             Configure{" "}
-            <code className="text-emerald-300">CHECKMATE_EMAIL_FROM</code> com
-            seu domínio quando estiver verificado.
+            <code className="text-emerald-300">RESEND_FROM_EMAIL</code> com seu
+            domínio quando estiver verificado.
           </p>
           <p>
             Variáveis suportadas no assunto e corpo:{" "}

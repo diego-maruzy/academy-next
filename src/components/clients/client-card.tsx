@@ -1,7 +1,7 @@
 "use client";
 
 import type { ComponentType } from "react";
-import { CalendarDays, Clock3, Copy, Eye, Phone } from "lucide-react";
+import { CalendarDays, Clock3, Copy, Eye } from "lucide-react";
 import { useState } from "react";
 import { ClientActionsMenu } from "@/components/clients/client-actions-menu";
 import { ClientPlanBadge } from "@/components/clients/client-plan-badge";
@@ -74,7 +74,7 @@ export function ClientCard({
           isPremium={client.isPremium}
         />
         <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-slate-400">
-          {client.sourceLabel}
+          {client.phone}
         </span>
         <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-slate-400">
           {client.roleLabel}
@@ -82,9 +82,6 @@ export function ClientCard({
       </div>
 
       <div className="mt-3 grid gap-2 text-xs text-slate-400 sm:grid-cols-2">
-        {client.phone && client.phone !== "—" ? (
-          <MetaRow icon={Phone} label="Telefone" value={client.phone} />
-        ) : null}
         <MetaRow
           icon={CalendarDays}
           label="Cadastro"
