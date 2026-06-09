@@ -21,7 +21,7 @@ export function KeycloakLoginButton({
       const result = await signIn("keycloak", { callbackUrl, redirect: false });
 
       if (result?.url) {
-        window.location.assign(result.url);
+        window.location.href = result.url;
         return;
       }
     } catch {

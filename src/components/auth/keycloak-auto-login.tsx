@@ -20,7 +20,7 @@ async function startKeycloakLogin(callbackUrl: string) {
   }
 
   if (result?.url) {
-    window.location.assign(result.url);
+    window.location.href = result.url;
     return;
   }
 

@@ -65,6 +65,36 @@ https://academy-next-pi.vercel.app/auth-debug
 2. Abra `/login` na Academy no mesmo browser.
 3. SSO deve autenticar sem pedir senha novamente.
 
+## Link “Acessar Academy” (Property → Academy)
+
+URL de entrada (mesma aba, sem popup):
+
+`https://play.checkmateproperty.com/oidc/login`
+
+**Correto (HTML):**
+
+```html
+<a href="https://play.checkmateproperty.com/oidc/login">Acessar Academy</a>
+```
+
+**Correto (React/JS):**
+
+```ts
+window.location.href = "https://play.checkmateproperty.com/oidc/login";
+```
+
+**Evitar:**
+
+- `target="_blank"`
+- `window.open(...)`
+- `rel="noopener"` em link que abre nova aba
+
+No app Property (`app.checkmateproperty.com`), o botão deve substituir a página atual — não abrir nova aba nem popup.
+
+Variável opcional neste projeto:
+
+`NEXT_PUBLIC_ACADEMY_OIDC_LOGIN_URL=https://play.checkmateproperty.com/oidc/login`
+
 ## Logout aluno
 
 Encerrar sessão Keycloak: usar sign-out do Auth.js (quando exposto na UI do aluno). O botão **Sair** do painel admin só limpa a sessão admin.
