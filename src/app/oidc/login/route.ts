@@ -5,12 +5,15 @@ import {
   getKeycloakSignInRedirect,
 } from "@/lib/auth/keycloak-signin-redirect";
 import {
-  buildDashboardBridgeHtml,
+  buildCompleteSuccessHtml,
   buildKeycloakBridgeHtml,
   buildOidcErrorHtml,
   buildSignInFormHtml,
 } from "@/lib/auth/oidc-login-html";
-import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
+import {
+  getOidcAuthCallbackPath,
+  resolveStudentCallbackUrl,
+} from "@/lib/auth/route-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -34,22 +37,30 @@ function htmlResponse(
   return response;
 }
 
+function buildOidcSignInCallbackUrl(request: NextRequest, destination: string) {
+  const callback = new URL(getOidcAuthCallbackPath(), request.url);
+  callback.searchParams.set("next", destination);
+  return `${callback.pathname}?${callback.searchParams.toString()}`;
+}
+
 export async function GET(request: NextRequest) {
   const session = await auth();
-  const redirectTo = resolveStudentCallbackUrl(
+  const destination = resolveStudentCallbackUrl(
     request.nextUrl.searchParams.get("callbackUrl") ??
       request.nextUrl.searchParams.get("next"),
   );
 
   if (session?.user) {
-    const dashboardUrl = new URL(redirectTo, request.url).toString();
-    return htmlResponse(buildDashboardBridgeHtml(dashboardUrl));
+    const targetUrl = new URL(destination, request.url).toString();
+    return htmlResponse(buildCompleteSuccessHtml(targetUrl));
   }
+
+  const signInCallbackUrl = buildOidcSignInCallbackUrl(request, destination);
 
   const signInRedirect = await getKeycloakSignInRedirect(
     request.nextUrl.origin,
     request.headers.get("cookie"),
-    redirectTo,
+    signInCallbackUrl,
   );
 
   if (signInRedirect) {
@@ -71,7 +82,7 @@ export async function GET(request: NextRequest) {
   return htmlResponse(
     buildSignInFormHtml(
       request.nextUrl.origin,
-      redirectTo,
+      signInCallbackUrl,
       csrf.csrfToken,
     ),
     csrf.setCookieHeaders,

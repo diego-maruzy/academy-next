@@ -3,7 +3,15 @@ export function isAdminLoginPath(pathname: string) {
 }
 
 export function isStudentLoginPath(pathname: string) {
-  return pathname === "/login" || pathname === "/oidc/login";
+  return (
+    pathname === "/login" ||
+    pathname === "/oidc/login" ||
+    pathname === "/oidc/complete"
+  );
+}
+
+export function getOidcAuthCallbackPath() {
+  return "/oidc/complete";
 }
 
 export function resolveStudentCallbackUrl(value?: string | null) {

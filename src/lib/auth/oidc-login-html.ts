@@ -73,9 +73,20 @@ const BASE_STYLES = `
   @keyframes spin { to { transform: rotate(360deg); } }
 `;
 
-export function buildKeycloakBridgeHtml(keycloakUrl: string) {
-  const safeUrl = escapeHtml(keycloakUrl);
-  const jsUrl = JSON.stringify(keycloakUrl);
+function buildBridgeHtml({
+  title,
+  subtitle,
+  targetUrl,
+  actionLabel,
+  delaySeconds = 1,
+}: {
+  title: string;
+  subtitle: string;
+  targetUrl: string;
+  actionLabel: string;
+  delaySeconds?: number;
+}) {
+  const safeUrl = escapeHtml(targetUrl);
 
   return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -83,7 +94,7 @@ export function buildKeycloakBridgeHtml(keycloakUrl: string) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <meta http-equiv="refresh" content="0;url=${safeUrl}" />
+    <meta http-equiv="refresh" content="${delaySeconds};url=${safeUrl}" />
     <title>Checkmate Academy</title>
     <style>${BASE_STYLES}</style>
   </head>
@@ -91,27 +102,46 @@ export function buildKeycloakBridgeHtml(keycloakUrl: string) {
     <div class="card">
       <div class="logo">C</div>
       <p class="eyebrow">Checkmate Academy</p>
-      <h1>Redirecionando para o acesso Checkmate...</h1>
-      <p>Aguarde um instante enquanto conectamos sua conta.</p>
+      <h1>${title}</h1>
+      <p>${subtitle}</p>
       <div class="spinner" aria-hidden="true"></div>
-      <a class="action" href="${safeUrl}">Continuar login</a>
+      <a class="action" href="${safeUrl}">${actionLabel}</a>
     </div>
-    <script>window.location.replace(${jsUrl});</script>
   </body>
 </html>`;
 }
 
-export function buildDashboardBridgeHtml(dashboardUrl: string) {
-  const safeUrl = escapeHtml(dashboardUrl);
-  const jsUrl = JSON.stringify(dashboardUrl);
+export function buildKeycloakBridgeHtml(keycloakUrl: string) {
+  return buildBridgeHtml({
+    title: "Redirecionando para o acesso Checkmate...",
+    subtitle: "Aguarde um instante enquanto conectamos sua conta.",
+    targetUrl: keycloakUrl,
+    actionLabel: "Continuar login",
+    delaySeconds: 1,
+  });
+}
 
+export function buildCompleteSuccessHtml(targetUrl: string) {
+  return buildBridgeHtml({
+    title: "Login concluído",
+    subtitle: "Abrindo sua Academy agora.",
+    targetUrl: targetUrl,
+    actionLabel: "Abrir Academy",
+    delaySeconds: 1,
+  });
+}
+
+export function buildDashboardBridgeHtml(dashboardUrl: string) {
+  return buildCompleteSuccessHtml(dashboardUrl);
+}
+
+export function buildSessionMissingHtml() {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <meta http-equiv="refresh" content="0;url=${safeUrl}" />
     <title>Checkmate Academy</title>
     <style>${BASE_STYLES}</style>
   </head>
@@ -119,12 +149,10 @@ export function buildDashboardBridgeHtml(dashboardUrl: string) {
     <div class="card">
       <div class="logo">C</div>
       <p class="eyebrow">Checkmate Academy</p>
-      <h1>Abrindo sua Academy...</h1>
-      <p>Aguarde um instante.</p>
-      <div class="spinner" aria-hidden="true"></div>
-      <a class="action" href="${safeUrl}">Continuar</a>
+      <h1>Não foi possível confirmar o login.</h1>
+      <p>A sessão não foi salva neste navegador. Tente novamente.</p>
+      <a class="action" href="/oidc/login">Tentar novamente</a>
     </div>
-    <script>window.location.replace(${jsUrl});</script>
   </body>
 </html>`;
 }
@@ -181,12 +209,6 @@ export function buildSignInFormHtml(
         <button class="action" type="submit">Continuar login</button>
       </form>
     </div>
-    <script>
-      setTimeout(function () {
-        var form = document.getElementById("oidc-login-form");
-        if (form) form.submit();
-      }, 300);
-    </script>
   </body>
 </html>`;
 }

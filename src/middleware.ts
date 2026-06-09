@@ -106,8 +106,8 @@ export async function middleware(request: NextRequest) {
     const keycloakToken = await getKeycloakToken(request);
 
     if (!keycloakToken) {
-      const loginUrl = new URL("/login", request.url);
-      loginUrl.searchParams.set("callbackUrl", pathname);
+      const loginUrl = new URL("/oidc/login", request.url);
+      loginUrl.searchParams.set("next", pathname);
       return NextResponse.redirect(loginUrl);
     }
 
@@ -122,6 +122,7 @@ export const config = {
     "/",
     "/login",
     "/oidc/login",
+    "/oidc/complete",
     "/admin/login",
     "/auth-debug",
     "/test",

@@ -10,7 +10,7 @@ export const authConfig = {
     }),
   ],
   pages: {
-    signIn: "/login",
+    signIn: "/oidc/login",
   },
   session: {
     strategy: "jwt",
