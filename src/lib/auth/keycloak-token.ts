@@ -5,7 +5,7 @@ import {
   type AcademyAppRole,
 } from "@/lib/auth/keycloak-roles";
 
-export type KeycloakRolesSource = "keycloak" | "fallback";
+export type KeycloakRolesSource = "keycloak" | "fallback" | "host-tokens";
 
 export type ResolvedKeycloakRoles = {
   roles: string[];

@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { auth, signIn } from "@/auth";
-import { logOidcStart } from "@/lib/auth/oidc-debug-log";
+import { logHostTokenValidation, logOidcSession } from "@/lib/auth/oidc-debug-log";
+import { validateHostTokens } from "@/lib/auth/host-token-validation";
+import { buildSafeTokenLog } from "@/lib/auth/token-inspect";
 import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
 
 export const dynamic = "force-dynamic";
@@ -8,9 +10,19 @@ export const dynamic = "force-dynamic";
 type SessionBody = {
   id_token?: string;
   access_token?: string;
+  refresh_token?: string;
   next?: string;
   callbackUrl?: string;
+  auth_source?: string;
 };
+
+function shouldExposeDebugReason(request: NextRequest) {
+  if (process.env.NODE_ENV === "development") {
+    return true;
+  }
+
+  return request.nextUrl.searchParams.get("debug") === "1";
+}
 
 export async function POST(request: NextRequest) {
   const userAgent = request.headers.get("user-agent") ?? "";
@@ -27,15 +39,60 @@ export async function POST(request: NextRequest) {
   const destination = resolveStudentCallbackUrl(
     body.next ?? body.callbackUrl,
   );
+  const authSource = body.auth_source ?? "host-tokens";
+  const exposeDebug = shouldExposeDebugReason(request);
 
-  if (!idToken || typeof idToken !== "string") {
-    return NextResponse.json({ error: "missing_token" }, { status: 400 });
+  const tokenLog = buildSafeTokenLog({
+    accessToken,
+    idToken,
+    refreshToken: body.refresh_token,
+  });
+
+  const validation = await validateHostTokens({
+    idToken,
+    accessToken,
+  });
+
+  logHostTokenValidation({
+    userAgent,
+    code: validation.ok ? "ok" : validation.code,
+    clientId: validation.ok ? validation.clientId : undefined,
+    tokenLog,
+  });
+
+  if (!validation.ok) {
+    logOidcSession({
+      userAgent,
+      hasSession: false,
+      destination,
+      source: authSource,
+      validationCode: validation.code,
+    });
+
+    return NextResponse.json(
+      {
+        ok: false,
+        error: validation.code,
+        message: validation.message,
+        ...(exposeDebug
+          ? {
+              debug: {
+                code: validation.code,
+                details: validation.details,
+                tokens: tokenLog,
+              },
+            }
+          : {}),
+      },
+      { status: 401 },
+    );
   }
 
   try {
     await signIn("keycloak-token", {
-      id_token: idToken,
-      access_token: typeof accessToken === "string" ? accessToken : "",
+      id_token: idToken ?? "",
+      access_token: accessToken ?? "",
+      auth_source: authSource,
       redirect: false,
       redirectTo: destination,
     });
@@ -43,21 +100,32 @@ export async function POST(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user) {
-      logOidcStart({
+      logOidcSession({
         userAgent,
         hasSession: false,
         destination,
-        redirected: false,
+        source: authSource,
+        validationCode: "session_failed",
+        clientId: validation.clientId,
       });
 
-      return NextResponse.json({ error: "invalid_token" }, { status: 401 });
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "session_failed",
+          ...(exposeDebug ? { debug: { code: "session_failed", tokens: tokenLog } } : {}),
+        },
+        { status: 401 },
+      );
     }
 
-    logOidcStart({
+    logOidcSession({
       userAgent,
       hasSession: true,
       destination,
-      redirected: true,
+      source: authSource,
+      validationCode: "ok",
+      clientId: validation.clientId,
     });
 
     return NextResponse.json({
@@ -65,13 +133,22 @@ export async function POST(request: NextRequest) {
       redirect: destination,
     });
   } catch {
-    logOidcStart({
+    logOidcSession({
       userAgent,
       hasSession: false,
       destination,
-      redirected: false,
+      source: authSource,
+      validationCode: "session_failed",
+      clientId: validation.ok ? validation.clientId : undefined,
     });
 
-    return NextResponse.json({ error: "session_failed" }, { status: 401 });
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "session_failed",
+        ...(exposeDebug ? { debug: { code: "session_failed", tokens: tokenLog } } : {}),
+      },
+      { status: 401 },
+    );
   }
 }

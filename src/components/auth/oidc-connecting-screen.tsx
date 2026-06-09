@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 type OidcConnectingScreenProps = {
   title: string;
   description: string;
@@ -12,6 +14,7 @@ type OidcConnectingScreenProps = {
   hint?: string;
   webViewHint?: string;
   errorMessage?: string;
+  extraActions?: ReactNode;
 };
 
 export function OidcConnectingScreen({
@@ -26,6 +29,7 @@ export function OidcConnectingScreen({
   hint = 'Se a tela não avançar automaticamente, toque em "Continuar acesso".',
   webViewHint,
   errorMessage,
+  extraActions,
 }: OidcConnectingScreenProps) {
   return (
     <div className="min-h-screen min-h-[100dvh] bg-[#0f172a] px-5 py-10 text-[#f8fafc]">
@@ -77,6 +81,8 @@ export function OidcConnectingScreen({
                   {webViewHint}
                 </p>
               ) : null}
+
+              {extraActions}
 
               {errorMessage ? (
                 <p className="text-xs text-amber-300">{errorMessage}</p>

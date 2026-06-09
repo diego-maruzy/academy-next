@@ -136,6 +136,7 @@ export const config = {
     "/admin/login",
     "/auth-debug",
     "/test",
+    "/mobile-oidc-debug",
     "/dashboard",
     "/dashboard/:path*",
     "/programas",

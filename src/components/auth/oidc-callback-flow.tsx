@@ -35,6 +35,7 @@ export function OidcCallbackFlow() {
             access_token: user.access_token ?? "",
           },
           destination,
+          { authSource: "oidc-callback" },
         );
 
         await manager.removeUser();

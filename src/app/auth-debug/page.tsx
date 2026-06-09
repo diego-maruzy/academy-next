@@ -52,11 +52,14 @@ export default async function AuthDebugPage() {
         <Row
           label="Source da role"
           value={
-            rolesSource === "keycloak"
-              ? session.user.provider === "oidc"
-                ? "oidc"
-                : "keycloak"
-              : "fallback (nenhuma app role encontrada no token)"
+            rolesSource === "host-tokens"
+              ? "host-tokens"
+              : rolesSource === "keycloak"
+                ? session.user.provider === "oidc" ||
+                    session.user.provider === "oidc-host"
+                  ? "oidc"
+                  : "keycloak"
+                : "fallback (nenhuma app role encontrada no token)"
           }
         />
         <Row label="User id" value={session.user.id || "—"} />

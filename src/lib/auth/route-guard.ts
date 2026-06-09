@@ -36,6 +36,7 @@ export function isPublicPath(pathname: string) {
   return (
     pathname === "/" ||
     pathname === "/test" ||
+    pathname === "/mobile-oidc-debug" ||
     isStudentLoginPath(pathname) ||
     isAdminLoginPath(pathname) ||
     pathname.startsWith("/pay")
@@ -52,7 +53,8 @@ export function isKeycloakApiPath(pathname: string) {
   return (
     pathname.startsWith("/api/auth") ||
     pathname === "/api/oidc/start" ||
-    pathname === "/api/oidc/session"
+    pathname === "/api/oidc/session" ||
+    pathname === "/api/oidc/diagnose"
   );
 }
 
