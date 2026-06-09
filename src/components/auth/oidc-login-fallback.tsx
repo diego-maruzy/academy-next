@@ -7,7 +7,15 @@ type OidcLoginFallbackProps = {
 async function continueKeycloakLogin(redirectTo: string) {
   "use server";
 
-  await signIn("keycloak", { redirectTo });
+  const keycloakUrl = await signIn("keycloak", {
+    redirectTo,
+    redirect: false,
+  });
+
+  if (typeof keycloakUrl === "string" && keycloakUrl.length > 0) {
+    const { redirect } = await import("next/navigation");
+    redirect(keycloakUrl);
+  }
 }
 
 export function OidcLoginFallback({ redirectTo }: OidcLoginFallbackProps) {
