@@ -1,4 +1,10 @@
-import { StudentLoginEntry } from "@/components/auth/student-login-entry";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { AutoKeycloakLogin } from "@/components/auth/auto-keycloak-login";
+import {
+  getStudentPostLoginPath,
+  resolveStudentCallbackUrl,
+} from "@/lib/auth/route-guard";
 
 type OidcLoginPageProps = {
   searchParams: Promise<{ callbackUrl?: string; next?: string }>;
@@ -12,7 +18,18 @@ export const metadata = {
 };
 
 export default async function OidcLoginPage({ searchParams }: OidcLoginPageProps) {
+  const session = await auth();
   const { callbackUrl, next } = await searchParams;
+  const redirectTo = resolveStudentCallbackUrl(callbackUrl ?? next);
 
-  return <StudentLoginEntry callbackUrl={callbackUrl ?? next} />;
+  if (session?.user) {
+    redirect(redirectTo);
+  }
+
+  return (
+    <AutoKeycloakLogin
+      callbackUrl={redirectTo ?? getStudentPostLoginPath()}
+      autoLoginDelayMs={300}
+    />
+  );
 }

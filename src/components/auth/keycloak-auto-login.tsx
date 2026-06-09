@@ -3,11 +3,12 @@
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const AUTO_LOGIN_DELAY_MS = 500;
+const DEFAULT_AUTO_LOGIN_DELAY_MS = 500;
 const FALLBACK_BUTTON_DELAY_MS = 6000;
 
 type KeycloakAutoLoginProps = {
   callbackUrl?: string;
+  autoLoginDelayMs?: number;
 };
 
 type LoginStatus = "waiting" | "redirecting" | "fallback" | "error";
@@ -29,6 +30,7 @@ async function startKeycloakLogin(callbackUrl: string) {
 
 export function KeycloakAutoLogin({
   callbackUrl = "/dashboard",
+  autoLoginDelayMs = DEFAULT_AUTO_LOGIN_DELAY_MS,
 }: KeycloakAutoLoginProps) {
   const [status, setStatus] = useState<LoginStatus>("waiting");
   const hasStarted = useRef(false);
@@ -52,7 +54,7 @@ export function KeycloakAutoLogin({
 
     const loginTimer = window.setTimeout(() => {
       void triggerLogin();
-    }, AUTO_LOGIN_DELAY_MS);
+    }, autoLoginDelayMs);
 
     const fallbackTimer = window.setTimeout(() => {
       setStatus((current) =>
@@ -64,7 +66,7 @@ export function KeycloakAutoLogin({
       window.clearTimeout(loginTimer);
       window.clearTimeout(fallbackTimer);
     };
-  }, [triggerLogin]);
+  }, [autoLoginDelayMs, triggerLogin]);
 
   const showFallbackButton = status === "fallback" || status === "error";
   const title =
