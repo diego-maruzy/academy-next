@@ -10,6 +10,7 @@ import {
   isProtectedPanelPath,
 } from "@/lib/admin-auth/permissions";
 import {
+  getStudentCallbackUrlFromSearchParams,
   isAdminApiPath,
   isAdminLoginPath,
   isKeycloakApiPath,
@@ -69,8 +70,9 @@ export async function middleware(request: NextRequest) {
     const keycloakToken = await getKeycloakToken(request);
 
     if (keycloakToken) {
-      const callbackUrl =
-        request.nextUrl.searchParams.get("callbackUrl") ?? "/dashboard";
+      const callbackUrl = getStudentCallbackUrlFromSearchParams(
+        request.nextUrl.searchParams,
+      );
       return NextResponse.redirect(new URL(callbackUrl, request.url));
     }
 
@@ -119,6 +121,7 @@ export const config = {
   matcher: [
     "/",
     "/login",
+    "/oidc/login",
     "/admin/login",
     "/auth-debug",
     "/dashboard",

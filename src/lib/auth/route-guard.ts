@@ -3,7 +3,23 @@ export function isAdminLoginPath(pathname: string) {
 }
 
 export function isStudentLoginPath(pathname: string) {
-  return pathname === "/login";
+  return pathname === "/login" || pathname === "/oidc/login";
+}
+
+export function resolveStudentCallbackUrl(value?: string | null) {
+  if (value && value.startsWith("/") && !value.startsWith("//")) {
+    return value;
+  }
+
+  return getStudentPostLoginPath();
+}
+
+export function getStudentCallbackUrlFromSearchParams(
+  searchParams: Pick<URLSearchParams, "get">,
+) {
+  return resolveStudentCallbackUrl(
+    searchParams.get("callbackUrl") ?? searchParams.get("next"),
+  );
 }
 
 export function isPublicPath(pathname: string) {
