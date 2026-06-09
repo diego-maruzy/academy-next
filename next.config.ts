@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/oidc/login",
+        destination: "/login",
+        permanent: false,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

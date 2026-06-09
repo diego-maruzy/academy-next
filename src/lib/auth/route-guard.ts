@@ -3,7 +3,11 @@ export function isAdminLoginPath(pathname: string) {
 }
 
 export function isStudentLoginPath(pathname: string) {
-  return pathname === "/login" || pathname === "/oidc/login";
+  return pathname === "/login";
+}
+
+export function isOidcLoginPath(pathname: string) {
+  return pathname === "/oidc/login";
 }
 
 export function resolveStudentCallbackUrl(value?: string | null) {
@@ -27,6 +31,7 @@ export function isPublicPath(pathname: string) {
     pathname === "/" ||
     pathname === "/test" ||
     isStudentLoginPath(pathname) ||
+    isOidcLoginPath(pathname) ||
     isAdminLoginPath(pathname) ||
     pathname.startsWith("/pay")
   );
