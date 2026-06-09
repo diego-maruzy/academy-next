@@ -25,6 +25,7 @@ export function getStudentCallbackUrlFromSearchParams(
 export function isPublicPath(pathname: string) {
   return (
     pathname === "/" ||
+    pathname === "/test" ||
     isStudentLoginPath(pathname) ||
     isAdminLoginPath(pathname) ||
     pathname.startsWith("/pay")

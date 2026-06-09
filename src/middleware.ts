@@ -124,6 +124,7 @@ export const config = {
     "/oidc/login",
     "/admin/login",
     "/auth-debug",
+    "/test",
     "/dashboard",
     "/dashboard/:path*",
     "/programas",
