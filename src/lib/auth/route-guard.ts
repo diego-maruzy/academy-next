@@ -47,7 +47,7 @@ export function isAdminApiPath(pathname: string) {
 }
 
 export function isKeycloakApiPath(pathname: string) {
-  return pathname.startsWith("/api/auth");
+  return pathname.startsWith("/api/auth") || pathname === "/api/oidc/start";
 }
 
 /** Rotas do aluno — exigem sessão Keycloak */

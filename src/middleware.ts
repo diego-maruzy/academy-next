@@ -67,6 +67,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isStudentLoginPath(pathname)) {
+    if (pathname === "/oidc/login") {
+      return NextResponse.next();
+    }
+
     const keycloakToken = await getKeycloakToken(request);
 
     if (keycloakToken) {
