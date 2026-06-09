@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { auth, signIn } from "@/auth";
+import { getEmbeddedContextFromSearchParams } from "@/lib/embedded-params";
 import { logHostTokenValidation, logOidcSession } from "@/lib/auth/oidc-debug-log";
 import { validateHostTokens } from "@/lib/auth/host-token-validation";
 import { buildSafeTokenLog } from "@/lib/auth/token-inspect";
@@ -39,6 +40,8 @@ export async function POST(request: NextRequest) {
   const destination = resolveStudentCallbackUrl(
     body.next ?? body.callbackUrl,
   );
+  const destinationUrl = new URL(destination, request.nextUrl.origin);
+  const embedded = getEmbeddedContextFromSearchParams(destinationUrl.searchParams);
   const authSource = body.auth_source ?? "host-tokens";
   const exposeDebug = shouldExposeDebugReason(request);
 
@@ -58,6 +61,7 @@ export async function POST(request: NextRequest) {
     code: validation.ok ? "ok" : validation.code,
     clientId: validation.ok ? validation.clientId : undefined,
     tokenLog,
+    embedded,
   });
 
   if (!validation.ok) {
@@ -67,6 +71,8 @@ export async function POST(request: NextRequest) {
       destination,
       source: authSource,
       validationCode: validation.code,
+      embedded,
+      pathname: "/api/oidc/session",
     });
 
     return NextResponse.json(
@@ -107,6 +113,8 @@ export async function POST(request: NextRequest) {
         source: authSource,
         validationCode: "session_failed",
         clientId: validation.clientId,
+        embedded,
+        pathname: "/api/oidc/session",
       });
 
       return NextResponse.json(
@@ -126,6 +134,8 @@ export async function POST(request: NextRequest) {
       source: authSource,
       validationCode: "ok",
       clientId: validation.clientId,
+      embedded,
+      pathname: "/api/oidc/session",
     });
 
     return NextResponse.json({
@@ -140,6 +150,8 @@ export async function POST(request: NextRequest) {
       source: authSource,
       validationCode: "session_failed",
       clientId: validation.ok ? validation.clientId : undefined,
+      embedded,
+      pathname: "/api/oidc/session",
     });
 
     return NextResponse.json(

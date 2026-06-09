@@ -2,6 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { OidcConnectingScreen } from "@/components/auth/oidc-connecting-screen";
+import {
+  getEmbeddedContext,
+  isEmbedded,
+  persistEmbeddedContext,
+  returnToHostApp,
+  withEmbeddedParams,
+} from "@/lib/embedded";
+import { logEmbeddedNavigation } from "@/lib/auth/oidc-debug-log";
 import { getOidcUserManager } from "@/lib/auth/oidc-user-manager";
 import { createAcademySessionFromTokens } from "@/lib/auth/oidc-session-client";
 import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
@@ -9,6 +17,10 @@ import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
 export function OidcCallbackFlow() {
   const started = useRef(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    persistEmbeddedContext();
+  }, []);
 
   useEffect(() => {
     if (started.current) {
@@ -21,9 +33,10 @@ export function OidcCallbackFlow() {
       try {
         const manager = getOidcUserManager();
         const user = await manager.signinRedirectCallback();
-        const destination = resolveStudentCallbackUrl(
+        const rawDestination = resolveStudentCallbackUrl(
           typeof user.state === "string" ? user.state : undefined,
         );
+        const destination = withEmbeddedParams(rawDestination);
 
         if (!user.id_token) {
           throw new Error("missing_id_token");
@@ -44,7 +57,18 @@ export function OidcCallbackFlow() {
           throw new Error(result.error ?? "session_failed");
         }
 
-        window.location.assign(result.redirect ?? destination);
+        const nextTarget = withEmbeddedParams(
+          result.redirect ?? destination,
+        );
+
+        logEmbeddedNavigation({
+          from: "/auth/callback",
+          to: nextTarget,
+          embedded: getEmbeddedContext(),
+          action: "dashboard",
+        });
+
+        window.location.assign(nextTarget);
       } catch {
         setErrorMessage(
           "Não foi possível concluir o login. Volte e tente novamente.",
@@ -67,9 +91,14 @@ export function OidcCallbackFlow() {
       }
       showSpinner={!errorMessage}
       showActions={Boolean(errorMessage)}
-      actionLabel="Voltar ao login"
+      actionLabel={isEmbedded() ? "Voltar ao app" : "Voltar ao login"}
       onContinue={() => {
-        window.location.assign("/oidc/login");
+        if (isEmbedded()) {
+          returnToHostApp();
+          return;
+        }
+
+        window.location.assign(withEmbeddedParams("/oidc/login"));
       }}
       errorMessage={errorMessage ?? undefined}
     />

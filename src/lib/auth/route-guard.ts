@@ -1,3 +1,5 @@
+import { buildPathWithEmbeddedParams } from "@/lib/embedded-params";
+
 export function isAdminLoginPath(pathname: string) {
   return pathname === "/admin/login";
 }
@@ -27,9 +29,11 @@ export function resolveStudentCallbackUrl(value?: string | null) {
 export function getStudentCallbackUrlFromSearchParams(
   searchParams: Pick<URLSearchParams, "get">,
 ) {
-  return resolveStudentCallbackUrl(
+  const base = resolveStudentCallbackUrl(
     searchParams.get("callbackUrl") ?? searchParams.get("next"),
   );
+
+  return buildPathWithEmbeddedParams(base, searchParams);
 }
 
 export function isPublicPath(pathname: string) {

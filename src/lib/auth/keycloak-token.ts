@@ -1,7 +1,6 @@
 import {
-  extractRawKeycloakRoles,
+  extractApplicationRolesFromPayload,
   mapKeycloakRolesToAppRole,
-  partitionKeycloakRoles,
   type AcademyAppRole,
 } from "@/lib/auth/keycloak-roles";
 
@@ -23,7 +22,10 @@ function decodeJwtPayload(token: string): Record<string, unknown> | null {
     }
 
     const payload = parts[1].replace(/-/g, "+").replace(/_/g, "/");
-    const padded = payload.padEnd(payload.length + ((4 - (payload.length % 4)) % 4), "=");
+    const padded = payload.padEnd(
+      payload.length + ((4 - (payload.length % 4)) % 4),
+      "=",
+    );
     const json = Buffer.from(padded, "base64").toString("utf8");
 
     return JSON.parse(json) as Record<string, unknown>;
@@ -32,36 +34,79 @@ function decodeJwtPayload(token: string): Record<string, unknown> | null {
   }
 }
 
-export function resolveKeycloakRolesFromAuthPayload(input: {
-  profile?: Record<string, unknown> | null;
-  accessToken?: string | null;
-  idToken?: string | null;
-}): ResolvedKeycloakRoles {
-  const payloads = [
-    input.profile,
-    input.accessToken ? decodeJwtPayload(input.accessToken) : null,
-    input.idToken ? decodeJwtPayload(input.idToken) : null,
-  ].filter((payload): payload is Record<string, unknown> => Boolean(payload));
-
-  const rawRoles = [
-    ...new Set(payloads.flatMap((payload) => extractRawKeycloakRoles(payload))),
-  ];
-
-  if (rawRoles.length === 0) {
-    return {
-      roles: [],
-      ignoredRoles: [],
-      appRole: "free",
-      source: "fallback",
-    };
+function resolveFromPayload(
+  payload: Record<string, unknown> | null | undefined,
+  source: KeycloakRolesSource,
+): ResolvedKeycloakRoles | null {
+  if (!payload) {
+    return null;
   }
 
-  const { applicationRoles, ignoredRoles } = partitionKeycloakRoles(rawRoles);
+  const { applicationRoles, ignoredRoles } =
+    extractApplicationRolesFromPayload(payload);
+
+  if (applicationRoles.length === 0) {
+    return null;
+  }
 
   return {
     roles: applicationRoles,
     ignoredRoles,
     appRole: mapKeycloakRolesToAppRole(applicationRoles),
-    source: applicationRoles.length > 0 ? "keycloak" : "fallback",
+    source,
+  };
+}
+
+export function resolveKeycloakRolesFromAuthPayload(input: {
+  profile?: Record<string, unknown> | null;
+  accessToken?: string | null;
+  idToken?: string | null;
+  rolesSource?: KeycloakRolesSource;
+}): ResolvedKeycloakRoles {
+  const source = input.rolesSource ?? "keycloak";
+  const accessPayload = input.accessToken
+    ? decodeJwtPayload(input.accessToken)
+    : null;
+  const idPayload = input.idToken ? decodeJwtPayload(input.idToken) : null;
+
+  const fromAccess = resolveFromPayload(accessPayload, source);
+
+  if (fromAccess) {
+    return fromAccess;
+  }
+
+  const fromId = resolveFromPayload(idPayload, source);
+
+  if (fromId) {
+    return fromId;
+  }
+
+  const fromProfile = resolveFromPayload(input.profile, source);
+
+  if (fromProfile) {
+    return fromProfile;
+  }
+
+  const ignoredRoles = [
+    ...new Set(
+      [
+        ...(accessPayload
+          ? extractApplicationRolesFromPayload(accessPayload).ignoredRoles
+          : []),
+        ...(idPayload
+          ? extractApplicationRolesFromPayload(idPayload).ignoredRoles
+          : []),
+        ...(input.profile
+          ? extractApplicationRolesFromPayload(input.profile).ignoredRoles
+          : []),
+      ].filter(Boolean),
+    ),
+  ];
+
+  return {
+    roles: [],
+    ignoredRoles,
+    appRole: "free",
+    source: "fallback",
   };
 }

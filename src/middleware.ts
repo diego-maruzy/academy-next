@@ -9,6 +9,7 @@ import {
   getDefaultAdminPath,
   isProtectedPanelPath,
 } from "@/lib/admin-auth/permissions";
+import { copyEmbeddedSearchParams } from "@/lib/embedded-params";
 import {
   getStudentCallbackUrlFromSearchParams,
   isAdminApiPath,
@@ -18,6 +19,13 @@ import {
   isStudentLoginPath,
   requiresKeycloakAuth,
 } from "@/lib/auth/route-guard";
+
+function buildOidcLoginRedirect(request: NextRequest, nextPath: string) {
+  const loginUrl = new URL("/oidc/login", request.url);
+  loginUrl.searchParams.set("next", nextPath);
+  copyEmbeddedSearchParams(request.nextUrl.searchParams, loginUrl.searchParams);
+  return loginUrl;
+}
 
 function redirectShortsToReels(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -114,9 +122,7 @@ export async function middleware(request: NextRequest) {
     const keycloakToken = await getKeycloakToken(request);
 
     if (!keycloakToken) {
-      const loginUrl = new URL("/oidc/login", request.url);
-      loginUrl.searchParams.set("next", pathname);
-      return NextResponse.redirect(loginUrl);
+      return NextResponse.redirect(buildOidcLoginRedirect(request, pathname));
     }
 
     return NextResponse.next();

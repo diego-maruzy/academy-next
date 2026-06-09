@@ -21,6 +21,23 @@ const APPLICATION_ROLE_NORMALIZED = new Set([
   "user",
 ]);
 
+const TECHNICAL_ROLE_EXACT = new Set([
+  "offline_access",
+  "uma_authorization",
+  "manage-users",
+  "view-users",
+  "query-groups",
+  "query-users",
+  "manage-account",
+  "manage-account-links",
+  "view-profile",
+]);
+
+const DEFAULT_PROPERTY_RESOURCE_CLIENTS = [
+  "checkmate-property-public",
+  "checkmate-property-private",
+];
+
 function normalizeRole(role: string) {
   return role.trim().toLowerCase();
 }
@@ -29,35 +46,37 @@ function isApplicationRole(role: string) {
   return APPLICATION_ROLE_NORMALIZED.has(normalizeRole(role));
 }
 
-export function extractRawKeycloakRoles(
-  source: Record<string, unknown> | null | undefined,
-): string[] {
-  if (!source) {
-    return [];
+export function isTechnicalKeycloakRole(role: string) {
+  const normalized = normalizeRole(role);
+
+  if (TECHNICAL_ROLE_EXACT.has(normalized)) {
+    return true;
   }
 
-  const realmAccess = source.realm_access as RealmAccess | undefined;
-  const realmRoles = realmAccess?.roles ?? [];
-
-  const resourceAccess = source.resource_access as ResourceAccess | undefined;
-  const resourceRoles = resourceAccess
-    ? Object.values(resourceAccess).flatMap((entry) => entry?.roles ?? [])
-    : [];
-
-  const topLevelRoles = Array.isArray(source.roles)
-    ? source.roles.filter((role): role is string => typeof role === "string")
-    : [];
-
-  const merged = [...realmRoles, ...resourceRoles, ...topLevelRoles]
-    .map((role) => role.trim())
-    .filter((role) => role.length > 0);
-
-  return [...new Set(merged)];
+  return normalized.startsWith("default-roles-");
 }
 
-export function partitionKeycloakRoles(
-  rawRoles: string[],
-): PartitionedKeycloakRoles {
+export function getKeycloakResourceClientIds() {
+  const defaults = [
+    process.env.KEYCLOAK_PUBLIC_CLIENT_ID ?? "checkmate-academy-public",
+    process.env.KEYCLOAK_CLIENT_ID,
+  ];
+
+  const hostClients = (process.env.KEYCLOAK_HOST_CLIENT_IDS ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  return [
+    ...new Set(
+      [...defaults, ...hostClients, ...DEFAULT_PROPERTY_RESOURCE_CLIENTS].filter(
+        Boolean,
+      ),
+    ),
+  ] as string[];
+}
+
+function partitionRoleList(rawRoles: string[]): PartitionedKeycloakRoles {
   const applicationRoles: string[] = [];
   const ignoredRoles: string[] = [];
 
@@ -82,22 +101,111 @@ export function partitionKeycloakRoles(
   };
 }
 
-export function mapKeycloakRolesToAppRole(roles: string[]): AcademyAppRole {
-  const normalized = roles.map(normalizeRole);
+export function extractApplicationRolesFromPayload(
+  source: Record<string, unknown> | null | undefined,
+): PartitionedKeycloakRoles {
+  if (!source) {
+    return { applicationRoles: [], ignoredRoles: [] };
+  }
 
-  if (normalized.includes("role_admin") || normalized.includes("admin")) {
+  const applicationRoles: string[] = [];
+  const ignoredRoles: string[] = [];
+  const prioritizedClients = getKeycloakResourceClientIds();
+  const resourceAccess = source.resource_access as ResourceAccess | undefined;
+
+  const addRoles = (roles: string[] | undefined, forceIgnored = false) => {
+    for (const role of roles ?? []) {
+      const trimmed = role.trim();
+
+      if (!trimmed) {
+        continue;
+      }
+
+      if (!forceIgnored && isApplicationRole(trimmed)) {
+        applicationRoles.push(trimmed);
+        continue;
+      }
+
+      ignoredRoles.push(trimmed);
+    }
+  };
+
+  for (const clientId of prioritizedClients) {
+    addRoles(resourceAccess?.[clientId]?.roles);
+  }
+
+  if (resourceAccess) {
+    for (const [clientId, entry] of Object.entries(resourceAccess)) {
+      if (prioritizedClients.includes(clientId)) {
+        continue;
+      }
+
+      addRoles(entry?.roles);
+    }
+  }
+
+  const realmAccess = source.realm_access as RealmAccess | undefined;
+
+  for (const role of realmAccess?.roles ?? []) {
+    const trimmed = role.trim();
+
+    if (!trimmed) {
+      continue;
+    }
+
+    if (isApplicationRole(trimmed)) {
+      applicationRoles.push(trimmed);
+      continue;
+    }
+
+    if (isTechnicalKeycloakRole(trimmed) || !isApplicationRole(trimmed)) {
+      ignoredRoles.push(trimmed);
+    }
+  }
+
+  const topLevelRoles = Array.isArray(source.roles)
+    ? source.roles.filter((role): role is string => typeof role === "string")
+    : [];
+
+  addRoles(topLevelRoles);
+
+  return {
+    applicationRoles: [...new Set(applicationRoles)],
+    ignoredRoles: [...new Set(ignoredRoles)],
+  };
+}
+
+export function extractRawKeycloakRoles(
+  source: Record<string, unknown> | null | undefined,
+): string[] {
+  const { applicationRoles, ignoredRoles } =
+    extractApplicationRolesFromPayload(source);
+
+  return [...new Set([...applicationRoles, ...ignoredRoles])];
+}
+
+export function partitionKeycloakRoles(
+  rawRoles: string[],
+): PartitionedKeycloakRoles {
+  return partitionRoleList(rawRoles);
+}
+
+export function mapKeycloakRolesToAppRole(roles: string[]): AcademyAppRole {
+  const normalized = new Set(roles.map(normalizeRole));
+
+  if (normalized.has("role_admin") || normalized.has("admin")) {
     return "admin";
   }
 
-  if (normalized.includes("role_user_free")) {
-    return "free";
-  }
-
-  if (normalized.includes("role_user")) {
+  if (normalized.has("role_user")) {
     return "premium";
   }
 
-  if (normalized.includes("user")) {
+  if (normalized.has("role_user_free")) {
+    return "free";
+  }
+
+  if (normalized.has("user")) {
     return "free";
   }
 
@@ -116,25 +224,22 @@ export function hasPremiumKeycloakAccess(roles: string[]): boolean {
 export function getAdminPermissionFromKeycloakRoles(
   roles: string[],
 ): AdminPermission | null {
-  const normalized = roles.map(normalizeRole);
+  const normalized = new Set(roles.map(normalizeRole));
 
-  if (normalized.includes("role_admin") || normalized.includes("admin")) {
+  if (normalized.has("role_admin") || normalized.has("admin")) {
     return "admin_access";
   }
 
   if (
-    normalized.includes("role_academy") ||
-    normalized.includes("academy_access") ||
-    normalized.includes("role_team") ||
-    normalized.includes("team")
+    normalized.has("role_academy") ||
+    normalized.has("academy_access") ||
+    normalized.has("role_team") ||
+    normalized.has("team")
   ) {
     return "academy_access";
   }
 
-  if (
-    normalized.includes("role_support") ||
-    normalized.includes("support_access")
-  ) {
+  if (normalized.has("role_support") || normalized.has("support_access")) {
     return "support_access";
   }
 

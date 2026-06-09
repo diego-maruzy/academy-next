@@ -50,6 +50,16 @@ export function stripHostTokensFromUrl() {
   window.history.replaceState({}, "", next || "/oidc/login");
 }
 
+export function getSanitizedLocationPath(location: Location) {
+  const url = new URL(location.href);
+
+  url.searchParams.delete("access_token");
+  url.searchParams.delete("id_token");
+  url.searchParams.delete("refresh_token");
+
+  return `${url.pathname}${url.search}`;
+}
+
 export type SessionCreateResult = {
   ok: boolean;
   redirect?: string;

@@ -3,7 +3,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { OidcConnectingScreen } from "@/components/auth/oidc-connecting-screen";
+import {
+  buildPathWithEmbeddedParams,
+  getEmbeddedContextFromSearchParams,
+} from "@/lib/embedded-params";
+import {
+  getEmbeddedContext,
+  isEmbedded,
+  persistEmbeddedContext,
+  returnToHostApp,
+  withEmbeddedParams,
+} from "@/lib/embedded";
 import { isLikelyWebView } from "@/lib/auth/detect-webview";
+import { logEmbeddedNavigation } from "@/lib/auth/oidc-debug-log";
 import { getOidcUserManager } from "@/lib/auth/oidc-user-manager";
 import {
   createAcademySessionFromTokens,
@@ -63,11 +75,15 @@ function getDebugErrorMessage(result: SessionCreateResult) {
 
 export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
   const searchParams = useSearchParams();
-  const destination = useMemo(
-    () =>
-      resolveStudentCallbackUrl(
-        searchParams.get("callbackUrl") ?? searchParams.get("next"),
-      ),
+  const destination = useMemo(() => {
+    const base = resolveStudentCallbackUrl(
+      searchParams.get("callbackUrl") ?? searchParams.get("next"),
+    );
+
+    return buildPathWithEmbeddedParams(base, searchParams);
+  }, [searchParams]);
+  const embeddedContext = useMemo(
+    () => getEmbeddedContextFromSearchParams(searchParams),
     [searchParams],
   );
   const isWebView = useMemo(
@@ -78,6 +94,7 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
       ),
     [userAgent],
   );
+  const isEmbeddedFlow = isEmbedded() || isWebView;
   const started = useRef(false);
   const [state, setState] = useState<FlowState>("bootstrapping");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -86,9 +103,26 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
     process.env.NODE_ENV === "development" ||
     searchParams.get("debug") === "1";
 
-  const finishWithDestination = useCallback((target: string) => {
-    window.location.assign(target);
+  useEffect(() => {
+    persistEmbeddedContext();
   }, []);
+
+  const finishWithDestination = useCallback(
+    (target: string) => {
+      const nextTarget = withEmbeddedParams(target);
+
+      logEmbeddedNavigation({
+        userAgent,
+        from: window.location.pathname,
+        to: nextTarget,
+        embedded: embeddedContext,
+        action: "dashboard",
+      });
+
+      window.location.assign(nextTarget);
+    },
+    [embeddedContext, userAgent],
+  );
 
   const bootstrapFromHostTokens = useCallback(async () => {
     const tokens = parseHostTokensFromLocation(window.location);
@@ -105,7 +139,7 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
     });
 
     if (!result.ok) {
-      if (isWebView) {
+      if (isEmbeddedFlow) {
         setState("host_error");
       } else {
         setState("desktop_fallback");
@@ -119,7 +153,7 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
     stripHostTokensFromUrl();
     finishWithDestination(result.redirect ?? destination);
     return true;
-  }, [destination, finishWithDestination, isWebView, showDebug]);
+  }, [destination, finishWithDestination, isEmbeddedFlow, showDebug]);
 
   const startKeycloakRedirect = useCallback(async () => {
     setState("connecting");
@@ -130,18 +164,38 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
       const manager = getOidcUserManager();
       await manager.signinRedirect({ state: destination });
     } catch {
-      setState(isWebView ? "host_error" : "manual");
+      setState(isEmbeddedFlow ? "host_error" : "manual");
       setErrorMessage(
         "Não foi possível abrir o Keycloak automaticamente. Use o botão abaixo.",
       );
     }
-  }, [destination, isWebView]);
+  }, [destination, isEmbeddedFlow]);
 
-  const openInBrowser = useCallback(() => {
-    const url = new URL(window.location.href);
-    url.searchParams.delete("debug");
-    window.open(url.toString(), "_blank");
-  }, []);
+  const retryLogin = useCallback(() => {
+    const retryPath = withEmbeddedParams("/oidc/login");
+
+    logEmbeddedNavigation({
+      userAgent,
+      from: window.location.pathname,
+      to: retryPath,
+      embedded: embeddedContext,
+      action: "retry",
+    });
+
+    window.location.assign(retryPath);
+  }, [embeddedContext, userAgent]);
+
+  const handleReturnToHost = useCallback(() => {
+    logEmbeddedNavigation({
+      userAgent,
+      from: window.location.pathname,
+      to: getEmbeddedContext().returnUrl ?? "postMessage",
+      embedded: embeddedContext,
+      action: "return-host",
+    });
+
+    returnToHostApp();
+  }, [embeddedContext, userAgent]);
 
   useEffect(() => {
     if (started.current) {
@@ -171,7 +225,7 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
         return;
       }
 
-      if (isWebView) {
+      if (isEmbeddedFlow) {
         setState("host_error");
         setErrorMessage(
           "Abra a Academy pelo app Checkmate com sua conta já logada.",
@@ -198,7 +252,7 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
     bootstrapFromHostTokens,
     destination,
     finishWithDestination,
-    isWebView,
+    isEmbeddedFlow,
     startKeycloakRedirect,
   ]);
 
@@ -218,14 +272,18 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
         ? errorMessage ??
           "Volte ao app Checkmate, confirme que está logado e tente acessar a Academy novamente."
         : state === "desktop_fallback"
-          ? errorMessage ??
-            "Os tokens recebidos não puderam ser validados."
+          ? errorMessage ?? "Os tokens recebidos não puderam ser validados."
           : "Aguarde um instante enquanto validamos seu acesso.";
 
   const showSpinner =
-    state === "bootstrapping" || state === "connecting" || state === "authenticated";
+    state === "bootstrapping" ||
+    state === "connecting" ||
+    state === "authenticated";
 
-  const showActions = state === "host_error" || state === "desktop_fallback" || state === "manual";
+  const showActions =
+    state === "host_error" ||
+    state === "desktop_fallback" ||
+    state === "manual";
 
   return (
     <OidcConnectingScreen
@@ -242,30 +300,30 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
           return;
         }
 
-        window.location.assign("/oidc/login");
+        retryLogin();
       }}
       secondaryHref={
         state === "desktop_fallback"
-          ? `/oidc/login?next=${encodeURIComponent(destination)}`
+          ? withEmbeddedParams(
+              `/oidc/login?next=${encodeURIComponent(destination.split("?")[0])}`,
+            )
           : undefined
       }
       secondaryLabel="Abrir login em nova tentativa"
       webViewHint={
-        isWebView
+        isEmbeddedFlow && !isEmbedded()
           ? "Se o acesso não continuar, abra no navegador do dispositivo."
           : undefined
       }
-      errorMessage={
-        showDebug && debugMessage ? debugMessage : undefined
-      }
+      errorMessage={showDebug && debugMessage ? debugMessage : undefined}
       extraActions={
-        isWebView && state === "host_error" ? (
+        isEmbeddedFlow && state === "host_error" ? (
           <button
             type="button"
-            onClick={openInBrowser}
+            onClick={handleReturnToHost}
             className="h-11 w-full rounded-xl border border-white/10 bg-white/5 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
           >
-            Abrir login no navegador
+            Voltar ao app
           </button>
         ) : null
       }
