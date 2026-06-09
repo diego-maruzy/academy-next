@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import { authConfig } from "@/auth.config";
 import type { AcademyAppRole } from "@/lib/auth/keycloak-roles";
 import { mapKeycloakRolesToAppRole } from "@/lib/auth/keycloak-roles";
+import { keycloakTokenProvider } from "@/lib/auth/keycloak-token-provider";
 import {
   resolveKeycloakRolesFromAuthPayload,
   type KeycloakRolesSource,
@@ -9,9 +10,10 @@ import {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  providers: [...authConfig.providers, keycloakTokenProvider],
   secret: process.env.AUTH_SECRET,
   callbacks: {
-    async jwt({ token, account, profile }) {
+    async jwt({ token, account, profile, user }) {
       if (account?.provider === "keycloak") {
         const resolved = resolveKeycloakRolesFromAuthPayload({
           profile: profile as Record<string, unknown> | undefined,
@@ -28,6 +30,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (account.id_token) {
           token.idToken = account.id_token;
         }
+      }
+
+      if (account?.provider === "keycloak-token" && user) {
+        token.sub = user.id;
+        token.email = user.email;
+        token.name = user.name;
+        token.provider = user.provider ?? "oidc";
+        token.roles = user.roles ?? [];
+        token.ignoredRoles = user.ignoredRoles ?? [];
+        token.appRole = user.appRole ?? "free";
+        token.rolesSource = user.rolesSource ?? "keycloak";
       }
 
       return token;

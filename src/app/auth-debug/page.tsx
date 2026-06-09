@@ -10,7 +10,7 @@ export default async function AuthDebugPage() {
   const [session, adminSession] = await Promise.all([auth(), getCurrentAdmin()]);
 
   if (!session?.user) {
-    redirect("/login?callbackUrl=/auth-debug");
+    redirect("/oidc/login?next=/auth-debug");
   }
 
   const appRoles = session.user.roles ?? [];
@@ -53,7 +53,9 @@ export default async function AuthDebugPage() {
           label="Source da role"
           value={
             rolesSource === "keycloak"
-              ? "keycloak"
+              ? session.user.provider === "oidc"
+                ? "oidc"
+                : "keycloak"
               : "fallback (nenhuma app role encontrada no token)"
           }
         />

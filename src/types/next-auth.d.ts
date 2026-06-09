@@ -3,6 +3,14 @@ import type { AcademyAppRole } from "@/lib/auth/keycloak-roles";
 import type { KeycloakRolesSource } from "@/lib/auth/keycloak-token";
 
 declare module "next-auth" {
+  interface User {
+    roles?: string[];
+    ignoredRoles?: string[];
+    appRole?: AcademyAppRole;
+    rolesSource?: KeycloakRolesSource;
+    provider?: string;
+  }
+
   interface Session {
     user: DefaultSession["user"] & {
       id: string;

@@ -67,7 +67,11 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isStudentLoginPath(pathname)) {
-    if (pathname === "/oidc/login") {
+    if (
+      pathname === "/oidc/login" ||
+      pathname === "/auth/callback" ||
+      pathname === "/auth/silent-callback"
+    ) {
       return NextResponse.next();
     }
 
@@ -127,6 +131,8 @@ export const config = {
     "/login",
     "/oidc/login",
     "/oidc/complete",
+    "/auth/callback",
+    "/auth/silent-callback",
     "/admin/login",
     "/auth-debug",
     "/test",

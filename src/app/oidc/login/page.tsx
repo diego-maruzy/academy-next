@@ -1,6 +1,7 @@
+import { Suspense } from "react";
 import { headers } from "next/headers";
-import { MobileOidcLogin } from "@/components/auth/mobile-oidc-login";
-import { auth } from "@/auth";
+import { OidcLoginFlow } from "@/components/auth/oidc-login-flow";
+import { OidcConnectingScreen } from "@/components/auth/oidc-connecting-screen";
 import { logOidcLoginAccess } from "@/lib/auth/oidc-debug-log";
 import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
 
@@ -8,7 +9,6 @@ type OidcLoginPageProps = {
   searchParams: Promise<{
     callbackUrl?: string;
     next?: string;
-    error?: string;
   }>;
 };
 
@@ -19,8 +19,16 @@ export const metadata = {
   robots: "noindex",
 };
 
+function OidcLoginFallback() {
+  return (
+    <OidcConnectingScreen
+      title="Conectando sua conta Checkmate..."
+      description="Aguarde um instante enquanto validamos seu acesso."
+    />
+  );
+}
+
 export default async function OidcLoginPage({ searchParams }: OidcLoginPageProps) {
-  const session = await auth();
   const params = await searchParams;
   const destination = resolveStudentCallbackUrl(
     params.callbackUrl ?? params.next,
@@ -30,16 +38,13 @@ export default async function OidcLoginPage({ searchParams }: OidcLoginPageProps
 
   logOidcLoginAccess({
     userAgent,
-    hasSession: Boolean(session?.user),
+    hasSession: false,
     destination,
   });
 
   return (
-    <MobileOidcLogin
-      destination={destination}
-      userAgent={userAgent}
-      alreadyAuthenticated={Boolean(session?.user)}
-      startError={params.error === "start"}
-    />
+    <Suspense fallback={<OidcLoginFallback />}>
+      <OidcLoginFlow userAgent={userAgent} />
+    </Suspense>
   );
 }

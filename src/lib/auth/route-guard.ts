@@ -6,6 +6,8 @@ export function isStudentLoginPath(pathname: string) {
   return (
     pathname === "/login" ||
     pathname === "/oidc/login" ||
+    pathname === "/auth/callback" ||
+    pathname === "/auth/silent-callback" ||
     pathname === "/oidc/complete"
   );
 }
@@ -47,7 +49,11 @@ export function isAdminApiPath(pathname: string) {
 }
 
 export function isKeycloakApiPath(pathname: string) {
-  return pathname.startsWith("/api/auth") || pathname === "/api/oidc/start";
+  return (
+    pathname.startsWith("/api/auth") ||
+    pathname === "/api/oidc/start" ||
+    pathname === "/api/oidc/session"
+  );
 }
 
 /** Rotas do aluno — exigem sessão Keycloak */

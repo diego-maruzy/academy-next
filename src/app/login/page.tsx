@@ -1,4 +1,5 @@
-import { StudentLoginEntry } from "@/components/auth/student-login-entry";
+import { redirect } from "next/navigation";
+import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
 
 type LoginPageProps = {
   searchParams: Promise<{ callbackUrl?: string }>;
@@ -13,6 +14,8 @@ export const metadata = {
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { callbackUrl } = await searchParams;
+  const destination = resolveStudentCallbackUrl(callbackUrl);
+  const params = new URLSearchParams({ next: destination });
 
-  return <StudentLoginEntry callbackUrl={callbackUrl} />;
+  redirect(`/oidc/login?${params.toString()}`);
 }
