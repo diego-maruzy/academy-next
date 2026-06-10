@@ -1,14 +1,9 @@
 import type { NextAuthConfig } from "next-auth";
-import Keycloak from "next-auth/providers/keycloak";
+import { buildPrimaryAuthProviders } from "@/lib/auth/auth-providers";
 
 export const authConfig = {
   trustHost: true,
-  providers: [
-    Keycloak({
-      clientId: process.env.KEYCLOAK_CLIENT_ID,
-      issuer: process.env.KEYCLOAK_ISSUER,
-    }),
-  ],
+  providers: buildPrimaryAuthProviders(),
   pages: {
     signIn: "/oidc/login",
   },

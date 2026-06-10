@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { safeAuth } from "@/lib/auth/safe-auth";
 import { sessionToCurrentUser } from "@/lib/auth/keycloak-session";
 import { createSupabaseReadServerClient } from "@/lib/supabase/server";
 
@@ -12,7 +12,7 @@ export type CurrentClient = {
 let warnedMissingClient = false;
 
 export async function getCurrentClient(): Promise<CurrentClient | null> {
-  const session = await auth();
+  const session = await safeAuth();
   const supabase = await createSupabaseReadServerClient();
 
   if (!supabase || !session?.user?.email) {

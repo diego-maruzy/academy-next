@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { getOidcUserManager } from "@/lib/auth/oidc-user-manager";
+import { handleSilentCallback } from "@/lib/oidc/auth-service";
 
 export function OidcSilentCallback() {
   useEffect(() => {
-    void getOidcUserManager()
-      .signinSilentCallback()
-      .catch(() => {
-        // Silent renew failures are non-blocking for the main login flow.
-      });
+    void handleSilentCallback().catch(() => {
+      // Silent renew failures are non-blocking for the main login flow.
+    });
   }, []);
 
   return (

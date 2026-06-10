@@ -10,6 +10,22 @@ import {
 
 const EMBEDDED_STORAGE_KEY = "checkmate_embedded_context";
 
+type HostMessage =
+  | { type: "checkmate-academy-login"; email?: string; sub?: string }
+  | { type: "checkmate-academy-return" };
+
+type ReactNativeWebViewWindow = Window & {
+  ReactNativeWebView?: { postMessage: (message: string) => void };
+};
+
+type WebkitWindow = Window & {
+  webkit?: {
+    messageHandlers?: {
+      checkmateAcademy?: { postMessage: (message: unknown) => void };
+    };
+  };
+};
+
 function readStoredContext(): EmbeddedContext {
   if (typeof window === "undefined") {
     return { embedded: false, returnUrl: null };
@@ -84,6 +100,58 @@ export function withEmbeddedParams(path: string) {
   return appendEmbeddedParamsToPath(path, getEmbeddedContext(), window.location.origin);
 }
 
+export function postMessageToHost(message: HostMessage) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const serialized = JSON.stringify(message);
+  const rnWindow = window as ReactNativeWebViewWindow;
+  const webkitWindow = window as WebkitWindow;
+
+  if (rnWindow.ReactNativeWebView?.postMessage) {
+    rnWindow.ReactNativeWebView.postMessage(serialized);
+  }
+
+  if (webkitWindow.webkit?.messageHandlers?.checkmateAcademy?.postMessage) {
+    webkitWindow.webkit.messageHandlers.checkmateAcademy.postMessage(message);
+  }
+
+  if (window.parent !== window) {
+    window.parent.postMessage(message, "*");
+  }
+}
+
+export function getHostTopLevelLoginUrl(fallbackPath = "/oidc/login") {
+  const returnUrl = getReturnUrl();
+
+  if (returnUrl) {
+    return returnUrl;
+  }
+
+  const configured = process.env.NEXT_PUBLIC_HOST_TOP_LEVEL_LOGIN_URL;
+
+  if (configured) {
+    return configured;
+  }
+
+  return withEmbeddedParams(fallbackPath);
+}
+
+/** Pede ao app host que abra o login (Lovable). postMessage + assign como fallback. */
+export function requestHostLogin(loginUrl = getHostTopLevelLoginUrl()) {
+  postMessageToHost({ type: "checkmate-academy-login" });
+  window.location.assign(loginUrl);
+}
+
+export function notifyHostLoginSuccess(input?: { email?: string; sub?: string }) {
+  postMessageToHost({
+    type: "checkmate-academy-login",
+    email: input?.email,
+    sub: input?.sub,
+  });
+}
+
 export function goToDashboard(path = "/dashboard") {
   if (typeof window === "undefined") {
     return;
@@ -114,11 +182,11 @@ export function returnToHostApp() {
   const returnUrl = getReturnUrl();
 
   if (returnUrl) {
-    window.location.href = returnUrl;
+    window.location.assign(returnUrl);
     return;
   }
 
-  if (window.parent !== window) {
-    window.parent.postMessage({ type: "checkmate-academy-return" }, "*");
-  }
+  postMessageToHost({ type: "checkmate-academy-return" });
 }
+
+export { EMBEDDED_PARAM, RETURN_URL_PARAM };

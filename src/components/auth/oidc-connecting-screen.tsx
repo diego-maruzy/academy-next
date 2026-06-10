@@ -55,6 +55,14 @@ export function OidcConnectingScreen({
             />
           ) : null}
 
+          {extraActions && !showActions ? (
+            <div className="mt-6">{extraActions}</div>
+          ) : null}
+
+          {errorMessage && !showActions ? (
+            <p className="mt-4 text-xs text-amber-300">{errorMessage}</p>
+          ) : null}
+
           {showActions ? (
             <div className="mt-8 flex flex-col gap-3">
               <button

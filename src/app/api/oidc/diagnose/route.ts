@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
   const validation = await validateHostTokens({
     idToken: body.id_token,
     accessToken: body.access_token,
+    tokenSource: "body",
   });
 
   return NextResponse.json({

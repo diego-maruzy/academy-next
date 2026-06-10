@@ -10,6 +10,7 @@ import {
   isProtectedPanelPath,
 } from "@/lib/admin-auth/permissions";
 import { copyEmbeddedSearchParams } from "@/lib/embedded-params";
+import { getSupabaseAuthUser } from "@/lib/supabase/middleware";
 import {
   getStudentCallbackUrlFromSearchParams,
   isAdminApiPath,
@@ -40,11 +41,15 @@ function redirectShortsToReels(request: NextRequest) {
 }
 
 async function getKeycloakToken(request: NextRequest) {
-  return getToken({
-    req: request,
-    secret: process.env.AUTH_SECRET,
-    secureCookie: process.env.NODE_ENV === "production",
-  });
+  try {
+    return await getToken({
+      req: request,
+      secret: process.env.AUTH_SECRET,
+      secureCookie: process.env.NODE_ENV === "production",
+    });
+  } catch {
+    return null;
+  }
 }
 
 export async function middleware(request: NextRequest) {
@@ -83,9 +88,12 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    const keycloakToken = await getKeycloakToken(request);
+    const [keycloakToken, supabaseUser] = await Promise.all([
+      getKeycloakToken(request),
+      getSupabaseAuthUser(request),
+    ]);
 
-    if (keycloakToken) {
+    if (keycloakToken || supabaseUser) {
       const callbackUrl = getStudentCallbackUrlFromSearchParams(
         request.nextUrl.searchParams,
       );
@@ -119,9 +127,12 @@ export async function middleware(request: NextRequest) {
   }
 
   if (requiresKeycloakAuth(pathname)) {
-    const keycloakToken = await getKeycloakToken(request);
+    const [keycloakToken, supabaseUser] = await Promise.all([
+      getKeycloakToken(request),
+      getSupabaseAuthUser(request),
+    ]);
 
-    if (!keycloakToken) {
+    if (!keycloakToken && !supabaseUser) {
       return NextResponse.redirect(buildOidcLoginRedirect(request, pathname));
     }
 

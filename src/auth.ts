@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import { authConfig } from "@/auth.config";
 import type { AcademyAppRole } from "@/lib/auth/keycloak-roles";
 import { mapKeycloakRolesToAppRole } from "@/lib/auth/keycloak-roles";
-import { keycloakTokenProvider } from "@/lib/auth/keycloak-token-provider";
+import { hostSsoProvider } from "@/lib/auth/host-sso-provider";
 import {
   resolveKeycloakRolesFromAuthPayload,
   type KeycloakRolesSource,
@@ -10,9 +10,16 @@ import {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
-  providers: [...authConfig.providers, keycloakTokenProvider],
+  providers: [...authConfig.providers, hostSsoProvider],
   secret: process.env.AUTH_SECRET,
   callbacks: {
+    async signIn({ account }) {
+      if (account?.provider === "host-sso") {
+        return true;
+      }
+
+      return true;
+    },
     async jwt({ token, account, profile, user }) {
       if (account?.provider === "keycloak") {
         const resolved = resolveKeycloakRolesFromAuthPayload({
@@ -32,15 +39,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
       }
 
-      if (account?.provider === "keycloak-token" && user) {
+      if (account?.provider === "host-sso" && user) {
         token.sub = user.id;
         token.email = user.email;
         token.name = user.name;
-        token.provider = user.provider ?? "oidc";
+        token.provider = user.provider ?? "oidc-host";
         token.roles = user.roles ?? [];
         token.ignoredRoles = user.ignoredRoles ?? [];
         token.appRole = user.appRole ?? "free";
-        token.rolesSource = user.rolesSource ?? "keycloak";
+        token.rolesSource = user.rolesSource ?? "host-tokens";
       }
 
       return token;
@@ -50,6 +57,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const roles = (token.roles as string[] | undefined) ?? [];
 
         session.user.id = String(token.sub ?? "");
+        session.user.email = (token.email as string | undefined) ?? session.user.email;
+        session.user.name = (token.name as string | undefined) ?? session.user.name;
         session.user.roles = roles;
         session.user.ignoredRoles =
           (token.ignoredRoles as string[] | undefined) ?? [];

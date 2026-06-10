@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { safeAuth } from "@/lib/auth/safe-auth";
 import { sessionToCurrentUser } from "@/lib/auth/keycloak-session";
 import type { UserRole } from "@/lib/auth/roles";
 
@@ -11,7 +11,7 @@ export type CurrentUser = {
 };
 
 export async function getCurrentUser(): Promise<CurrentUser> {
-  const session = await auth();
+  const session = await safeAuth();
 
   if (session?.user) {
     const user = sessionToCurrentUser(session);

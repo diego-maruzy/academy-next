@@ -1,17 +1,32 @@
-import { jwtVerify, type JWTPayload } from "jose";
+import type { JWTPayload } from "jose";
 import {
   resolveKeycloakRolesFromAuthPayload,
   type ResolvedKeycloakRoles,
 } from "@/lib/auth/keycloak-token";
+import { getHostClientAuthorizationRule } from "@/lib/auth/keycloak-client-auth";
+import { refreshKeycloakTokens } from "@/lib/auth/keycloak-token-refresh";
+import {
+  normalizeTokenFromEnv,
+  normalizeTokenFromQuery,
+} from "@/lib/auth/normalize-token";
 import {
   decodeJwtPayloadUnsafe,
   extractDecodedClaims,
-  inspectTokenStructure,
   type HostTokenValidationCode,
 } from "@/lib/auth/token-inspect";
+import {
+  verifyKeycloakJwt,
+  type KeycloakJwtVerifyError,
+} from "@/lib/auth/verify-keycloak-jwt";
+
+export type HostTokenRefreshMeta = {
+  tokenRefreshAttempted?: boolean;
+  tokenRefreshSucceeded?: boolean;
+  refreshErrorCode?: string;
+};
 
 export type HostTokenValidationResult =
-  | {
+  | ({
       ok: true;
       sub: string;
       email: string;
@@ -21,6 +36,7 @@ export type HostTokenValidationResult =
       roles: ResolvedKeycloakRoles;
       idToken?: string;
       accessToken?: string;
+      refreshToken?: string;
       clientId: string;
       claims: {
         iss: string;
@@ -29,115 +45,49 @@ export type HostTokenValidationResult =
         exp?: number;
         iat?: number;
       };
-    }
-  | {
+    } & HostTokenRefreshMeta)
+  | ({
       ok: false;
-      code: HostTokenValidationCode;
+      code:
+        | HostTokenValidationCode
+        | "jwks_kid_not_found"
+        | "refresh_token_expired_or_invalid"
+        | "refresh_request_failed";
       message: string;
       details?: Record<string, unknown>;
-    };
+      failedTokenType?: "access_token" | "id_token";
+      tokenKid?: string;
+      tokenAlg?: string;
+      jwksUrl?: string;
+      issuer?: string;
+      aud?: string | string[];
+      azp?: string;
+      hasEmail?: boolean;
+      hasSub?: boolean;
+      rolesFound?: string[];
+    } & HostTokenRefreshMeta);
 
-const CLOCK_SKEW_SECONDS = 60;
+export { getAllowedClientIds } from "@/lib/auth/keycloak-client-auth";
+export { getHostClientAuthorizationRule };
 
-function getKeycloakIssuer() {
-  return (
-    process.env.KEYCLOAK_ISSUER ??
-    "https://auth.checkmateproperty.com/realms/Checkmate"
-  );
-}
-
-export function getAllowedClientIds() {
-  const defaults = [
-    process.env.KEYCLOAK_PUBLIC_CLIENT_ID ?? "checkmate-academy-public",
-    process.env.KEYCLOAK_CLIENT_ID,
-  ];
-
-  const hostClients = (process.env.KEYCLOAK_HOST_CLIENT_IDS ?? "")
-    .split(",")
-    .map((value) => value.trim())
-    .filter(Boolean);
-
-  return [...new Set([...defaults, ...hostClients].filter(Boolean))] as string[];
-}
-
-let jwks: ReturnType<typeof import("jose").createRemoteJWKSet> | null = null;
-
-async function getJwks() {
-  if (!jwks) {
-    const { createRemoteJWKSet } = await import("jose");
-    const issuer = getKeycloakIssuer();
-    jwks = createRemoteJWKSet(
-      new URL(`${issuer}/protocol/openid-connect/certs`),
-    );
-  }
-
-  return jwks;
-}
-
-function getAudienceList(aud: JWTPayload["aud"]) {
-  if (!aud) {
-    return [] as string[];
-  }
-
-  return Array.isArray(aud) ? aud.map(String) : [String(aud)];
-}
-
-type ClientAuthorizationResult =
-  | { ok: true; matchedBy: string; clientId: string }
-  | { ok: false; allowed: string[]; azp: string | null; aud: string[] };
-
-/**
- * Aceita token se:
- * a) azp ∈ allowedClients
- * b) aud ∩ allowedClients ≠ ∅
- * c) aud contém "account" e azp ∈ allowedClients
- */
-export function isClientAuthorized(payload: JWTPayload): ClientAuthorizationResult {
-  const allowed = getAllowedClientIds();
-  const azp = typeof payload.azp === "string" ? payload.azp : null;
-  const audiences = getAudienceList(payload.aud);
-
-  if (azp && allowed.includes(azp)) {
-    return { ok: true, matchedBy: "azp", clientId: azp };
-  }
-
-  const audMatch = audiences.find((audience) => allowed.includes(audience));
-
-  if (audMatch) {
-    return { ok: true, matchedBy: "aud", clientId: audMatch };
-  }
-
-  if (audiences.includes("account") && azp && allowed.includes(azp)) {
-    return { ok: true, matchedBy: "account+azp", clientId: azp };
-  }
-
-  if (process.env.KEYCLOAK_HOST_TRUST_REALM_SSO === "true") {
-    const trustedClient = azp ?? audiences[0] ?? "realm-trusted";
-
-    return {
-      ok: true,
-      matchedBy: "realm-trust",
-      clientId: trustedClient,
-    };
-  }
-
+function failureFromVerifyError(
+  error: KeycloakJwtVerifyError,
+): HostTokenValidationResult {
   return {
     ok: false,
-    allowed,
-    azp,
-    aud: audiences,
+    code: error.code,
+    message: error.message,
+    details: error.details,
+    failedTokenType: error.failedTokenType,
+    tokenKid: error.tokenKid,
+    tokenAlg: error.tokenAlg,
+    jwksUrl: error.jwksUrl,
+    issuer: error.issuer,
+    aud: error.aud,
+    azp: error.azp,
+    hasEmail: error.hasEmail,
+    hasSub: error.hasSub,
   };
-}
-
-function isExpired(payload: JWTPayload) {
-  const exp = payload.exp;
-
-  if (typeof exp !== "number") {
-    return true;
-  }
-
-  const now = Math.floor(Date.now() / 1000);
-  return exp < now - CLOCK_SKEW_SECONDS;
 }
 
 function extractEmail(
@@ -186,131 +136,12 @@ function extractName(primary: JWTPayload, email: string) {
   return email;
 }
 
-async function verifySignedToken(token: string, options?: { requireClient?: boolean }) {
-  const structure = inspectTokenStructure(token);
-
-  if (!structure.valid) {
-    return {
-      ok: false as const,
-      code: structure.reason,
-      message:
-        structure.reason === "token_truncated"
-          ? "Token parece truncado na URL."
-          : "Token malformado.",
-    };
-  }
-
-  const issuer = getKeycloakIssuer();
-
-  try {
-    const { payload } = await jwtVerify(token, await getJwks(), {
-      issuer,
-    });
-
-    if (isExpired(payload)) {
-      return {
-        ok: false as const,
-        code: "token_expired" as const,
-        message: "Token expirado.",
-        details: extractDecodedClaims(payload) ?? undefined,
-      };
-    }
-
-    if (!payload.sub) {
-      return {
-        ok: false as const,
-        code: "missing_sub" as const,
-        message: "Token sem subject (sub).",
-        details: extractDecodedClaims(payload) ?? undefined,
-      };
-    }
-
-    if (options?.requireClient !== false) {
-      const client = isClientAuthorized(payload);
-
-      if (!client.ok) {
-        return {
-          ok: false as const,
-          code: "invalid_audience" as const,
-          message:
-            "Client do token não autorizado para Host SSO (aud/azp).",
-          details: client,
-        };
-      }
-
-      return {
-        ok: true as const,
-        payload,
-        clientId: client.clientId,
-      };
-    }
-
-    return {
-      ok: true as const,
-      payload,
-      clientId:
-        typeof payload.azp === "string"
-          ? payload.azp
-          : getAudienceList(payload.aud)[0] ?? "unknown",
-    };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "verify_failed";
-
-    if (message.toLowerCase().includes("jwks")) {
-      return {
-        ok: false as const,
-        code: "jwks_error" as const,
-        message: "Falha ao buscar/validar JWKS.",
-      };
-    }
-
-    return {
-      ok: false as const,
-      code: "signature_invalid" as const,
-      message: "Assinatura do token inválida.",
-    };
-  }
-}
-
-async function verifyAccessTokenForRoles(
-  accessToken: string,
-  idTokenTrusted: boolean,
-) {
-  const verified = await verifySignedToken(accessToken, {
-    requireClient: !idTokenTrusted,
-  });
-
-  if (verified.ok) {
-    return verified;
-  }
-
-  if (!idTokenTrusted) {
-    return verified;
-  }
-
-  const signatureOnly = await verifySignedToken(accessToken, {
-    requireClient: false,
-  });
-
-  if (!signatureOnly.ok) {
-    return signatureOnly;
-  }
-
-  return {
-    ...signatureOnly,
-    clientId:
-      typeof signatureOnly.payload.azp === "string"
-        ? signatureOnly.payload.azp
-        : signatureOnly.clientId,
-  };
-}
-
-export async function validateHostTokens(input: {
-  idToken?: string | null;
-  accessToken?: string | null;
+async function validateHostTokensOnce(input: {
+  idToken: string;
+  accessToken: string;
 }): Promise<HostTokenValidationResult> {
-  const idToken = input.idToken?.trim() ?? "";
-  const accessToken = input.accessToken?.trim() ?? "";
+  const idToken = input.idToken;
+  const accessToken = input.accessToken;
 
   if (!idToken && !accessToken) {
     return {
@@ -329,27 +160,23 @@ export async function validateHostTokens(input: {
     azp?: string;
     exp?: number;
     iat?: number;
-  } = { iss: getKeycloakIssuer() };
+  } = {
+    iss:
+      process.env.KEYCLOAK_ISSUER ??
+      "https://auth.checkmateproperty.com/realms/Checkmate",
+  };
 
   if (idToken) {
-    const verified = await verifySignedToken(idToken);
+    const verified = await verifyKeycloakJwt(idToken, "id_token");
 
     if (!verified.ok) {
-      return {
-        ok: false,
-        code: verified.code,
-        message: verified.message,
-        details:
-          "details" in verified && verified.details
-            ? (verified.details as Record<string, unknown>)
-            : undefined,
-      };
+      return failureFromVerifyError(verified);
     }
 
     identityPayload = verified.payload;
     clientId = verified.clientId;
     claims = {
-      iss: String(verified.payload.iss ?? getKeycloakIssuer()),
+      iss: String(verified.payload.iss ?? claims.iss),
       aud: verified.payload.aud,
       azp:
         typeof verified.payload.azp === "string"
@@ -360,32 +187,28 @@ export async function validateHostTokens(input: {
     };
 
     if (accessToken) {
-      const accessVerified = await verifyAccessTokenForRoles(accessToken, true);
+      const accessVerified = await verifyKeycloakJwt(accessToken, "access_token", {
+        requireClient: false,
+      });
 
       if (accessVerified.ok) {
         rolesAccessToken = accessToken;
+      } else if (accessVerified.code === "token_expired") {
+        return failureFromVerifyError(accessVerified);
       }
     }
   } else if (accessToken) {
-    const verified = await verifySignedToken(accessToken);
+    const verified = await verifyKeycloakJwt(accessToken, "access_token");
 
     if (!verified.ok) {
-      return {
-        ok: false,
-        code: verified.code,
-        message: verified.message,
-        details:
-          "details" in verified && verified.details
-            ? (verified.details as Record<string, unknown>)
-            : undefined,
-      };
+      return failureFromVerifyError(verified);
     }
 
     identityPayload = verified.payload;
     rolesAccessToken = accessToken;
     clientId = verified.clientId;
     claims = {
-      iss: String(verified.payload.iss ?? getKeycloakIssuer()),
+      iss: String(verified.payload.iss ?? claims.iss),
       aud: verified.payload.aud,
       azp:
         typeof verified.payload.azp === "string"
@@ -453,19 +276,99 @@ export async function validateHostTokens(input: {
   };
 }
 
-export function getHostClientAuthorizationRule() {
+function shouldAttemptRefresh(result: HostTokenValidationResult) {
+  return (
+    !result.ok &&
+    result.code === "token_expired" &&
+    Boolean(result.failedTokenType)
+  );
+}
+
+export async function validateHostTokens(input: {
+  idToken?: string | null;
+  accessToken?: string | null;
+  refreshToken?: string | null;
+  tokenSource?: "env" | "query" | "body";
+}): Promise<HostTokenValidationResult> {
+  const normalize =
+    input.tokenSource === "query"
+      ? normalizeTokenFromQuery
+      : normalizeTokenFromEnv;
+
+  let idToken = normalize(input.idToken) ?? "";
+  let accessToken = normalize(input.accessToken) ?? "";
+  let refreshToken = normalize(input.refreshToken) ?? "";
+
+  let tokenRefreshAttempted = false;
+  let tokenRefreshSucceeded = false;
+
+  if (!idToken && !accessToken && refreshToken) {
+    tokenRefreshAttempted = true;
+    const refreshed = await refreshKeycloakTokens(refreshToken);
+
+    if (!refreshed.ok) {
+      return {
+        ok: false,
+        code: refreshed.code,
+        message: refreshed.message,
+        refreshErrorCode: refreshed.refreshErrorCode,
+        tokenRefreshAttempted: true,
+        tokenRefreshSucceeded: false,
+      };
+    }
+
+    tokenRefreshSucceeded = true;
+    accessToken = refreshed.access_token;
+    idToken = refreshed.id_token ?? "";
+    refreshToken = refreshed.refresh_token ?? refreshToken;
+  }
+
+  let result = await validateHostTokensOnce({ idToken, accessToken });
+
+  if (shouldAttemptRefresh(result) && refreshToken) {
+    tokenRefreshAttempted = true;
+
+    const refreshed = await refreshKeycloakTokens(refreshToken);
+
+    if (!refreshed.ok) {
+      const failedResult = result.ok ? null : result;
+
+      return {
+        ok: false,
+        code: refreshed.code,
+        message: refreshed.message,
+        refreshErrorCode: refreshed.refreshErrorCode,
+        tokenRefreshAttempted: true,
+        tokenRefreshSucceeded: false,
+        failedTokenType: failedResult?.failedTokenType,
+        issuer: failedResult?.issuer,
+        aud: failedResult?.aud,
+        azp: failedResult?.azp,
+        hasEmail: failedResult?.hasEmail,
+        hasSub: failedResult?.hasSub,
+      };
+    }
+
+    tokenRefreshSucceeded = true;
+    accessToken = refreshed.access_token;
+    idToken = refreshed.id_token ?? idToken;
+    refreshToken = refreshed.refresh_token ?? refreshToken;
+
+    result = await validateHostTokensOnce({ idToken, accessToken });
+  }
+
+  if (!result.ok) {
+    return {
+      ...result,
+      tokenRefreshAttempted,
+      tokenRefreshSucceeded,
+    };
+  }
+
   return {
-    allowedClients: getAllowedClientIds(),
-    resourceRoleClients: [
-      process.env.KEYCLOAK_PUBLIC_CLIENT_ID ?? "checkmate-academy-public",
-      ...(process.env.KEYCLOAK_HOST_CLIENT_IDS ?? "")
-        .split(",")
-        .map((value) => value.trim())
-        .filter(Boolean),
-      "checkmate-property-public",
-      "checkmate-property-private",
-    ],
-    rule:
-      "Aceita se azp ∈ allowedClients, aud ∩ allowedClients ≠ ∅, aud contém account com azp autorizado, ou id_token válido pareado com access_token assinado.",
+    ...result,
+    refreshToken: refreshToken || undefined,
+    tokenRefreshAttempted,
+    tokenRefreshSucceeded,
   };
 }

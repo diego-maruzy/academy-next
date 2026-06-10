@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { OidcConnectingScreen } from "@/components/auth/oidc-connecting-screen";
 import {
   getEmbeddedContext,
   isEmbedded,
@@ -10,13 +9,18 @@ import {
   withEmbeddedParams,
 } from "@/lib/embedded";
 import { logEmbeddedNavigation } from "@/lib/auth/oidc-debug-log";
-import { getOidcUserManager } from "@/lib/auth/oidc-user-manager";
-import { createAcademySessionFromTokens } from "@/lib/auth/oidc-session-client";
 import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
+import { handleCallback } from "@/lib/oidc/auth-service";
+import {
+  provisionAndBridgeSupabase,
+  syncAuthJsSessionInBackground,
+} from "@/lib/oidc/supabase-bridge";
+import { OidcConnectingScreen } from "@/components/auth/oidc-connecting-screen";
 
 export function OidcCallbackFlow() {
   const started = useRef(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [debugMessage, setDebugMessage] = useState<string | null>(null);
 
   useEffect(() => {
     persistEmbeddedContext();
@@ -31,47 +35,42 @@ export function OidcCallbackFlow() {
 
     void (async () => {
       try {
-        const manager = getOidcUserManager();
-        const user = await manager.signinRedirectCallback();
+        const user = await handleCallback();
         const rawDestination = resolveStudentCallbackUrl(
           typeof user.state === "string" ? user.state : undefined,
         );
         const destination = withEmbeddedParams(rawDestination);
 
-        if (!user.id_token) {
-          throw new Error("missing_id_token");
+        const bridgeResult = await provisionAndBridgeSupabase(user, {
+          source: "oidc-callback",
+          force: true,
+        });
+
+        if (!bridgeResult.ok || !bridgeResult.hasSession) {
+          setDebugMessage(`debug: ${bridgeResult.code}`);
+          throw new Error(bridgeResult.code);
         }
 
-        const result = await createAcademySessionFromTokens(
-          {
-            id_token: user.id_token,
-            access_token: user.access_token ?? "",
-          },
-          destination,
-          { authSource: "oidc-callback" },
-        );
+        syncAuthJsSessionInBackground(user);
 
-        await manager.removeUser();
-
-        if (!result.ok) {
-          throw new Error(result.error ?? "session_failed");
-        }
-
-        const nextTarget = withEmbeddedParams(
-          result.redirect ?? destination,
-        );
+        console.info("[OIDC]", { step: "redirect_dashboard" });
 
         logEmbeddedNavigation({
           from: "/auth/callback",
-          to: nextTarget,
+          to: destination,
           embedded: getEmbeddedContext(),
           action: "dashboard",
         });
 
-        window.location.assign(nextTarget);
-      } catch {
+        window.location.assign(destination);
+      } catch (error) {
+        const code =
+          error instanceof Error ? error.message : "post_login_failed";
+
         setErrorMessage(
-          "Não foi possível concluir o login. Volte e tente novamente.",
+          code === "verify_otp_failed"
+            ? "Falha ao validar o acesso Supabase."
+            : "Não foi possível concluir o login. Volte e tente novamente.",
         );
       }
     })();
@@ -87,7 +86,7 @@ export function OidcCallbackFlow() {
       description={
         errorMessage
           ? "Use o botão abaixo para voltar ao início do login."
-          : "Estamos criando sua sessão com segurança."
+          : "Estamos criando sua sessão Supabase com segurança."
       }
       showSpinner={!errorMessage}
       showActions={Boolean(errorMessage)}
@@ -100,7 +99,7 @@ export function OidcCallbackFlow() {
 
         window.location.assign(withEmbeddedParams("/oidc/login"));
       }}
-      errorMessage={errorMessage ?? undefined}
+      errorMessage={debugMessage ?? errorMessage ?? undefined}
     />
   );
 }

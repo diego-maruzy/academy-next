@@ -31,10 +31,13 @@ export type HostTokenValidationCode =
   | "invalid_audience"
   | "token_expired"
   | "jwks_error"
+  | "jwks_kid_not_found"
   | "signature_invalid"
   | "missing_email"
   | "missing_sub"
-  | "session_failed";
+  | "session_failed"
+  | "refresh_token_expired_or_invalid"
+  | "refresh_request_failed";
 
 export function maskTokenPreview(token: string) {
   if (!token) {
@@ -48,21 +51,7 @@ export function maskTokenPreview(token: string) {
   return `${token.slice(0, 12)}…${token.slice(-6)} (${token.length})`;
 }
 
-export function normalizeTokenFromQuery(value: string | null | undefined) {
-  if (!value) {
-    return "";
-  }
-
-  let token = value.trim();
-
-  try {
-    token = decodeURIComponent(token);
-  } catch {
-    // keep raw value when not URI-encoded
-  }
-
-  return token.replace(/ /g, "+");
-}
+export { normalizeTokenFromEnv, normalizeTokenFromQuery } from "@/lib/auth/normalize-token";
 
 export function decodeJwtPayloadUnsafe(
   token: string,

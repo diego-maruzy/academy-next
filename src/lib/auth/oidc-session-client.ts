@@ -85,6 +85,7 @@ export async function createAcademySessionFromTokens(
       body: JSON.stringify({
         id_token: tokens.id_token,
         access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
         next: destination,
         auth_source: options?.authSource ?? "host-tokens",
       }),

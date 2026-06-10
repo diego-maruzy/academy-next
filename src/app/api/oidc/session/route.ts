@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { auth, signIn } from "@/auth";
+import { createHostSsoSession } from "@/lib/auth/create-host-sso-session";
 import { getEmbeddedContextFromSearchParams } from "@/lib/embedded-params";
 import { logHostTokenValidation, logOidcSession } from "@/lib/auth/oidc-debug-log";
 import { validateHostTokens } from "@/lib/auth/host-token-validation";
@@ -54,6 +54,8 @@ export async function POST(request: NextRequest) {
   const validation = await validateHostTokens({
     idToken,
     accessToken,
+    refreshToken: body.refresh_token,
+    tokenSource: "body",
   });
 
   logHostTokenValidation({
@@ -94,62 +96,24 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  try {
-    await signIn("keycloak-token", {
-      id_token: idToken ?? "",
-      access_token: accessToken ?? "",
-      auth_source: authSource,
-      redirect: false,
-      redirectTo: destination,
-    });
+  const sessionResult = await createHostSsoSession({
+    sub: validation.sub,
+    email: validation.email,
+    name: validation.name,
+    roles: validation.roles.roles,
+    ignoredRoles: validation.roles.ignoredRoles,
+    appRole: validation.roles.appRole,
+    rolesSource: "host-tokens",
+  });
 
-    const session = await auth();
-
-    if (!session?.user) {
-      logOidcSession({
-        userAgent,
-        hasSession: false,
-        destination,
-        source: authSource,
-        validationCode: "session_failed",
-        clientId: validation.clientId,
-        embedded,
-        pathname: "/api/oidc/session",
-      });
-
-      return NextResponse.json(
-        {
-          ok: false,
-          error: "session_failed",
-          ...(exposeDebug ? { debug: { code: "session_failed", tokens: tokenLog } } : {}),
-        },
-        { status: 401 },
-      );
-    }
-
-    logOidcSession({
-      userAgent,
-      hasSession: true,
-      destination,
-      source: authSource,
-      validationCode: "ok",
-      clientId: validation.clientId,
-      embedded,
-      pathname: "/api/oidc/session",
-    });
-
-    return NextResponse.json({
-      ok: true,
-      redirect: destination,
-    });
-  } catch {
+  if (!sessionResult.ok) {
     logOidcSession({
       userAgent,
       hasSession: false,
       destination,
       source: authSource,
       validationCode: "session_failed",
-      clientId: validation.ok ? validation.clientId : undefined,
+      clientId: validation.clientId,
       embedded,
       pathname: "/api/oidc/session",
     });
@@ -157,10 +121,34 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         ok: false,
-        error: "session_failed",
-        ...(exposeDebug ? { debug: { code: "session_failed", tokens: tokenLog } } : {}),
+        error: sessionResult.error,
+        ...(exposeDebug
+          ? {
+              debug: {
+                code: sessionResult.error,
+                detail: sessionResult.detail,
+                tokens: tokenLog,
+              },
+            }
+          : {}),
       },
       { status: 401 },
     );
   }
+
+  logOidcSession({
+    userAgent,
+    hasSession: true,
+    destination,
+    source: authSource,
+    validationCode: "ok",
+    clientId: validation.clientId,
+    embedded,
+    pathname: "/api/oidc/session",
+  });
+
+  return NextResponse.json({
+    ok: true,
+    redirect: destination,
+  });
 }

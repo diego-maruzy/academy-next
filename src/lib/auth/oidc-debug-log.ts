@@ -86,7 +86,7 @@ export function logEmbeddedNavigation(input: {
   from: string;
   to: string;
   embedded?: EmbeddedContext;
-  action: "dashboard" | "retry" | "return-host";
+  action: "dashboard" | "retry" | "return-host" | "request-host-login";
 }) {
   console.info("[embedded] navigation", {
     client: summarizeUserAgent(input.userAgent ?? ""),

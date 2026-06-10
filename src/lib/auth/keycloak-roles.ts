@@ -193,7 +193,11 @@ export function partitionKeycloakRoles(
 export function mapKeycloakRolesToAppRole(roles: string[]): AcademyAppRole {
   const normalized = new Set(roles.map(normalizeRole));
 
-  if (normalized.has("role_admin") || normalized.has("admin")) {
+  if (
+    normalized.has("role_admin") ||
+    normalized.has("admin") ||
+    normalized.has("admin_access")
+  ) {
     return "admin";
   }
 

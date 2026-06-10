@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { safeAuth } from "@/lib/auth/safe-auth";
 import { KeycloakAutoLogin } from "@/components/auth/keycloak-auto-login";
 import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
 
@@ -8,7 +8,7 @@ type StudentLoginEntryProps = {
 };
 
 export async function StudentLoginEntry({ callbackUrl }: StudentLoginEntryProps) {
-  const session = await auth();
+  const session = await safeAuth();
   const redirectTo = resolveStudentCallbackUrl(callbackUrl);
 
   if (session?.user) {

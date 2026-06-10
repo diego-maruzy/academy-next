@@ -58,7 +58,12 @@ export function isKeycloakApiPath(pathname: string) {
     pathname.startsWith("/api/auth") ||
     pathname === "/api/oidc/start" ||
     pathname === "/api/oidc/session" ||
-    pathname === "/api/oidc/diagnose"
+    pathname === "/api/oidc/diagnose" ||
+    pathname === "/api/oidc/test-host-session" ||
+    pathname === "/api/oidc/provision" ||
+    pathname === "/api/oidc/supabase-bridge" ||
+    pathname === "/api/oidc/refresh" ||
+    pathname === "/api/oidc/test-supabase-bridge"
   );
 }
 
