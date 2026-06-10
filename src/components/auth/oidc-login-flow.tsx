@@ -34,9 +34,10 @@ import {
   hasHostTokensInUrl,
   stripHostTokensFromUrl,
 } from "@/lib/oidc/host-sso";
+import { OIDC_BRIDGE_OVERALL_TIMEOUT_MS } from "@/lib/oidc/bridge-timeout";
 import {
   hasSbAuthTokenInLocalStorage,
-  provisionAndBridgeSupabase,
+  provisionAndBridgeSupabaseWithTimeout,
   syncAuthJsSessionInBackground,
   type OidcBridgeDebugState,
   type ProvisionAndBridgeResult,
@@ -68,6 +69,12 @@ const HOST_ERROR_MESSAGES: Record<string, string> = {
   supabase_bridge_not_called: "Bridge Supabase não foi executado.",
   missing_supabase_service_role:
     "Configuração Supabase incompleta (service role ausente).",
+  supabase_bridge_timeout:
+    "Não foi possível criar sua sessão Supabase.",
+  supabase_set_session_failed:
+    "Falha ao persistir a sessão Supabase no dispositivo.",
+  verify_otp_no_session_returned:
+    "Login Supabase concluiu sem retornar sessão.",
 };
 
 function getPublicErrorMessage(code?: string, fallback?: string) {
@@ -84,12 +91,18 @@ function createEmptyDebugState(): OidcBridgeDebugState {
   return {
     oidc_user_ready: false,
     provision_called: false,
+    provision_ok: false,
     bridge_called: false,
     bridge_ok: false,
+    has_token_hash: false,
     verify_otp_ok: false,
+    verify_otp_has_session: false,
+    set_session_ok: false,
     supabase_session_persisted: false,
     redirect_started: false,
+    last_step: null,
     last_error: null,
+    status_code: null,
   };
 }
 
@@ -213,6 +226,34 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
     persistEmbeddedContext();
   }, []);
 
+  useEffect(() => {
+    if (state !== "bootstrapping" && state !== "connecting") {
+      return;
+    }
+
+    const safetyTimer = window.setTimeout(() => {
+      setState((current) => {
+        if (current !== "bootstrapping" && current !== "connecting") {
+          return current;
+        }
+
+        setErrorMessage("Não foi possível criar sua sessão Supabase.");
+        setDebugMessage("debug: supabase_bridge_timeout");
+        setBridgeDebug((currentDebug) => ({
+          ...currentDebug,
+          last_error: "supabase_bridge_timeout",
+          last_step: currentDebug.last_step ?? "overall",
+        }));
+
+        return isEmbeddedFlow ? "host_error" : "desktop_fallback";
+      });
+    }, OIDC_BRIDGE_OVERALL_TIMEOUT_MS);
+
+    return () => {
+      window.clearTimeout(safetyTimer);
+    };
+  }, [isEmbeddedFlow, state]);
+
   const redirectToDashboard = useCallback(
     (target: string) => {
       const nextTarget = withEmbeddedParams(target);
@@ -265,10 +306,11 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
         return false;
       }
 
-      const bridgeResult = await provisionAndBridgeSupabase(user, {
+      const bridgeResult = await provisionAndBridgeSupabaseWithTimeout(user, {
         debug: showDebug,
         source,
         force: source === "oidc-login-manual",
+        onDebugUpdate: setBridgeDebug,
       });
 
       console.info("[OIDC]", {
@@ -341,10 +383,11 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
       return { ok: false, code: "oidc_user_invalid" };
     }
 
-    const bridgeResult = await provisionAndBridgeSupabase(bridgeUser, {
+    const bridgeResult = await provisionAndBridgeSupabaseWithTimeout(bridgeUser, {
       debug: showDebug,
       source: "oidc-login-bootstrap",
       force: true,
+      onDebugUpdate: setBridgeDebug,
     });
 
     console.info("[OIDC]", {
@@ -394,10 +437,11 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
         return;
       }
 
-      const result = await provisionAndBridgeSupabase(user, {
+      const result = await provisionAndBridgeSupabaseWithTimeout(user, {
         debug: true,
         source: "oidc-login-manual",
         force: true,
+        onDebugUpdate: setBridgeDebug,
       });
 
       applyBridgeDebug(setBridgeDebug, result);
@@ -562,14 +606,19 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
     startKeycloakRedirect,
   ]);
 
+  const isBridgeFailure =
+    state === "host_error" || state === "desktop_fallback";
+
   const title =
     state === "host_session_expired"
       ? "Sua sessão expirou"
-      : state === "host_error"
-        ? "Não foi possível entrar automaticamente"
-        : state === "desktop_fallback"
-          ? "Não foi possível validar os tokens"
-          : "Conectando sua conta Checkmate...";
+      : isBridgeFailure && errorMessage
+        ? "Não foi possível criar sua sessão Supabase"
+        : state === "host_error"
+          ? "Não foi possível entrar automaticamente"
+          : state === "desktop_fallback"
+            ? "Não foi possível validar os tokens"
+            : "Conectando sua conta Checkmate...";
 
   const description =
     state === "host_session_expired"
@@ -629,10 +678,12 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
           : undefined
       }
       errorMessage={
-        showDebug && (debugMessage || errorMessage)
-          ? (debugMessage ?? errorMessage ?? undefined)
-          : errorMessage && state !== "bootstrapping" && state !== "connecting"
-            ? errorMessage
+        isBridgeFailure
+          ? (showDebug && debugMessage
+              ? `${errorMessage ?? ""} ${debugMessage}`.trim()
+              : errorMessage ?? undefined)
+          : showDebug && debugMessage
+            ? debugMessage
             : undefined
       }
       extraActions={
@@ -657,7 +708,7 @@ export function OidcLoginFlow({ userAgent = "" }: OidcLoginFlowProps) {
               ) : null}
             </>
           ) : null}
-          {isEmbeddedFlow && state === "host_error" ? (
+          {isEmbeddedFlow && isBridgeFailure ? (
             <button
               type="button"
               onClick={handleReturnToHost}

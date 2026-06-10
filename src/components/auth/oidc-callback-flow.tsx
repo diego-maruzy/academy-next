@@ -12,7 +12,7 @@ import { logEmbeddedNavigation } from "@/lib/auth/oidc-debug-log";
 import { resolveStudentCallbackUrl } from "@/lib/auth/route-guard";
 import { handleCallback } from "@/lib/oidc/auth-service";
 import {
-  provisionAndBridgeSupabase,
+  provisionAndBridgeSupabaseWithTimeout,
   syncAuthJsSessionInBackground,
 } from "@/lib/oidc/supabase-bridge";
 import { OidcConnectingScreen } from "@/components/auth/oidc-connecting-screen";
@@ -41,7 +41,7 @@ export function OidcCallbackFlow() {
         );
         const destination = withEmbeddedParams(rawDestination);
 
-        const bridgeResult = await provisionAndBridgeSupabase(user, {
+        const bridgeResult = await provisionAndBridgeSupabaseWithTimeout(user, {
           source: "oidc-callback",
           force: true,
         });

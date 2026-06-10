@@ -62,6 +62,7 @@ export function isKeycloakApiPath(pathname: string) {
     pathname === "/api/oidc/test-host-session" ||
     pathname === "/api/oidc/provision" ||
     pathname === "/api/oidc/supabase-bridge" ||
+    pathname === "/api/oidc/health" ||
     pathname === "/api/oidc/refresh" ||
     pathname === "/api/oidc/test-supabase-bridge"
   );

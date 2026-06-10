@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { getUser } from "@/lib/oidc/auth-service";
 import {
   hasSupabaseBrowserSession,
-  provisionAndBridgeSupabase,
+  provisionAndBridgeSupabaseWithTimeout,
 } from "@/lib/oidc/supabase-bridge";
 
 /**
@@ -38,7 +38,7 @@ export function OidcSupabaseSessionSync() {
         step: "dashboard_supabase_bridge_recovery_start",
       });
 
-      const result = await provisionAndBridgeSupabase(user, {
+      const result = await provisionAndBridgeSupabaseWithTimeout(user, {
         source: "dashboard-recovery",
         force: true,
       });
