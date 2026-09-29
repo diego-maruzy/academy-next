@@ -3,6 +3,8 @@ import { createSupabaseReadServerClient } from "@/lib/supabase/server";
 type SupabaseQueryError = {
   code?: string;
   message?: string;
+  details?: string;
+  hint?: string;
 };
 
 let webhookEventsTableAvailable: boolean | undefined;
@@ -22,7 +24,7 @@ export type DailyCount = {
   count: number;
 };
 
-// Quando o Keycloak/login estiver ativo, substituir ou complementar
+// Quando o login do aluno estiver ativo, substituir ou complementar
 // webhook_events por user_access_logs.
 export type RecentActivity = {
   id: string;
@@ -55,11 +57,18 @@ export type ConnectionSummary = {
 
 type WebhookEventRow = {
   id: string;
-  webhook_connection_id: string | null;
+  webhook_id: string | null;
   status: string;
   error_message: string | null;
   created_client_id: string | null;
   created_at: string;
+};
+
+type WebhookEndpointRow = {
+  id: string;
+  name: string | null;
+  slug: string | null;
+  source: string | null;
 };
 
 async function getReadClient() {
@@ -82,7 +91,55 @@ function logDashboardError(context: string, error: SupabaseQueryError) {
     return;
   }
 
-  console.error(`[dashboard-data] ${context}:`, error.message);
+  console.error(`[dashboard-data] ${context}:`, {
+    message: error.message,
+    details: error.details,
+    hint: error.hint,
+    code: error.code,
+  });
+}
+
+function resolveEndpointDisplayName(endpoint: {
+  name?: string | null;
+  slug?: string | null;
+  source?: string | null;
+}) {
+  return endpoint.name?.trim() || endpoint.slug?.trim() || endpoint.source?.trim() || "Webhook";
+}
+
+function buildEndpointNamesMap(endpoints: WebhookEndpointRow[]) {
+  return new Map(
+    endpoints.map((endpoint) => [
+      endpoint.id,
+      resolveEndpointDisplayName(endpoint),
+    ]),
+  );
+}
+
+async function fetchEndpointNamesByIds(
+  webhookIds: string[],
+): Promise<Map<string, string>> {
+  if (webhookIds.length === 0) {
+    return new Map();
+  }
+
+  const supabase = await getReadClient();
+
+  if (!supabase) {
+    return new Map();
+  }
+
+  const { data, error } = await supabase
+    .from("webhook_endpoints")
+    .select("id, name, slug, source")
+    .in("id", webhookIds);
+
+  if (error) {
+    logDashboardError("Erro ao buscar endpoints dos eventos", error);
+    return new Map();
+  }
+
+  return buildEndpointNamesMap((data ?? []) as WebhookEndpointRow[]);
 }
 
 async function hasWebhookEventsTable(): Promise<boolean> {
@@ -197,12 +254,12 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     activeConnections,
     connectionSummary,
   ] = await Promise.all([
-    safeCount("clients"),
+    safeCount("profiles"),
     safeCount("programs", { column: "published", value: true }),
     safeCount("modules"),
     safeCount("lessons"),
     eventsTableAvailable ? safeCount("webhook_events") : Promise.resolve(0),
-    safeCount("webhook_connections", { column: "status", value: "active" }),
+    safeCount("webhook_endpoints", { column: "enabled", value: true }),
     eventsTableAvailable ? Promise.resolve(null) : getConnectionSummary(),
   ]);
 
@@ -220,7 +277,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   };
 }
 
-async function getWebhookActivityFromConnections(): Promise<DailyCount[]> {
+async function getWebhookActivityFromEndpoints(): Promise<DailyCount[]> {
   const supabase = await getReadClient();
 
   if (!supabase) {
@@ -228,17 +285,17 @@ async function getWebhookActivityFromConnections(): Promise<DailyCount[]> {
   }
 
   const { data, error } = await supabase
-    .from("webhook_connections")
-    .select("last_event_at")
-    .not("last_event_at", "is", null)
-    .gte("last_event_at", getThirtyDaysAgoIso());
+    .from("webhook_endpoints")
+    .select("last_triggered_at")
+    .not("last_triggered_at", "is", null)
+    .gte("last_triggered_at", getThirtyDaysAgoIso());
 
   if (error) {
-    logDashboardError("Erro ao buscar atividade via conexões", error);
+    logDashboardError("Erro ao buscar atividade via endpoints", error);
     return buildLast30DaysSeries(new Map());
   }
 
-  const timestamps = (data ?? []).map((row) => row.last_event_at as string);
+  const timestamps = (data ?? []).map((row) => row.last_triggered_at as string);
   return buildLast30DaysSeries(groupByDay(timestamps));
 }
 
@@ -251,7 +308,7 @@ export async function getWebhookActivityLast30Days(): Promise<DailyCount[]> {
   }
 
   if (!eventsTableAvailable) {
-    return getWebhookActivityFromConnections();
+    return getWebhookActivityFromEndpoints();
   }
 
   const { data, error } = await supabase
@@ -264,7 +321,7 @@ export async function getWebhookActivityLast30Days(): Promise<DailyCount[]> {
 
     if (isMissingTableError(error)) {
       webhookEventsTableAvailable = false;
-      return getWebhookActivityFromConnections();
+      return getWebhookActivityFromEndpoints();
     }
 
     return buildLast30DaysSeries(new Map());
@@ -285,9 +342,9 @@ export async function getClientSummary(): Promise<ClientSummary> {
   }
 
   const [totalResult, recentResult] = await Promise.all([
-    supabase.from("clients").select("*", { count: "exact", head: true }),
+    supabase.from("profiles").select("*", { count: "exact", head: true }),
     supabase
-      .from("clients")
+      .from("profiles")
       .select("created_at")
       .gte("created_at", getThirtyDaysAgoIso()),
   ]);
@@ -310,7 +367,7 @@ export async function getClientSummary(): Promise<ClientSummary> {
   };
 }
 
-async function getRecentActivityFromConnections(
+async function getRecentActivityFromEndpoints(
   limit = 5,
 ): Promise<RecentActivity[]> {
   const supabase = await getReadClient();
@@ -320,24 +377,28 @@ async function getRecentActivityFromConnections(
   }
 
   const { data, error } = await supabase
-    .from("webhook_connections")
-    .select("id, name, last_event_at, success_events, error_events")
-    .not("last_event_at", "is", null)
-    .order("last_event_at", { ascending: false })
+    .from("webhook_endpoints")
+    .select("id, name, slug, source, last_triggered_at, trigger_count")
+    .not("last_triggered_at", "is", null)
+    .order("last_triggered_at", { ascending: false })
     .limit(limit);
 
   if (error) {
-    logDashboardError("Erro ao buscar atividade via conexões", error);
+    logDashboardError("Erro ao buscar atividade via endpoints", error);
     return [];
   }
 
-  return (data ?? []).map((connection) => ({
-    id: connection.id as string,
+  return (data ?? []).map((endpoint) => ({
+    id: endpoint.id as string,
     type: "webhook" as const,
-    title: connection.name as string,
-    description: `${connection.success_events ?? 0} sucessos · ${connection.error_events ?? 0} erros`,
+    title: resolveEndpointDisplayName({
+      name: endpoint.name as string | null,
+      slug: endpoint.slug as string | null,
+      source: endpoint.source as string | null,
+    }),
+    description: `${endpoint.trigger_count ?? 0} disparos`,
     status: "info" as const,
-    created_at: connection.last_event_at as string,
+    created_at: endpoint.last_triggered_at as string,
   }));
 }
 
@@ -352,14 +413,12 @@ export async function getRecentWebhookEvents(
   }
 
   if (!eventsTableAvailable) {
-    return getRecentActivityFromConnections(limit);
+    return getRecentActivityFromEndpoints(limit);
   }
 
   const { data, error } = await supabase
     .from("webhook_events")
-    .select(
-      "id, webhook_connection_id, status, error_message, created_client_id, created_at",
-    )
+    .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
 
@@ -368,7 +427,7 @@ export async function getRecentWebhookEvents(
 
     if (isMissingTableError(error)) {
       webhookEventsTableAvailable = false;
-      return getRecentActivityFromConnections(limit);
+      return getRecentActivityFromEndpoints(limit);
     }
 
     return [];
@@ -380,10 +439,10 @@ export async function getRecentWebhookEvents(
     return [];
   }
 
-  const connectionIds = [
+  const webhookIds = [
     ...new Set(
       events
-        .map((event) => event.webhook_connection_id)
+        .map((event) => event.webhook_id)
         .filter((id): id is string => Boolean(id)),
     ),
   ];
@@ -396,32 +455,16 @@ export async function getRecentWebhookEvents(
     ),
   ];
 
-  const [connectionsResult, clientsResult] = await Promise.all([
-    connectionIds.length > 0
-      ? supabase
-          .from("webhook_connections")
-          .select("id, name")
-          .in("id", connectionIds)
-      : Promise.resolve({ data: [], error: null }),
+  const [endpointNames, clientsResult] = await Promise.all([
+    fetchEndpointNamesByIds(webhookIds),
     clientIds.length > 0
-      ? supabase.from("clients").select("id, email").in("id", clientIds)
+      ? supabase.from("profiles").select("id, email").in("id", clientIds)
       : Promise.resolve({ data: [], error: null }),
   ]);
-
-  if (connectionsResult.error) {
-    logDashboardError("Erro ao buscar conexões dos eventos", connectionsResult.error);
-  }
 
   if (clientsResult.error) {
     logDashboardError("Erro ao buscar clientes dos eventos", clientsResult.error);
   }
-
-  const connectionNames = new Map(
-    (connectionsResult.data ?? []).map((connection) => [
-      connection.id as string,
-      connection.name as string,
-    ]),
-  );
 
   const clientEmails = new Map(
     (clientsResult.data ?? []).map((client) => [
@@ -431,9 +474,9 @@ export async function getRecentWebhookEvents(
   );
 
   return events.map((event) => {
-    const connectionName = event.webhook_connection_id
-      ? (connectionNames.get(event.webhook_connection_id) ?? null)
-      : null;
+    const endpointName = event.webhook_id
+      ? (endpointNames.get(event.webhook_id) ?? "Webhook")
+      : "Webhook";
     const clientEmail = event.created_client_id
       ? (clientEmails.get(event.created_client_id) ?? null)
       : null;
@@ -448,7 +491,7 @@ export async function getRecentWebhookEvents(
     return {
       id: event.id,
       type: "webhook" as const,
-      title: connectionName ?? "Webhook",
+      title: endpointName,
       description: clientEmail
         ? `Cliente: ${clientEmail}`
         : event.error_message
@@ -514,35 +557,44 @@ export async function getConnectionSummary(): Promise<ConnectionSummary> {
     };
   }
 
-  const { data, error } = await supabase
-    .from("webhook_connections")
-    .select("status, total_events, success_events, error_events");
+  const [endpointsResult, eventsResult] = await Promise.all([
+    supabase
+      .from("webhook_endpoints")
+      .select("enabled, trigger_count"),
+    supabase.from("webhook_events").select("status"),
+  ]);
 
-  if (error) {
-    logDashboardError("Erro ao buscar resumo de conexões", error);
+  if (endpointsResult.error) {
+    logDashboardError("Erro ao buscar resumo de endpoints", endpointsResult.error);
+  }
 
+  if (eventsResult.error) {
+    logDashboardError("Erro ao buscar resumo de eventos", eventsResult.error);
+  }
+
+  const endpoints = endpointsResult.data ?? [];
+  const events = eventsResult.data ?? [];
+
+  const activeConnections = endpoints.filter((endpoint) => endpoint.enabled).length;
+
+  if (events.length > 0) {
     return {
-      activeConnections: 0,
-      totalEvents: 0,
-      successEvents: 0,
-      errorEvents: 0,
+      activeConnections,
+      totalEvents: events.length,
+      successEvents: events.filter((event) => event.status === "success").length,
+      errorEvents: events.filter((event) => event.status === "error").length,
     };
   }
 
-  return (data ?? []).reduce<ConnectionSummary>(
-    (summary, connection) => ({
-      activeConnections:
-        summary.activeConnections +
-        (connection.status === "active" ? 1 : 0),
-      totalEvents: summary.totalEvents + (connection.total_events ?? 0),
-      successEvents: summary.successEvents + (connection.success_events ?? 0),
-      errorEvents: summary.errorEvents + (connection.error_events ?? 0),
-    }),
-    {
-      activeConnections: 0,
-      totalEvents: 0,
-      successEvents: 0,
-      errorEvents: 0,
-    },
+  const totalEventsFromEndpoints = endpoints.reduce(
+    (sum, endpoint) => sum + (endpoint.trigger_count ?? 0),
+    0,
   );
+
+  return {
+    activeConnections,
+    totalEvents: totalEventsFromEndpoints,
+    successEvents: 0,
+    errorEvents: 0,
+  };
 }

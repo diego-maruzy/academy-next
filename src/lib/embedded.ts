@@ -122,7 +122,7 @@ export function postMessageToHost(message: HostMessage) {
   }
 }
 
-export function getHostTopLevelLoginUrl(fallbackPath = "/oidc/login") {
+export function getHostTopLevelLoginUrl(fallbackPath = "/login") {
   const returnUrl = getReturnUrl();
 
   if (returnUrl) {
@@ -138,7 +138,7 @@ export function getHostTopLevelLoginUrl(fallbackPath = "/oidc/login") {
   return withEmbeddedParams(fallbackPath);
 }
 
-/** Pede ao app host que abra o login (Lovable). postMessage + assign como fallback. */
+/** Pede ao app host que abra o login. postMessage + assign como fallback. */
 export function requestHostLogin(loginUrl = getHostTopLevelLoginUrl()) {
   postMessageToHost({ type: "checkmate-academy-login" });
   window.location.assign(loginUrl);

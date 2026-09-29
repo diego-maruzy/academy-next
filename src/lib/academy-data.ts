@@ -12,11 +12,11 @@ import type {
 } from "@/types/academy";
 
 const programColumns =
-  "id, external_id, slug, name, description, published, display_order, is_premium, upgrade_url, cover_image_url, created_at, updated_at";
+  "id, name, description, cover_image_url, published, display_order, created_at, updated_at, slug, is_premium, lock_title, lock_message, lock_cta_label, lock_cta_url, allowed_roles";
 const moduleColumns =
-  "id, external_id, program_id, slug, name, description, display_order, cover_image_url, created_at, updated_at";
+  "id, program_id, name, display_order, created_at, cover_image_url, slug";
 const lessonColumns =
-  "id, external_id, module_id, slug, name, description, cta_url, cta_text, image_url, vimeo_url, media_type, display_order, created_at, updated_at";
+  "id, module_id, name, vimeo_url, cta_text, cta_url, display_order, created_at, slug, image_url";
 
 function logAcademyDataError(context: string, error: unknown) {
   console.error(`[academy-data] ${context}`, formatSupabaseError(error));
@@ -24,6 +24,13 @@ function logAcademyDataError(context: string, error: unknown) {
 
 async function getClient() {
   return createSupabaseReadServerClient();
+}
+
+function normalizeProgram(program: Program): Program {
+  return {
+    ...program,
+    upgrade_url: program.lock_cta_url,
+  };
 }
 
 async function attachModules(programs: Program[]) {
@@ -48,7 +55,7 @@ async function attachModules(programs: Program[]) {
   const modules = (data ?? []) as Module[];
 
   return programs.map((program) => ({
-    ...program,
+    ...normalizeProgram(program),
     modules: modules.filter((moduleItem) => moduleItem.program_id === program.id),
   }));
 }

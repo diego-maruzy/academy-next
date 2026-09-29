@@ -26,7 +26,7 @@ export default function AdministratorPage() {
               Permissões e acessos
             </h2>
             <p className="mt-1 text-sm text-slate-400">
-              Login administrativo ativo. Keycloak do cliente será tratado em etapa futura.
+              Login administrativo ativo. Login do aluno será tratado em etapa futura.
             </p>
           </div>
         </CardContent>

@@ -74,4 +74,4 @@ curl -X POST https://SUA-URL-VERCEL.vercel.app/api/test-resend \
 - [ ] Domínio `checkmateproperty.com` verificado no Resend (SPF/DKIM)
 - [ ] `RESEND_FROM_EMAIL` usando endereço do domínio verificado
 - [ ] Variáveis configuradas em Production na Vercel
-- [ ] Keycloak e callbacks — **ainda não alterar** até a troca de domínio planejada
+- [ ] Login do aluno via Supabase configurado no domínio final

@@ -5,7 +5,7 @@ import {
   EntityCardField,
   EntityCardShell,
 } from "@/components/crm/entity-card-shell";
-import { RoleBadge } from "@/components/crm/role-badge";
+import { ClientPlanBadge } from "@/components/clients/client-plan-badge";
 import { StatusBadge } from "@/components/crm/status-badge";
 import { Button } from "@/components/ui/button";
 import { getInitials } from "@/components/ui/admin-modal";
@@ -34,7 +34,10 @@ export function ClientCard({
       headerBadges={
         <>
           <StatusBadge status={client.status} label={client.statusLabel} />
-          <RoleBadge value={client.role} variant="client" />
+          <ClientPlanBadge
+            label={client.planLabel}
+            isPremium={client.isPremium}
+          />
         </>
       }
       footer={

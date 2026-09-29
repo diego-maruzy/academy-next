@@ -16,6 +16,7 @@ import {
   deleteTeamMember,
   updateTeamMember,
 } from "@/lib/actions/team-actions";
+import { TEAM_USER_ROLE_LABELS, normalizeTeamUserRole } from "@/lib/team/team-roles";
 import type { TeamMemberInput } from "@/lib/validations/team";
 
 type TeamPageContentProps = {
@@ -42,7 +43,7 @@ export function TeamPageContent({ initialMembers }: TeamPageContentProps) {
       { value: "all", label: "Todas as permissões" },
       ...permissions.map((permission) => ({
         value: permission,
-        label: permission,
+        label: TEAM_USER_ROLE_LABELS[normalizeTeamUserRole(permission)],
       })),
     ];
   }, [initialMembers]);
@@ -90,8 +91,7 @@ export function TeamPageContent({ initialMembers }: TeamPageContentProps) {
       return (
         member.fullName.toLowerCase().includes(searchQuery) ||
         member.email.toLowerCase().includes(searchQuery) ||
-        member.roleLabel.toLowerCase().includes(searchQuery) ||
-        member.department.toLowerCase().includes(searchQuery)
+        member.permissionLabel.toLowerCase().includes(searchQuery)
       );
     });
   }, [initialMembers, searchValue, statusFilter, permissionFilter]);

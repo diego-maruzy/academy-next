@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { ClientAnalyticsPanel } from "@/components/clients/client-analytics-panel";
 import { ClientPlanBadge } from "@/components/clients/client-plan-badge";
-import { RoleBadge } from "@/components/crm/role-badge";
 import { StatusBadge } from "@/components/crm/status-badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,11 +60,6 @@ export function ClientDetailsModal({
               label={client.planLabel}
               isPremium={client.isPremium}
             />
-            <RoleBadge
-              value={client.role}
-              label={client.roleLabel}
-              variant="client"
-            />
           </>
         }
         meta={
@@ -97,7 +91,7 @@ export function ClientDetailsModal({
           <AdminDetailCard
             icon={UserRound}
             label="Tipo de usuário"
-            value={client.roleLabel}
+            value={client.planLabel}
           />
           <AdminDetailCard
             icon={Globe2}

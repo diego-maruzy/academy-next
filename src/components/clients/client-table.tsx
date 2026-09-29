@@ -80,7 +80,7 @@ export function ClientTable({
                   </td>
                   <td className="px-6 py-5">{client.email}</td>
                   <td className="px-6 py-5">{client.phone}</td>
-                  <td className="px-6 py-5">{client.role}</td>
+                  <td className="px-6 py-5">{client.planLabel}</td>
                   <td className="px-6 py-5">
                     <Badge className={cn(statusClass(client.status))}>
                       {client.statusLabel}

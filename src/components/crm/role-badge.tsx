@@ -10,6 +10,9 @@ type RoleBadgeProps = {
 };
 
 const permissionStyles: Record<string, string> = {
+  admin: "border-violet-400/25 bg-violet-400/10 text-violet-200",
+  academy_manager: "border-blue-400/25 bg-blue-400/10 text-blue-200",
+  academy_editor: "border-emerald-400/25 bg-emerald-400/10 text-emerald-200",
   admin_access:
     "border-violet-400/25 bg-violet-400/10 text-violet-200",
   academy_access:

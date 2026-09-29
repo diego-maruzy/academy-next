@@ -7,20 +7,20 @@ import type { AdminPermission } from "@/lib/admin-auth/permissions";
 
 const MOBILE_PRIMARY_HREFS: Record<AdminPermission, string[]> = {
   admin_access: [
-    "/admin",
+    "/admin/dashboard",
     "/clientes",
     "/admin/programas",
     "/admin/shorts",
   ],
-  academy_access: ["/admin", "/clientes"],
-  support_access: ["/admin", "/clientes"],
-  property_access: ["/admin"],
+  academy_access: ["/admin/dashboard", "/clientes"],
+  support_access: ["/admin/dashboard", "/clientes"],
+  property_access: ["/admin/dashboard"],
 };
 
 const MAX_PRIMARY_ITEMS = 4;
 
 const MOBILE_SHORT_LABELS: Record<string, string> = {
-  "/admin": "Início",
+  "/admin/dashboard": "Início",
   "/programas": "Programas",
   "/reels": "Reels",
   "/clientes": "Clientes",

@@ -1,6 +1,7 @@
 "use client";
 
 import { User } from "lucide-react";
+import { StudentLogoutButton } from "@/components/auth/student-logout-button";
 import { useCurrentUser } from "@/components/auth/user-provider";
 
 export function StudentHeader() {
@@ -27,19 +28,22 @@ export function StudentHeader() {
           </span>
         </div>
 
-        <button
-          type="button"
-          className="flex h-11 min-w-[44px] items-center gap-2 rounded-xl border border-white/10 bg-white/5 py-1 pl-1 pr-3 transition active:scale-[0.98] md:h-auto"
-          aria-label={`Perfil de ${user.name}`}
-        >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-400 to-emerald-400 text-xs font-bold text-slate-950">
-            {userInitial}
+        <div className="flex items-center gap-2">
+          <div
+            className="flex h-11 min-w-[44px] items-center gap-2 rounded-xl border border-white/10 bg-white/5 py-1 pl-1 pr-3 md:h-auto"
+            aria-label={`Perfil de ${user.name}`}
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-400 to-emerald-400 text-xs font-bold text-slate-950">
+              {userInitial}
+            </div>
+            <span className="hidden text-sm font-medium text-white sm:inline">
+              {user.name}
+            </span>
+            <User className="h-4 w-4 text-slate-400 sm:hidden" />
           </div>
-          <span className="hidden text-sm font-medium text-white sm:inline">
-            {user.name}
-          </span>
-          <User className="h-4 w-4 text-slate-400 sm:hidden" />
-        </button>
+          <StudentLogoutButton compact className="sm:hidden" />
+          <StudentLogoutButton className="hidden sm:inline-flex" />
+        </div>
       </div>
     </header>
   );

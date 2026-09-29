@@ -1,6 +1,6 @@
 # Login admin/equipe
 
-Autenticação própria por **email e senha**, separada do Keycloak.
+Autenticação própria por **email e senha**, separada do login de aluno.
 
 ## Rotas
 
@@ -30,7 +30,7 @@ Migration: `supabase/team-members-auth.sql`
 ADMIN_SESSION_SECRET=uma_chave_longa_aleatoria_com_no_minimo_32_caracteres
 ```
 
-Gere uma chave forte e única. Não reutilize `AUTH_SECRET` do Keycloak.
+Gere uma chave forte e única para o cookie administrativo.
 
 ## Criar ou resetar senha
 
@@ -72,6 +72,6 @@ curl -X POST http://localhost:3000/api/admin/logout
 
 ## Importante
 
-- Keycloak **não** concede acesso ao painel admin.
-- Logout admin **não** encerra sessão Keycloak.
+- A sessão de aluno **não** concede acesso ao painel admin.
+- Logout admin **não** encerra a sessão de aluno.
 - Sessão admin: cookie httpOnly, `Secure` em produção, `SameSite=Lax`.

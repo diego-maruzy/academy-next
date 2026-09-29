@@ -1,29 +1,30 @@
-const CLIENT_ROLE_LABELS: Record<string, string> = {
-  ROLE_USER_FREE: "Free",
-  ROLE_USER: "Premium",
-  user: "Usuário",
-  admin: "Admin",
-  ROLE_ADMIN: "Admin",
-  academy_access: "Academy",
-  property_access: "Property",
-};
+import {
+  getClientPlanLabel,
+  isPremiumClientPlan,
+  normalizeClientPlan,
+  type ClientPlan,
+} from "@/lib/clients/client-access";
 
-export function formatClientRole(role: string | null | undefined): string {
-  if (!role) {
-    return "Usuário";
-  }
-
-  const normalized = role.trim();
-  const upper = normalized.toUpperCase();
-
-  return (
-    CLIENT_ROLE_LABELS[normalized] ??
-    CLIENT_ROLE_LABELS[upper] ??
-    normalized.replace(/^ROLE_/i, "").replaceAll("_", " ")
-  );
+export function formatClientRole(
+  plan: ClientPlan | string | null | undefined,
+): "Free" | "Premium" {
+  return getClientPlanLabel(normalizeClientPlan(plan));
 }
 
-export function isPremiumRole(role: string | null | undefined): boolean {
-  const upper = role?.trim().toUpperCase() ?? "";
-  return upper === "ROLE_USER" || upper === "ADMIN" || upper === "ROLE_ADMIN";
+export function formatClientPlan(
+  plan: ClientPlan | string | null | undefined,
+): "Free" | "Premium" {
+  return getClientPlanLabel(normalizeClientPlan(plan));
+}
+
+export function isPremiumRole(
+  plan: ClientPlan | string | null | undefined,
+): boolean {
+  return isPremiumClientPlan(normalizeClientPlan(plan));
+}
+
+export function isPremiumPlan(
+  plan: ClientPlan | string | null | undefined,
+): boolean {
+  return isPremiumClientPlan(normalizeClientPlan(plan));
 }

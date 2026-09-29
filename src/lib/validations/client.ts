@@ -9,7 +9,9 @@ export const clientSchema = z.object({
   full_name: z.string().min(2, "Informe o nome completo."),
   email: z.string().email("Informe um email válido."),
   phone: optionalText,
-  role: z.string().min(1, "Informe a role."),
+  plan: z.enum(["free", "premium"], {
+    message: "Informe um plano válido.",
+  }),
   status: z.enum(["active", "pending", "inactive", "blocked"], {
     message: "Informe um status válido.",
   }),

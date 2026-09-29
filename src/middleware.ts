@@ -1,30 +1,38 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { resolveAdminMiddlewareState } from "@/lib/admin-auth/middleware-admin";
 import {
-  ADMIN_SESSION_COOKIE,
-  verifyAdminSessionFromToken,
-} from "@/lib/admin-auth/admin-session";
-import {
-  canAccessAdminRoute,
   getDefaultAdminPath,
   isProtectedPanelPath,
 } from "@/lib/admin-auth/permissions";
 import { copyEmbeddedSearchParams } from "@/lib/embedded-params";
 import { getSupabaseAuthUser } from "@/lib/supabase/middleware";
 import {
-  getStudentCallbackUrlFromSearchParams,
   isAdminApiPath,
   isAdminLoginPath,
-  isKeycloakApiPath,
   isPublicPath,
   isStudentLoginPath,
-  requiresKeycloakAuth,
+  requiresStudentAuth,
 } from "@/lib/auth/route-guard";
 
-function buildOidcLoginRedirect(request: NextRequest, nextPath: string) {
-  const loginUrl = new URL("/oidc/login", request.url);
+function buildStudentLoginRedirect(request: NextRequest, nextPath: string) {
+  const loginUrl = new URL("/login", request.url);
   loginUrl.searchParams.set("next", nextPath);
   copyEmbeddedSearchParams(request.nextUrl.searchParams, loginUrl.searchParams);
+  return loginUrl;
+}
+
+function buildAdminLoginRedirect(
+  request: NextRequest,
+  options?: { error?: "unauthorized"; nextPath?: string },
+) {
+  const loginUrl = new URL("/admin/login", request.url);
+
+  if (options?.error) {
+    loginUrl.searchParams.set("error", options.error);
+  } else if (options?.nextPath) {
+    loginUrl.searchParams.set("next", options.nextPath);
+  }
+
   return loginUrl;
 }
 
@@ -40,22 +48,10 @@ function redirectShortsToReels(request: NextRequest) {
   return null;
 }
 
-async function getKeycloakToken(request: NextRequest) {
-  try {
-    return await getToken({
-      req: request,
-      secret: process.env.AUTH_SECRET,
-      secureCookie: process.env.NODE_ENV === "production",
-    });
-  } catch {
-    return null;
-  }
-}
-
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (isKeycloakApiPath(pathname) || isAdminApiPath(pathname)) {
+  if (isAdminApiPath(pathname)) {
     return NextResponse.next();
   }
 
@@ -65,12 +61,9 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isAdminLoginPath(pathname)) {
-    const adminToken = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-    const adminSession = adminToken
-      ? await verifyAdminSessionFromToken(adminToken)
-      : null;
+    const { isAdmin } = await resolveAdminMiddlewareState(request);
 
-    if (adminSession) {
+    if (isAdmin) {
       const next =
         request.nextUrl.searchParams.get("next") ?? getDefaultAdminPath();
       return NextResponse.redirect(new URL(next, request.url));
@@ -80,23 +73,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isStudentLoginPath(pathname)) {
-    if (
-      pathname === "/oidc/login" ||
-      pathname === "/auth/callback" ||
-      pathname === "/auth/silent-callback"
-    ) {
-      return NextResponse.next();
-    }
+    const supabaseUser = await getSupabaseAuthUser(request);
 
-    const [keycloakToken, supabaseUser] = await Promise.all([
-      getKeycloakToken(request),
-      getSupabaseAuthUser(request),
-    ]);
-
-    if (keycloakToken || supabaseUser) {
-      const callbackUrl = getStudentCallbackUrlFromSearchParams(
-        request.nextUrl.searchParams,
-      );
+    if (supabaseUser) {
+      const callbackUrl = request.nextUrl.searchParams.get("next") ?? "/dashboard";
       return NextResponse.redirect(new URL(callbackUrl, request.url));
     }
 
@@ -108,32 +88,29 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isProtectedPanelPath(pathname)) {
-    const adminToken = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-    const adminSession = adminToken
-      ? await verifyAdminSessionFromToken(adminToken)
-      : null;
+    const { authenticated, isAdmin } =
+      await resolveAdminMiddlewareState(request);
 
-    if (!adminSession) {
-      const loginUrl = new URL("/admin/login", request.url);
-      loginUrl.searchParams.set("next", pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+    if (!isAdmin) {
+      if (authenticated) {
+        return NextResponse.redirect(
+          buildAdminLoginRedirect(request, { error: "unauthorized" }),
+        );
+      }
 
-    if (!canAccessAdminRoute(adminSession, pathname)) {
-      return NextResponse.redirect(new URL("/access-denied", request.url));
+      return NextResponse.redirect(
+        buildAdminLoginRedirect(request, { nextPath: pathname }),
+      );
     }
 
     return NextResponse.next();
   }
 
-  if (requiresKeycloakAuth(pathname)) {
-    const [keycloakToken, supabaseUser] = await Promise.all([
-      getKeycloakToken(request),
-      getSupabaseAuthUser(request),
-    ]);
+  if (requiresStudentAuth(pathname)) {
+    const supabaseUser = await getSupabaseAuthUser(request);
 
-    if (!keycloakToken && !supabaseUser) {
-      return NextResponse.redirect(buildOidcLoginRedirect(request, pathname));
+    if (!supabaseUser) {
+      return NextResponse.redirect(buildStudentLoginRedirect(request, pathname));
     }
 
     return NextResponse.next();
@@ -146,14 +123,10 @@ export const config = {
   matcher: [
     "/",
     "/login",
-    "/oidc/login",
-    "/oidc/complete",
-    "/auth/callback",
-    "/auth/silent-callback",
+    "/forgot-password",
+    "/reset-password",
     "/admin/login",
-    "/auth-debug",
     "/test",
-    "/mobile-oidc-debug",
     "/dashboard",
     "/dashboard/:path*",
     "/programas",

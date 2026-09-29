@@ -14,7 +14,10 @@ type ConnectionFormProps = {
   programs: ProgramOption[];
   editingConnection?: WebhookConnectionView | null;
   onCancelEdit?: () => void;
-  onSave: (values: WebhookConnectionInput, connectionId?: string) => Promise<{
+  onSave: (
+    values: WebhookConnectionInput,
+    connectionId?: string,
+  ) => Promise<{
     error: string | null;
     secretToken?: string;
   }>;
@@ -25,11 +28,19 @@ const emptyValues: WebhookConnectionInput = {
   slug: "",
   description: null,
   type: "jetformbuilder",
-  role: "ROLE_USER_FREE",
+  role: "free",
   program_id: null,
   status: "active",
   secret_token: null,
 };
+
+function normalizeWebhookPlan(value: string | null | undefined) {
+  const normalized = String(value ?? "")
+    .trim()
+    .toLowerCase();
+
+  return normalized === "premium" ? "premium" : "free";
+}
 
 export function ConnectionForm({
   programs,
@@ -48,7 +59,7 @@ export function ConnectionForm({
         slug: editingConnection.slug,
         description: editingConnection.description,
         type: editingConnection.type,
-        role: editingConnection.role,
+        role: normalizeWebhookPlan(editingConnection.role),
         program_id: editingConnection.program_id,
         status: editingConnection.status as "active" | "inactive",
         secret_token: editingConnection.secret_token,
@@ -65,6 +76,7 @@ export function ConnectionForm({
           Configure um webhook de entrada para receber leads via POST JSON.
         </p>
       </CardHeader>
+
       <CardContent>
         <form
           key={editingConnection?.id ?? "new"}
@@ -74,7 +86,8 @@ export function ConnectionForm({
             setError(null);
             setSuccessMessage(null);
 
-            const formData = new FormData(event.currentTarget);
+            const form = event.currentTarget;
+            const formData = new FormData(form);
 
             startTransition(async () => {
               const result = await onSave(
@@ -83,9 +96,11 @@ export function ConnectionForm({
                   slug: String(formData.get("slug") ?? ""),
                   description: String(formData.get("description") ?? "") || null,
                   type: String(formData.get("type") ?? "jetformbuilder"),
-                  role: String(formData.get("role") ?? ""),
+                  role: normalizeWebhookPlan(String(formData.get("role") ?? "free")),
                   program_id: String(formData.get("program_id") ?? "") || null,
-                  status: String(formData.get("status")) as WebhookConnectionInput["status"],
+                  status: String(
+                    formData.get("status") ?? "active",
+                  ) as WebhookConnectionInput["status"],
                   secret_token: editingConnection?.secret_token ?? null,
                 },
                 editingConnection?.id,
@@ -104,7 +119,7 @@ export function ConnectionForm({
                 setSuccessMessage("Conexão salva com sucesso.");
               }
 
-              event.currentTarget.reset();
+              form.reset();
               setSlugTouched(false);
               onCancelEdit?.();
             });
@@ -133,6 +148,7 @@ export function ConnectionForm({
                 }}
               />
             </Field>
+
             <Field label="Slug da URL">
               <Input
                 name="slug"
@@ -161,13 +177,11 @@ export function ConnectionForm({
                 <option value="other">Outro</option>
               </Select>
             </Field>
-            <Field label="Role aplicada">
+
+            <Field label="Plano aplicado ao cliente">
               <Select name="role" defaultValue={values.role}>
-                <option value="ROLE_USER">ROLE_USER</option>
-                <option value="ROLE_USER_FREE">ROLE_USER_FREE</option>
-                <option value="academy_access">academy_access</option>
-                <option value="property_access">property_access</option>
-                <option value="admin_access">admin_access</option>
+                <option value="free">Free</option>
+                <option value="premium">Premium</option>
               </Select>
             </Field>
           </div>
@@ -183,6 +197,7 @@ export function ConnectionForm({
                 ))}
               </Select>
             </Field>
+
             <Field label="Status">
               <Select name="status" defaultValue={values.status}>
                 <option value="active">Ativo</option>
@@ -209,6 +224,7 @@ export function ConnectionForm({
                 Cancelar edição
               </Button>
             ) : null}
+
             <Button type="submit" disabled={pending}>
               <Plus className="mr-2 h-4 w-4" />
               {pending

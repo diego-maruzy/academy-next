@@ -12,8 +12,9 @@ import {
   AdminModalHero,
   getInitials,
 } from "@/components/ui/admin-modal";
-import { Field, Input, Select, Textarea } from "@/components/ui/form-controls";
+import { Field, Input, Select } from "@/components/ui/form-controls";
 import { PhoneInput } from "@/components/ui/phone-input";
+import { TEAM_USER_ROLE_LABELS, TEAM_USER_ROLES } from "@/lib/team/team-roles";
 import { normalizeUsPhoneForStorage } from "@/lib/phone-us";
 import type { TeamMemberInput } from "@/lib/validations/team";
 import type { TeamMember } from "./types";
@@ -30,11 +31,8 @@ const emptyValues: TeamMemberInput = {
   full_name: "",
   email: "",
   phone: null,
-  role: "support",
-  permission: "academy_access",
-  status: "invited",
-  department: null,
-  notes: null,
+  permission: "academy_editor",
+  status: "active",
   password: undefined,
   newPassword: undefined,
 };
@@ -84,11 +82,10 @@ export function TeamFormModal({
                 phone: normalizeUsPhoneForStorage(
                   String(formData.get("phone") ?? ""),
                 ),
-                role: String(formData.get("role") ?? ""),
-                permission: String(formData.get("permission") ?? ""),
-                department: String(formData.get("department") ?? "") || null,
+                permission: String(
+                  formData.get("permission") ?? "academy_editor",
+                ) as TeamMemberInput["permission"],
                 status: String(formData.get("status")) as TeamMemberInput["status"],
-                notes: String(formData.get("notes") ?? "") || null,
                 password: isEditing
                   ? undefined
                   : String(formData.get("password") ?? "") || undefined,
@@ -139,35 +136,11 @@ export function TeamFormModal({
           </AdminFormSection>
 
           <AdminFormSection
-            title="Função e departamento"
-            description="Organize o membro dentro da operação da Academy."
-          >
-            <div className="grid gap-5 md:grid-cols-2">
-              <Field label="Função">
-                <Select name="role" defaultValue={values.role}>
-                  <option value="admin">Administrador</option>
-                  <option value="content">Conteúdo</option>
-                  <option value="support">Suporte</option>
-                  <option value="sales">Comercial</option>
-                  <option value="finance">Financeiro</option>
-                </Select>
-              </Field>
-              <Field label="Departamento">
-                <Input
-                  name="department"
-                  defaultValue={values.department ?? ""}
-                  placeholder="Operação"
-                />
-              </Field>
-            </div>
-          </AdminFormSection>
-
-          <AdminFormSection
             title="Senha administrativa"
             description={
               isEditing
-                ? "Defina uma nova senha apenas se quiser alterar o acesso ao painel."
-                : "Opcional. Se informada, o membro poderá acessar /admin/login."
+                ? "Defina uma nova senha apenas se quiser alterar o acesso via Supabase Auth."
+                : "Obrigatória na criação. O membro usará esta senha em /admin/login."
             }
           >
             {isEditing ? (
@@ -186,6 +159,7 @@ export function TeamFormModal({
                   type="password"
                   autoComplete="new-password"
                   placeholder="Mínimo de 8 caracteres"
+                  required
                 />
               </Field>
             )}
@@ -193,15 +167,16 @@ export function TeamFormModal({
 
           <AdminFormSection
             title="Acesso e status"
-            description="Controle de permissão e situação do membro."
+            description="Permissão em user_roles e situação do membro em profiles."
           >
             <div className="grid gap-5 md:grid-cols-2">
               <Field label="Permissão">
                 <Select name="permission" defaultValue={values.permission}>
-                  <option value="admin_access">admin_access</option>
-                  <option value="academy_access">academy_access</option>
-                  <option value="property_access">property_access</option>
-                  <option value="support_access">support_access</option>
+                  {TEAM_USER_ROLES.map((role) => (
+                    <option key={role} value={role}>
+                      {TEAM_USER_ROLE_LABELS[role]}
+                    </option>
+                  ))}
                 </Select>
               </Field>
               <Field label="Status">
@@ -213,19 +188,6 @@ export function TeamFormModal({
                 </Select>
               </Field>
             </div>
-          </AdminFormSection>
-
-          <AdminFormSection
-            title="Observações"
-            description="Notas internas sobre responsabilidades e contexto."
-          >
-            <Field label="Notas">
-              <Textarea
-                name="notes"
-                defaultValue={values.notes ?? ""}
-                placeholder="Responsabilidades, contexto ou observações internas..."
-              />
-            </Field>
           </AdminFormSection>
 
           {error ? (

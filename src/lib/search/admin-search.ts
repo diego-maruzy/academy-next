@@ -97,7 +97,7 @@ export async function searchAdminContent(
   }
 
   for (const client of clients) {
-    if (matchesQuery(query, client.full_name, client.email, client.phone)) {
+    if (matchesQuery(query, client.full_name, client.email, client.whatsapp)) {
       results.push({
         id: client.id,
         type: "client",

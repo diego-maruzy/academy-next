@@ -7,7 +7,6 @@ export type ClientSourceFilter =
   | "import_json"
   | "manual"
   | "checkout"
-  | "keycloak"
   | "webhook"
   | "other";
 export type ClientSortOption =

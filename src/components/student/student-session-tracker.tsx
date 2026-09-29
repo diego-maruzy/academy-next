@@ -2,7 +2,7 @@
 
 /**
  * Mede tempo na plataforma via session_heartbeat.
- * Quando Keycloak estiver ativo, clientId virá da sessão do aluno autenticado.
+ * Com Supabase Auth ativo, clientId vem da sessão do aluno autenticado.
  */
 
 import { useEffect, useRef } from "react";

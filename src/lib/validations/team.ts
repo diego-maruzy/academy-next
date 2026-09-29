@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TEAM_USER_ROLES } from "@/lib/team/team-roles";
 
 const optionalText = z.preprocess(
   (value) => (value === "" || value === undefined ? null : value),
@@ -17,13 +18,12 @@ export const teamMemberSchema = z.object({
   full_name: z.string().min(2, "Informe o nome completo."),
   email: z.string().email("Informe um email válido."),
   phone: optionalText,
-  role: z.string().min(1, "Informe a função."),
-  permission: z.string().min(1, "Informe a permissão."),
-  department: optionalText,
+  permission: z.enum(TEAM_USER_ROLES, {
+    message: "Informe uma permissão válida.",
+  }),
   status: z.enum(["active", "invited", "inactive", "blocked"], {
     message: "Informe um status válido.",
   }),
-  notes: optionalText,
   password: optionalPassword,
   newPassword: optionalPassword,
 });

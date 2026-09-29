@@ -9,8 +9,6 @@ export const metadata = {
 
 const ROUTE_CHECKS = [
   { label: "Login aluno", href: "/login" },
-  { label: "OIDC login (mobile)", href: "/oidc/login" },
-  { label: "Auth debug", href: "/auth-debug" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Login admin", href: "/admin/login" },
   { label: "Programas", href: "/programas" },

@@ -33,7 +33,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 Dois fluxos separados:
 
-- **Aluno** — Keycloak SSO: [docs/keycloak.md](docs/keycloak.md)
+- **Aluno** — sessão Supabase.
 - **Admin/equipe** — email e senha: [docs/admin-auth.md](docs/admin-auth.md)
 
 ## Resend (e-mail)

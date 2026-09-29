@@ -88,7 +88,7 @@ async function slugExists(slug: string, ignoreId?: string) {
 }
 
 export async function createProgram(data: ProgramInput): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const parsed = programSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -132,7 +132,7 @@ export async function updateProgram(
   id: string,
   data: ProgramInput,
 ): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const parsed = programSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -185,7 +185,7 @@ export async function updateProgram(
 }
 
 export async function deleteProgram(id: string): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const supabase = createSupabaseServiceServerClient();
 
   if (!supabase) {

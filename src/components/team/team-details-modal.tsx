@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Briefcase,
   CalendarDays,
   Clock3,
   Edit3,
@@ -56,11 +55,10 @@ export function TeamDetailsModal({
           <>
             <StatusBadge status={member.status} label={member.statusLabel} />
             <RoleBadge
-              value={member.role}
-              label={member.roleLabel}
-              variant="team-role"
+              value={member.permission}
+              label={member.permissionLabel}
+              variant="permission"
             />
-            <RoleBadge value={member.permission} variant="permission" />
           </>
         }
         meta={
@@ -85,19 +83,9 @@ export function TeamDetailsModal({
           <AdminDetailCard icon={Mail} label="Email" value={member.email} />
           <AdminDetailCard icon={Phone} label="Telefone" value={member.phone} />
           <AdminDetailCard
-            icon={Briefcase}
-            label="Função"
-            value={member.roleLabel}
-          />
-          <AdminDetailCard
             icon={Shield}
             label="Permissão"
-            value={member.permission}
-          />
-          <AdminDetailCard
-            icon={Briefcase}
-            label="Departamento"
-            value={member.department}
+            value={member.permissionLabel}
           />
           <AdminDetailCard
             icon={CalendarDays}
@@ -108,17 +96,8 @@ export function TeamDetailsModal({
             icon={Clock3}
             label="Última atualização"
             value={member.updatedAt}
-            className="md:col-span-2 xl:col-span-2"
+            className="md:col-span-2 xl:col-span-1"
           />
-        </div>
-
-        <div className="mt-5 rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-transparent p-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-            Observações
-          </p>
-          <p className="mt-3 text-sm leading-7 text-slate-300">
-            {member.notes || "Nenhuma observação registrada."}
-          </p>
         </div>
       </AdminModalBody>
 

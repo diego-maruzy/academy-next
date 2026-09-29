@@ -1,6 +1,7 @@
 "use client";
 
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 let browserClient: SupabaseClient | null = null;
 
@@ -20,19 +21,11 @@ export function createSupabaseBrowserClient() {
     throw new Error("Supabase public environment variables are missing.");
   }
 
-  browserClient = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      storage: window.localStorage,
-    },
-  });
+  browserClient = createBrowserClient(supabaseUrl, supabaseAnonKey);
 
   return browserClient;
 }
 
-/** Alias explícito para fluxo OIDC mobile (localStorage `sb-...auth-token`). */
 export const supabaseBrowser = {
   get client() {
     return createSupabaseBrowserClient();

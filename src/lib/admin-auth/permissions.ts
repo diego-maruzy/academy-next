@@ -12,14 +12,13 @@ export type AdminPermission =
   | "property_access";
 
 export function isAdmin(admin: CurrentAdmin | null): boolean {
-  return admin?.permission === "admin_access";
+  return admin?.role === "admin";
 }
 
+/** @deprecated Apenas role admin é suportada. */
 export function isTeam(admin: CurrentAdmin | null): boolean {
-  return (
-    admin?.permission === "academy_access" ||
-    admin?.permission === "support_access"
-  );
+  void admin;
+  return false;
 }
 
 function matchesPath(pathname: string, route: string) {
@@ -27,7 +26,7 @@ function matchesPath(pathname: string, route: string) {
 }
 
 function isAdminHomePath(pathname: string) {
-  return pathname === "/admin";
+  return pathname === "/admin" || pathname === "/admin/dashboard";
 }
 
 function isAdminCrudPath(pathname: string) {
@@ -72,38 +71,18 @@ export function canAccessAdminRoute(
     return Boolean(admin);
   }
 
-  if (!admin) {
-    return false;
-  }
-
-  const permission = admin.permission as AdminPermission;
-
-  if (permission === "admin_access") {
-    return true;
-  }
-
-  if (permission === "academy_access") {
-    return isAdminHomePath(pathname) || matchesPath(pathname, "/clientes");
-  }
-
-  if (permission === "support_access") {
-    return isAdminHomePath(pathname) || matchesPath(pathname, "/clientes");
-  }
-
-  return false;
+  return isAdmin(admin);
 }
 
 export function getAllowedMenuItemsForAdmin(
   admin: CurrentAdmin | null,
 ): SidebarItem[] {
-  if (!admin) {
+  if (!isAdmin(admin)) {
     return [];
   }
 
-  const permission = admin.permission as AdminPermission;
-
   return SIDEBAR_ITEMS.filter((item) =>
-    item.allowedPermissions.includes(permission),
+    item.allowedPermissions.includes("admin_access"),
   );
 }
 
@@ -112,7 +91,7 @@ export function getAdminBadgeLabel(admin: CurrentAdmin | null): string {
     return "EQUIPE";
   }
 
-  if (admin.permission === "admin_access") {
+  if (isAdmin(admin)) {
     return "ADMINISTRADOR";
   }
 
@@ -120,5 +99,5 @@ export function getAdminBadgeLabel(admin: CurrentAdmin | null): string {
 }
 
 export function getDefaultAdminPath(): string {
-  return "/admin";
+  return "/admin/dashboard";
 }

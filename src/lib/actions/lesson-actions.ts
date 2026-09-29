@@ -116,7 +116,7 @@ async function revalidateLessonPaths(moduleId: string) {
 }
 
 export async function createLesson(data: LessonInput): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const parsed = lessonSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -163,7 +163,7 @@ export async function updateLesson(
   id: string,
   data: LessonInput,
 ): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const parsed = lessonSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -219,7 +219,7 @@ export async function deleteLesson(
   id: string,
   moduleId: string,
 ): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const supabase = createSupabaseServiceServerClient();
 
   if (!supabase) {

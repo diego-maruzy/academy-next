@@ -1,6 +1,6 @@
-import { safeAuth } from "@/lib/auth/safe-auth";
-import { sessionToCurrentUser } from "@/lib/auth/keycloak-session";
 import type { UserRole } from "@/lib/auth/roles";
+import { getCurrentClient } from "@/lib/current-client";
+import { getSupabaseCurrentUser } from "@/lib/supabase/auth";
 
 export type CurrentUser = {
   id: string;
@@ -11,17 +11,33 @@ export type CurrentUser = {
 };
 
 export async function getCurrentUser(): Promise<CurrentUser> {
-  const session = await safeAuth();
+  const student = await getCurrentClient();
 
-  if (session?.user) {
-    const user = sessionToCurrentUser(session);
+  if (student) {
+    return {
+      id: student.authUserId,
+      name: student.name,
+      email: student.email,
+      role: "client",
+      clientEmail: student.email,
+    };
+  }
+
+  const user = await getSupabaseCurrentUser();
+
+  if (user) {
+    const name =
+      user.user_metadata?.full_name ??
+      user.user_metadata?.name ??
+      user.email ??
+      "Usuário";
 
     return {
       id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      clientEmail: user.clientEmail,
+      name,
+      email: user.email ?? "",
+      role: "client",
+      clientEmail: user.email ?? "",
     };
   }
 

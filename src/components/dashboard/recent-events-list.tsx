@@ -8,7 +8,7 @@ type RecentEventsListProps = {
   events: RecentActivity[];
 };
 
-// Quando o Keycloak/login estiver ativo, substituir ou complementar
+// Quando o login do aluno estiver ativo, substituir ou complementar
 // webhook_events por user_access_logs.
 function statusMeta(status: RecentActivity["status"]) {
   if (status === "success") {

@@ -2,11 +2,10 @@ export type LessonMediaType = "video" | "image";
 
 export type Lesson = {
   id: string;
-  external_id: string;
   module_id: string;
   name: string;
   slug: string;
-  description: string | null;
+  description?: string | null;
   cta_url: string | null;
   cta_text: string | null;
   image_url: string | null;
@@ -14,25 +13,23 @@ export type Lesson = {
   media_type: LessonMediaType;
   display_order: number;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 };
 
 export type Module = {
   id: string;
-  external_id: string;
   program_id: string;
   name: string;
   slug: string;
-  description: string | null;
+  description?: string | null;
   display_order: number;
   cover_image_url: string | null;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 };
 
 export type Program = {
   id: string;
-  external_id: string;
   slug: string;
   name: string;
   description: string | null;
@@ -40,6 +37,11 @@ export type Program = {
   display_order: number;
   is_premium: boolean;
   upgrade_url: string | null;
+  lock_title: string | null;
+  lock_message: string | null;
+  lock_cta_label: string | null;
+  lock_cta_url: string | null;
+  allowed_roles: string[] | null;
   cover_image_url: string | null;
   created_at: string;
   updated_at: string;

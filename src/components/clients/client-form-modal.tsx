@@ -32,7 +32,7 @@ const emptyValues: ClientInput = {
   phone: null,
   status: "active",
   program_id: null,
-  role: "ROLE_USER_FREE",
+  plan: "free",
   source: null,
   notes: null,
 };
@@ -84,7 +84,7 @@ export function ClientFormModal({
                 ),
                 status: String(formData.get("status")) as ClientInput["status"],
                 program_id: client?.programId ?? null,
-                role: String(formData.get("role") ?? ""),
+                plan: String(formData.get("plan") ?? "free") as ClientInput["plan"],
                 source: String(formData.get("source") ?? "") || null,
                 notes: String(formData.get("notes") ?? "") || null,
               },
@@ -131,16 +131,14 @@ export function ClientFormModal({
           </AdminFormSection>
 
           <AdminFormSection
-            title="Role e origem"
-            description="Defina a role do cliente e a origem do cadastro."
+            title="Plano e origem"
+            description="Defina o plano do cliente e a origem do cadastro."
           >
             <div className="grid gap-5 md:grid-cols-2">
-              <Field label="Role">
-                <Select name="role" defaultValue={values.role}>
-                  <option value="ROLE_USER">ROLE_USER</option>
-                  <option value="ROLE_USER_FREE">ROLE_USER_FREE</option>
-                  <option value="academy_access">academy_access</option>
-                  <option value="property_access">property_access</option>
+              <Field label="Plano">
+                <Select name="plan" defaultValue={values.plan}>
+                  <option value="free">Free</option>
+                  <option value="premium">Premium</option>
                 </Select>
               </Field>
               <Field label="Origem">

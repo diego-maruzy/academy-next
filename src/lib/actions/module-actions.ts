@@ -98,7 +98,7 @@ async function revalidateModulePaths(programId: string) {
 }
 
 export async function createModule(data: ModuleInput): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const parsed = moduleSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -145,7 +145,7 @@ export async function updateModule(
   id: string,
   data: ModuleInput,
 ): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const parsed = moduleSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -208,7 +208,7 @@ export async function deleteModule(
   id: string,
   programId: string,
 ): Promise<ActionResult> {
-  // TODO: proteger esta action com Keycloak/admin_access antes de produção.
+  // TODO: proteger esta action com permissão admin_access antes de produção.
   const supabase = createSupabaseServiceServerClient();
 
   if (!supabase) {

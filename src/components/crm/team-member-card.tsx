@@ -36,6 +36,7 @@ export function TeamMemberCard({
           <StatusBadge status={member.status} label={member.statusLabel} />
           <RoleBadge
             value={member.permission}
+            label={member.permissionLabel}
             variant="permission"
           />
         </>
@@ -73,17 +74,10 @@ export function TeamMemberCard({
       }
     >
       <div className="grid grid-cols-2 gap-4">
-        <EntityCardField label="Função" value={member.roleLabel} />
-        <EntityCardField label="Permissão" value={member.permission} />
-        <EntityCardField label="Departamento" value={member.department} />
+        <EntityCardField label="Permissão" value={member.permissionLabel} />
         <EntityCardField label="Telefone" value={member.phone} />
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <RoleBadge
-          value={member.role}
-          label={member.roleLabel}
-          variant="team-role"
-        />
         <span className="text-xs text-slate-500">
           Atualizado em {member.updatedAt}
         </span>

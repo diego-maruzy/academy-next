@@ -1,6 +1,6 @@
 /**
  * Analytics do cliente — área admin.
- * Quando Keycloak estiver ativo, acesso deve exigir permissão administrativa adequada.
+ * Acesso deve exigir permissão administrativa adequada.
  */
 
 import { getCurrentAdmin } from "@/lib/admin-auth/current-admin";

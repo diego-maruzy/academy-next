@@ -1,3 +1,10 @@
+import { formatTeamUserRole } from "@/lib/team/team-roles";
+import {
+  getClientPlanLabel,
+  normalizeClientPlan,
+  type ClientPlan,
+} from "@/lib/clients/client-access";
+
 export type ProgramOption = {
   id: string;
   name: string;
@@ -40,25 +47,28 @@ export const TEAM_STATUS_LABELS = {
 
 export const TEAM_ROLE_LABELS = {
   admin: "Administrador",
-  content: "Conteúdo",
-  support: "Suporte",
-  sales: "Comercial",
-  finance: "Financeiro",
+  academy_manager: "Gestor Academy",
+  academy_editor: "Editor Academy",
 } as const;
 
-export const CLIENT_ROLE_LABELS = {
-  ROLE_USER: "Premium",
-  ROLE_USER_FREE: "Free",
-  user: "Usuário",
-  admin: "Admin",
-  ROLE_ADMIN: "Admin",
-  academy_access: "Academy",
-  property_access: "Property",
+export const CLIENT_PLAN_LABELS = {
+  free: "Free",
+  premium: "Premium",
 } as const;
 
 export type ClientStatus = keyof typeof CLIENT_STATUS_LABELS;
 export type TeamStatus = keyof typeof TEAM_STATUS_LABELS;
 
 export function formatTeamRole(role: string) {
-  return TEAM_ROLE_LABELS[role as keyof typeof TEAM_ROLE_LABELS] ?? role;
+  return formatTeamUserRole(role);
+}
+
+export function formatClientPlan(plan: ClientPlan | string | null | undefined) {
+  return getClientPlanLabel(normalizeClientPlan(plan));
+}
+
+export function normalizeAdminClientPlan(
+  plan: ClientPlan | string | null | undefined,
+): ClientPlan {
+  return normalizeClientPlan(plan);
 }

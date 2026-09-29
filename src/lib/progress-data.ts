@@ -3,10 +3,7 @@ import {
   getPublishedPrograms,
   type ProgramWithModules,
 } from "@/lib/academy-data";
-import {
-  createSupabaseReadServerClient,
-  createSupabaseServiceServerClient,
-} from "@/lib/supabase/server";
+import { createSupabaseReadServerClient } from "@/lib/supabase/server";
 
 export type ModuleProgress = {
   moduleId: string;
@@ -23,11 +20,6 @@ export type ModuleProgressMap = Record<
     percentage: number;
   }
 >;
-
-type LessonProgressRow = {
-  lesson_id: string;
-  completed: boolean;
-};
 
 function calculateModuleProgress(
   lessonIds: string[],
@@ -96,55 +88,17 @@ async function getLessonsGroupedByModule(
 export async function getLessonProgressForClient(
   clientId: string,
 ): Promise<string[]> {
-  const supabase = await createSupabaseReadServerClient();
-
-  if (!supabase) {
-    return [];
-  }
-
-  const { data, error } = await supabase
-    .from("lesson_progress")
-    .select("lesson_id, completed")
-    .eq("client_id", clientId)
-    .eq("completed", true);
-
-  if (error) {
-    console.error(
-      "[progress-data] Erro ao buscar progresso do cliente:",
-      error.message,
-    );
-    return [];
-  }
-
-  return ((data ?? []) as LessonProgressRow[]).map((row) => row.lesson_id);
+  void clientId;
+  return [];
 }
 
 export async function isLessonCompletedForClient(
   clientId: string,
   lessonId: string,
 ): Promise<boolean> {
-  const supabase = await createSupabaseReadServerClient();
-
-  if (!supabase) {
-    return false;
-  }
-
-  const { data, error } = await supabase
-    .from("lesson_progress")
-    .select("completed")
-    .eq("client_id", clientId)
-    .eq("lesson_id", lessonId)
-    .maybeSingle();
-
-  if (error) {
-    console.error(
-      "[progress-data] Erro ao verificar progresso da aula:",
-      error.message,
-    );
-    return false;
-  }
-
-  return Boolean(data?.completed);
+  void clientId;
+  void lessonId;
+  return false;
 }
 
 export async function getModuleProgressForClient(
@@ -207,40 +161,14 @@ export async function toggleLessonCompleted(
   lessonId: string,
   completed: boolean,
 ): Promise<{ success: boolean; error?: string }> {
-  const supabase = createSupabaseServiceServerClient();
+  void clientId;
+  void lessonId;
+  void completed;
 
-  if (!supabase) {
-    return {
-      success: false,
-      error: "Supabase não configurado para salvar progresso.",
-    };
-  }
-
-  const now = new Date().toISOString();
-  const { error } = await supabase.from("lesson_progress").upsert(
-    {
-      client_id: clientId,
-      lesson_id: lessonId,
-      completed,
-      completed_at: completed ? now : null,
-      updated_at: now,
-    },
-    { onConflict: "client_id,lesson_id" },
-  );
-
-  if (error) {
-    console.error(
-      "[progress-data] Erro ao salvar progresso da aula:",
-      error.message,
-    );
-
-    return {
-      success: false,
-      error: "Não foi possível salvar o progresso da aula.",
-    };
-  }
-
-  return { success: true };
+  return {
+    success: false,
+    error: "Progresso de aulas ainda não está disponível neste schema.",
+  };
 }
 
 export function countCompletedModules(

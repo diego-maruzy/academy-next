@@ -63,7 +63,6 @@ export function TeamTable({
                 <th className="px-6 py-4 font-semibold">Nome</th>
                 <th className="px-6 py-4 font-semibold">Email</th>
                 <th className="px-6 py-4 font-semibold">Telefone</th>
-                <th className="px-6 py-4 font-semibold">Função</th>
                 <th className="px-6 py-4 font-semibold">Permissão</th>
                 <th className="px-6 py-4 font-semibold">Status</th>
                 <th className="px-6 py-4 text-right font-semibold">Ações</th>
@@ -81,8 +80,7 @@ export function TeamTable({
                   </td>
                   <td className="px-6 py-5">{member.email}</td>
                   <td className="px-6 py-5">{member.phone}</td>
-                  <td className="px-6 py-5">{member.roleLabel}</td>
-                  <td className="px-6 py-5">{member.permission}</td>
+                  <td className="px-6 py-5">{member.permissionLabel}</td>
                   <td className="px-6 py-5">
                     <Badge className={cn(statusClass(member.status))}>
                       {member.statusLabel}

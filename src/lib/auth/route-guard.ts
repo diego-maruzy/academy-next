@@ -5,17 +5,11 @@ export function isAdminLoginPath(pathname: string) {
 }
 
 export function isStudentLoginPath(pathname: string) {
-  return (
-    pathname === "/login" ||
-    pathname === "/oidc/login" ||
-    pathname === "/auth/callback" ||
-    pathname === "/auth/silent-callback" ||
-    pathname === "/oidc/complete"
-  );
+  return pathname === "/login";
 }
 
-export function getOidcAuthCallbackPath() {
-  return "/oidc/complete";
+export function isStudentPasswordResetPath(pathname: string) {
+  return pathname === "/forgot-password" || pathname === "/reset-password";
 }
 
 export function resolveStudentCallbackUrl(value?: string | null) {
@@ -40,8 +34,8 @@ export function isPublicPath(pathname: string) {
   return (
     pathname === "/" ||
     pathname === "/test" ||
-    pathname === "/mobile-oidc-debug" ||
     isStudentLoginPath(pathname) ||
+    isStudentPasswordResetPath(pathname) ||
     isAdminLoginPath(pathname) ||
     pathname.startsWith("/pay")
   );
@@ -53,27 +47,8 @@ export function isAdminApiPath(pathname: string) {
   );
 }
 
-export function isKeycloakApiPath(pathname: string) {
-  return (
-    pathname.startsWith("/api/auth") ||
-    pathname === "/api/oidc/start" ||
-    pathname === "/api/oidc/session" ||
-    pathname === "/api/oidc/diagnose" ||
-    pathname === "/api/oidc/test-host-session" ||
-    pathname === "/api/oidc/provision" ||
-    pathname === "/api/oidc/supabase-bridge" ||
-    pathname === "/api/oidc/health" ||
-    pathname === "/api/oidc/refresh" ||
-    pathname === "/api/oidc/test-supabase-bridge"
-  );
-}
-
-/** Rotas do aluno — exigem sessão Keycloak */
-export function requiresKeycloakAuth(pathname: string) {
-  if (pathname === "/auth-debug") {
-    return true;
-  }
-
+/** Rotas do aluno — exigem sessão Supabase. */
+export function requiresStudentAuth(pathname: string) {
   if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
     return true;
   }

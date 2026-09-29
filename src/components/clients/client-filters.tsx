@@ -107,7 +107,6 @@ export function ClientFilters({
             { value: "import_json", label: "import:json" },
             { value: "manual", label: "Cadastro manual" },
             { value: "checkout", label: "Checkout" },
-            { value: "keycloak", label: "Keycloak" },
             { value: "webhook", label: "Webhook" },
           ]}
         />

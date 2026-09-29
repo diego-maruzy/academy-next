@@ -3,9 +3,9 @@ import {
   TEAM_STATUS_LABELS,
   formatDate,
   formatDateTime,
-  formatTeamRole,
   type TeamStatus,
 } from "@/lib/admin-labels";
+import { formatTeamUserRole, normalizeTeamUserRole } from "@/lib/team/team-roles";
 import { formatUsPhoneDisplay } from "@/lib/phone-us";
 import type { TeamMemberInput } from "@/lib/validations/team";
 
@@ -15,21 +15,19 @@ export type TeamMember = {
   email: string;
   phone: string;
   phoneRaw: string;
-  role: string;
-  roleLabel: string;
   permission: string;
+  permissionLabel: string;
   status: TeamStatus;
   statusLabel: string;
-  department: string;
   createdAt: string;
   updatedAt: string;
-  notes: string;
 };
 
 export type TeamFormValues = TeamMemberInput;
 
 export function mapTeamMemberRow(row: TeamMemberRow): TeamMember {
   const status = row.status as TeamStatus;
+  const permission = normalizeTeamUserRole(row.permission);
 
   return {
     id: row.id,
@@ -37,15 +35,12 @@ export function mapTeamMemberRow(row: TeamMemberRow): TeamMember {
     email: row.email,
     phone: formatUsPhoneDisplay(row.phone),
     phoneRaw: row.phone ?? "",
-    role: row.role,
-    roleLabel: formatTeamRole(row.role),
-    permission: row.permission,
+    permission,
+    permissionLabel: formatTeamUserRole(permission),
     status,
     statusLabel: TEAM_STATUS_LABELS[status] ?? row.status,
-    department: row.department ?? "—",
     createdAt: formatDate(row.created_at),
     updatedAt: formatDateTime(row.updated_at),
-    notes: row.notes ?? "",
   };
 }
 
@@ -54,10 +49,7 @@ export function mapTeamMemberToInput(member: TeamMember): TeamMemberInput {
     full_name: member.fullName,
     email: member.email,
     phone: member.phoneRaw || null,
-    role: member.role,
-    permission: member.permission,
-    department: member.department === "—" ? null : member.department,
+    permission: normalizeTeamUserRole(member.permission),
     status: member.status,
-    notes: member.notes || null,
   };
 }

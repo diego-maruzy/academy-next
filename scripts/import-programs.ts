@@ -94,23 +94,37 @@ function logItemError(type: string, name: string, error: unknown) {
 }
 
 async function upsertProgram(program: LovableProgram) {
-  const { data, error } = await supabase
+  const payload = {
+    slug: program.slug,
+    name: program.name,
+    description: program.description,
+    published: program.published,
+    display_order: program.display_order,
+    is_premium: program.is_premium,
+    cover_image_url: program.cover_image_url,
+  };
+  const { data: existing, error: lookupError } = await supabase
     .from("programs")
-    .upsert(
-      {
-        external_id: program.id,
-        slug: program.slug,
-        name: program.name,
-        description: program.description,
-        published: program.published,
-        display_order: program.display_order,
-        is_premium: program.is_premium,
-        cover_image_url: program.cover_image_url,
-      },
-      { onConflict: "external_id" },
-    )
     .select("id")
-    .single<SupabaseRecord>();
+    .eq("slug", program.slug)
+    .maybeSingle<SupabaseRecord>();
+
+  if (lookupError) {
+    throw lookupError;
+  }
+
+  const { data, error } = existing
+    ? await supabase
+        .from("programs")
+        .update(payload)
+        .eq("id", existing.id)
+        .select("id")
+        .single<SupabaseRecord>()
+    : await supabase
+        .from("programs")
+        .insert(payload)
+        .select("id")
+        .single<SupabaseRecord>();
 
   if (error) {
     throw error;
@@ -121,22 +135,36 @@ async function upsertProgram(program: LovableProgram) {
 }
 
 async function upsertModule(programId: string, programModule: LovableModule) {
-  const { data, error } = await supabase
+  const payload = {
+    program_id: programId,
+    slug: programModule.slug,
+    name: programModule.name,
+    display_order: programModule.display_order,
+    cover_image_url: programModule.cover_image_url,
+  };
+  const { data: existing, error: lookupError } = await supabase
     .from("modules")
-    .upsert(
-      {
-        external_id: programModule.id,
-        program_id: programId,
-        slug: programModule.slug,
-        name: programModule.name,
-        description: programModule.description ?? null,
-        display_order: programModule.display_order,
-        cover_image_url: programModule.cover_image_url,
-      },
-      { onConflict: "external_id" },
-    )
     .select("id")
-    .single<SupabaseRecord>();
+    .eq("program_id", programId)
+    .eq("slug", programModule.slug)
+    .maybeSingle<SupabaseRecord>();
+
+  if (lookupError) {
+    throw lookupError;
+  }
+
+  const { data, error } = existing
+    ? await supabase
+        .from("modules")
+        .update(payload)
+        .eq("id", existing.id)
+        .select("id")
+        .single<SupabaseRecord>()
+    : await supabase
+        .from("modules")
+        .insert(payload)
+        .select("id")
+        .single<SupabaseRecord>();
 
   if (error) {
     throw error;
@@ -147,21 +175,30 @@ async function upsertModule(programId: string, programModule: LovableModule) {
 }
 
 async function upsertLesson(moduleId: string, lesson: LovableLesson) {
-  const { error } = await supabase.from("lessons").upsert(
-    {
-      external_id: lesson.id,
-      module_id: moduleId,
-      slug: lesson.slug,
-      name: lesson.name,
-      description: lesson.description ?? null,
-      cta_url: lesson.cta_url,
-      cta_text: lesson.cta_text,
-      image_url: lesson.image_url,
-      vimeo_url: lesson.vimeo_url,
-      display_order: lesson.display_order,
-    },
-    { onConflict: "external_id" },
-  );
+  const payload = {
+    module_id: moduleId,
+    slug: lesson.slug,
+    name: lesson.name,
+    cta_url: lesson.cta_url,
+    cta_text: lesson.cta_text,
+    image_url: lesson.image_url,
+    vimeo_url: lesson.vimeo_url,
+    display_order: lesson.display_order,
+  };
+  const { data: existing, error: lookupError } = await supabase
+    .from("lessons")
+    .select("id")
+    .eq("module_id", moduleId)
+    .eq("slug", lesson.slug)
+    .maybeSingle<SupabaseRecord>();
+
+  if (lookupError) {
+    throw lookupError;
+  }
+
+  const { error } = existing
+    ? await supabase.from("lessons").update(payload).eq("id", existing.id)
+    : await supabase.from("lessons").insert(payload);
 
   if (error) {
     throw error;

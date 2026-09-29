@@ -81,7 +81,7 @@ export function ProgramProgressPanel({
                     </span>
                   </div>
                   <p className="mt-1 line-clamp-2 text-xs text-slate-500">
-                    {module.description ?? "Módulo do programa"}
+                    Módulo do programa
                   </p>
                   <div className="mt-2.5 h-1.5 w-full max-w-full overflow-hidden rounded-full bg-white/10 md:mt-3">
                     <div

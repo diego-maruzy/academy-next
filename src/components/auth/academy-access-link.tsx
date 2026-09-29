@@ -1,6 +1,5 @@
 "use client";
 
-import { getAcademyOidcLoginUrl } from "@/lib/auth/academy-entry-url";
 import { cn } from "@/lib/utils";
 
 type AcademyAccessLinkProps = {
@@ -12,7 +11,7 @@ type AcademyAccessLinkProps = {
 export function AcademyAccessLink({
   className,
   label = "Acessar Academy",
-  href = getAcademyOidcLoginUrl(),
+  href = "/login",
 }: AcademyAccessLinkProps) {
   return (
     <a href={href} className={cn(className)}>
@@ -21,6 +20,6 @@ export function AcademyAccessLink({
   );
 }
 
-export function navigateToAcademy(href = getAcademyOidcLoginUrl()) {
+export function navigateToAcademy(href = "/login") {
   window.location.href = href;
 }

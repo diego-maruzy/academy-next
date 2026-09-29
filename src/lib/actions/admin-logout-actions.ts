@@ -1,9 +1,14 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { destroyAdminSession } from "@/lib/admin-auth/admin-session";
+import { createSupabaseAuthServerClient } from "@/lib/supabase/auth";
 
 export async function logoutAdminAction() {
-  await destroyAdminSession();
+  const supabase = await createSupabaseAuthServerClient();
+
+  if (supabase) {
+    await supabase.auth.signOut();
+  }
+
   redirect("/admin/login");
 }

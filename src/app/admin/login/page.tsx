@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { AdminLoginForm } from "@/components/auth/admin-login-form";
 
 export const metadata = {
@@ -23,7 +24,9 @@ export default function AdminLoginPage() {
           </p>
         </div>
 
-        <AdminLoginForm />
+        <Suspense fallback={null}>
+          <AdminLoginForm />
+        </Suspense>
       </div>
     </div>
   );
